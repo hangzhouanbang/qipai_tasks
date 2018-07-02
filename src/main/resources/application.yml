@@ -1,0 +1,53 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/qipai_tasks
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          zk-nodes: localhost:2181
+          minPartitionCount: 1
+          autoCreateTopics: true
+          autoAddPartitions: false
+        bindings:
+          taskdocuments:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          taskdocumenthistories:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+      bindings:
+        taskdocuments:
+          destination: taskdocuments
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        taskdocumenthistories:
+          destination: taskdocumenthistories
+          contentType: application/json
+          producer:
+            partitionCount: 1
+  application:
+    name: qipai-tasks
+server:
+  port: 98
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
