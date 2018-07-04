@@ -12,37 +12,9 @@ spring:
           autoCreateTopics: true
           autoAddPartitions: false
         bindings:
-          taskdocuments:
-            producer:
-              configuration:
-                request:
-                  timeout:
-                    ms: 30000
-                linger:
-                  ms: 5
-                batch:
-                  size: 16384
-          taskdocumenthistories:
-            producer:
-              configuration:
-                request:
-                  timeout:
-                    ms: 30000
-                linger:
-                  ms: 5
-                batch:
-                  size: 16384
+          
       bindings:
-        taskdocuments:
-          destination: taskdocuments
-          contentType: application/json
-          producer:
-            partitionCount: 1
-        taskdocumenthistories:
-          destination: taskdocumenthistories
-          contentType: application/json
-          producer:
-            partitionCount: 1
+        
   application:
     name: qipai-tasks
 server:

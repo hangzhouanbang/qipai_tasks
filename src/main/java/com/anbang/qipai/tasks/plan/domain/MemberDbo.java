@@ -4,9 +4,11 @@ import java.util.List;
 
 public class MemberDbo {
 	private String id;// 会员id
-	private String nickname;// 会员昵称
 	private Boolean vip;// 是否VIP
 	private long releaseTaskTime;// 任务游标
+	private Integer onlineTime;// 在线时长
+	private Long lastLoginTime;// 最后登录时间
+	private Long createTime;// 注册时间
 	private List<Task> doingTasks;
 	private List<Task> finishTasks;
 
@@ -16,14 +18,6 @@ public class MemberDbo {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public Boolean getVip() {
@@ -40,6 +34,30 @@ public class MemberDbo {
 
 	public void setReleaseTaskTime(long releaseTaskTime) {
 		this.releaseTaskTime = releaseTaskTime;
+	}
+
+	public Integer getOnlineTime() {
+		return onlineTime;
+	}
+
+	public void setOnlineTime(Integer onlineTime) {
+		this.onlineTime = onlineTime;
+	}
+
+	public Long getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Long lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	public Long getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Long createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<Task> getDoingTasks() {
