@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
@@ -53,14 +52,13 @@ public class TaskController {
 	}
 
 	@RequestMapping("/withdraw")
-	public CommonVO withdrawTask(@RequestParam(value = "taskId") String taskId) {
+	public CommonVO withdrawTask(@RequestBody String[] taskIds) {
 		CommonVO vo = new CommonVO();
 		vo.setSuccess(false);
 		vo.setMsg("Tasks WithDraw Fail");
-		if (taskDocumentHistoryService.withdrawTaskDocumentHistory(taskId)) {
+		if (taskDocumentHistoryService.withdrawTaskDocumentHistory(taskIds)) {
 			vo.setSuccess(true);
 			vo.setMsg("WithDraw TaskDocument");
-			vo.setData(taskDocumentHistoryService.findTaskById(taskId));
 		}
 		return vo;
 	}

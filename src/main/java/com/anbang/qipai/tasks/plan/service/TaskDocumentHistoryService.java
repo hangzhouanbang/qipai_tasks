@@ -21,7 +21,7 @@ public class TaskDocumentHistoryService {
 		taskDocumentHistoryDao.addTaskDocumentHistory(task);
 	}
 
-	public boolean withdrawTaskDocumentHistory(String taskId) {
-		return taskDocumentHistoryDao.updateState(taskId, 0);
+	public boolean withdrawTaskDocumentHistory(String[] taskIds) {
+		return taskDocumentHistoryDao.updateState(taskIds, 0);
 	}
 }

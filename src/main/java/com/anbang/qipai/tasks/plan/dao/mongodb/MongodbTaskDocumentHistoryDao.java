@@ -1,5 +1,7 @@
 package com.anbang.qipai.tasks.plan.dao.mongodb;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,18 +25,33 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public boolean updateState(String taskId, int state) {
-		Query query = new Query(Criteria.where("id").is(taskId));
+	public boolean updateState(String[] taskIds, int state) {
+		Object[] ids = taskIds;
+		Query query = new Query(Criteria.where("id").in(ids));
 		Update update = new Update();
 		update.set("state", state);
-		WriteResult result = mongoTemplate.updateFirst(query, update, TaskDocumentHistory.class);
-		return result.getN() > 0;
+		WriteResult result = mongoTemplate.updateMulti(query, update, TaskDocumentHistory.class);
+		return result.getN() <= taskIds.length;
 	}
 
 	@Override
 	public TaskDocumentHistory findTaskById(String taskId) {
 		Query query = new Query(Criteria.where("id").is(taskId));
 		return mongoTemplate.findOne(query, TaskDocumentHistory.class);
+	}
+
+	@Override
+	public long getAmount(long releaseTime) {
+		Query query = new Query(Criteria.where("releaseTime").gte(releaseTime));
+		return mongoTemplate.count(query, TaskDocumentHistory.class);
+	}
+
+	@Override
+	public List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime) {
+		Query query = new Query(Criteria.where("releaseTime").gte(releaseTime));
+		query.skip((page - 1) * size);
+		query.limit(size);
+		return mongoTemplate.find(query, TaskDocumentHistory.class);
 	}
 
 }

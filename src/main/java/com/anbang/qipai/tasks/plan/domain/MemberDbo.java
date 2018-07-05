@@ -3,7 +3,7 @@ package com.anbang.qipai.tasks.plan.domain;
 public class MemberDbo {
 	private String id;// 会员id
 	private Boolean vip;// 是否VIP
-	private long releaseTaskTime;// 任务游标
+	private Long releaseTaskTime;// 任务游标
 	private Integer onlineTime;// 在线时长
 	private Long lastLoginTime;// 最后登录时间
 	private Long createTime;// 注册时间
@@ -24,11 +24,11 @@ public class MemberDbo {
 		this.vip = vip;
 	}
 
-	public long getReleaseTaskTime() {
+	public Long getReleaseTaskTime() {
 		return releaseTaskTime;
 	}
 
-	public void setReleaseTaskTime(long releaseTaskTime) {
+	public void setReleaseTaskTime(Long releaseTaskTime) {
 		this.releaseTaskTime = releaseTaskTime;
 	}
 
@@ -55,6 +55,5 @@ public class MemberDbo {
 	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
-
 
 }

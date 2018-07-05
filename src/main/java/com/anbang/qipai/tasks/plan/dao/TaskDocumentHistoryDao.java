@@ -1,12 +1,18 @@
 package com.anbang.qipai.tasks.plan.dao;
 
+import java.util.List;
+
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
 public interface TaskDocumentHistoryDao {
+
+	long getAmount(long releaseTime);
+
+	List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime);
 
 	TaskDocumentHistory findTaskById(String taskId);
 
 	void addTaskDocumentHistory(TaskDocumentHistory taskDocumentHistory);
 
-	boolean updateState(String taskId, int state);
+	boolean updateState(String[] taskIds, int state);
 }
