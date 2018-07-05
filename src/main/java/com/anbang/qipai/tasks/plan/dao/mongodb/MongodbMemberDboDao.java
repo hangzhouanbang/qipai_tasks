@@ -26,6 +26,10 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	public boolean updateMemberDbo(MemberDbo member) {
 		Query query = new Query(Criteria.where("id").is(member.getId()));
 		Update update = new Update();
+		update.set("vip",member.getVip());
+		update.set("createTime",member.getCreateTime());
+		update.set("lastLoginTime",member.getLastLoginTime());
+		update.set("onlineTime",member.getOnlineTime());
 		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
 		return result.getN() > 0;
 	}

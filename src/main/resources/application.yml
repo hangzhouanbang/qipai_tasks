@@ -11,9 +11,14 @@ spring:
           minPartitionCount: 1
           autoCreateTopics: true
           autoAddPartitions: false
-        bindings:
-          
       bindings:
+        members:
+          destination: members
+          group: qipai_tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         
   application:
     name: qipai-tasks
