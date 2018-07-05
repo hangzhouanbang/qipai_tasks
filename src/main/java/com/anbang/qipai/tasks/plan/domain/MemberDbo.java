@@ -1,7 +1,5 @@
 package com.anbang.qipai.tasks.plan.domain;
 
-import java.util.List;
-
 public class MemberDbo {
 	private String id;// 会员id
 	private Boolean vip;// 是否VIP
@@ -9,8 +7,6 @@ public class MemberDbo {
 	private Integer onlineTime;// 在线时长
 	private Long lastLoginTime;// 最后登录时间
 	private Long createTime;// 注册时间
-	private List<Task> doingTasks;
-	private List<Task> finishTasks;
 
 	public String getId() {
 		return id;
@@ -60,20 +56,5 @@ public class MemberDbo {
 		this.createTime = createTime;
 	}
 
-	public List<Task> getDoingTasks() {
-		return doingTasks;
-	}
-
-	public void setDoingTasks(List<Task> doingTasks) {
-		this.doingTasks = doingTasks;
-	}
-
-	public List<Task> getFinishTasks() {
-		return finishTasks;
-	}
-
-	public void setFinishTasks(List<Task> finishTasks) {
-		this.finishTasks = finishTasks;
-	}
 
 }
