@@ -22,6 +22,7 @@ public class TaskService {
 	}
 
 	public boolean checkTask(MemberDbo member) {
+		
 		return false;
 	}
 }
