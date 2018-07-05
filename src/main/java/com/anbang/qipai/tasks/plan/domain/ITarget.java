@@ -1,6 +1,10 @@
 package com.anbang.qipai.tasks.plan.domain;
 
+import java.util.Map;
+
 public interface ITarget {
 
-	boolean checkTaskComplete(Task task);
+	void init(TaskDocumentHistory task);
+
+	void updateTask(Task task, Map<String, Object> params);
 }

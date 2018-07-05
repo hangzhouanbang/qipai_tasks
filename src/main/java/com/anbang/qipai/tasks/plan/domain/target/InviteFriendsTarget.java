@@ -1,7 +1,11 @@
 package com.anbang.qipai.tasks.plan.domain.target;
 
+import java.util.Map;
+
+import com.anbang.qipai.tasks.config.TaskState;
 import com.anbang.qipai.tasks.plan.domain.ITarget;
 import com.anbang.qipai.tasks.plan.domain.Task;
+import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
 public class InviteFriendsTarget implements ITarget {
 	private String taskId;
@@ -9,8 +13,19 @@ public class InviteFriendsTarget implements ITarget {
 	private int finishInviteNum;
 
 	@Override
-	public boolean checkTaskComplete(Task task) {
-		return finishInviteNum >= targetInviteNum;
+	public void updateTask(Task task, Map<String, Object> params) {
+		if (params.get("finishInviteNum") != null) {
+			finishInviteNum += (int) params.get("finishInviteNum");
+			if (finishInviteNum >= targetInviteNum) {
+				task.setTaskState(TaskState.COMPLETETASK);
+			}
+		}
+	}
+
+	@Override
+	public void init(TaskDocumentHistory task) {
+		this.targetInviteNum = task.getTargetNum();
+		this.finishInviteNum = 0;
 	}
 
 }

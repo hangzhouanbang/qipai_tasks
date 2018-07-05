@@ -38,6 +38,9 @@ public class MongodbMemberDboDao implements MemberDboDao {
 		if (member.getOnlineTime() != null) {
 			update.set("onlineTime", member.getOnlineTime());
 		}
+		if (member.getReleaseTaskTime() != null) {
+			update.set("releaseTaskTime", member.getReleaseTaskTime());
+		}
 		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
 		return result.getN() > 0;
 	}

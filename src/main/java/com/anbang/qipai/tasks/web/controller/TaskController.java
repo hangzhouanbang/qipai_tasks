@@ -1,6 +1,7 @@
 package com.anbang.qipai.tasks.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
+import com.anbang.qipai.tasks.plan.domain.DoingTask;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
+import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 
 @RestController
@@ -19,6 +22,9 @@ public class TaskController {
 
 	@Autowired
 	private TaskDocumentHistoryService taskDocumentHistoryService;
+
+	@Autowired
+	private TaskService taskService;
 
 	@RequestMapping("/querytaskconfig")
 	public CommonVO queryTaskConfig() {
@@ -63,4 +69,26 @@ public class TaskController {
 		return vo;
 	}
 
+	@RequestMapping("/querymemberdoingtasks")
+	public CommonVO queryMemberDoingTasks(String token) {
+		CommonVO vo = new CommonVO();
+		// TODO根据token获取memberid
+
+		Map<String, List<DoingTask>> taskMap = taskService.queryMemberDoingTasks(token);
+		vo.setData(taskMap);
+		return vo;
+	}
+
+	@RequestMapping("/updatedoingtasks")
+	public void updateDoingTasks(Map<String, Object> params) {
+		taskService.updateDoingTasks(params);
+	}
+
+	@RequestMapping("/getrewards")
+	public void getRewards(String token, String doingTaskId) {
+		// TODO根据token获取memberid
+
+		DoingTask doingTask = taskService.getRewards(doingTaskId);
+		// TODO根据奖励类型Kafka发送奖励并增加记录
+	}
 }

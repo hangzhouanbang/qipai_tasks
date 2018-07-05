@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.anbang.qipai.tasks.config.TargetType;
 import com.anbang.qipai.tasks.config.TaskConfig;
 import com.anbang.qipai.tasks.config.TaskState;
+import com.anbang.qipai.tasks.plan.dao.DoingTaskDao;
 import com.anbang.qipai.tasks.plan.dao.MemberDboDao;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
 import com.anbang.qipai.tasks.plan.domain.DoingTask;
@@ -24,16 +25,35 @@ public class TaskService {
 	private MemberDboDao memberDboDao;
 
 	@Autowired
+	private DoingTaskDao doingTaskDao;
+
+	@Autowired
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
-	public Map<String, List<DoingTask>> queryMemberTasks(String memberId) {
+	public Map<String, List<DoingTask>> queryMemberDoingTasks(String memberId) {
 		Map<String, List<DoingTask>> taskMap = new HashMap<String, List<DoingTask>>();
 		addMemberDoingTask(memberId);
+		List<String> typeList = TaskConfig.typeList;
+		for (String type : typeList) {
+			List<DoingTask> taskList = doingTaskDao.findDoingTaskByMemberIdAndType(memberId, type);
+			taskMap.put(type, taskList);
+		}
 		return taskMap;
 	}
 
-	public void updateTask(String memberId, Map<String, Integer> params) {
+	public void updateDoingTasks(Map<String, Object> params) {
+		String[] memberIds = (String[]) params.get("memberIds");
+		for (String memberId : memberIds) {
+			List<DoingTask> doingTaskList = doingTaskDao.findAllDoingTaskByMemberId(memberId);
+			for (DoingTask doingTask : doingTaskList) {
+				Task task = doingTask.getTask();
+				task.getTarget().updateTask(task, params);
+			}
+		}
+	}
 
+	public DoingTask getRewards(String doingTaskId) {
+		return doingTaskDao.findDoingTaskById(doingTaskId);
 	}
 
 	private void addMemberDoingTask(String memberId) {
@@ -51,22 +71,26 @@ public class TaskService {
 				if (hasCriterion(member, taskHistory)) {
 					DoingTask doingTask = new DoingTask();
 					doingTask.setMemberId(member.getId());
+					doingTask.setType(taskHistory.getType());
+					doingTask.setRewardType(taskHistory.getRewardType());
+					doingTask.setRewardNum(taskHistory.getRewardNum());
 					Task task = new Task();
 					task.setTaskState(TaskState.DOINGTASK);
-					task.setProgress(0);
-					task.setTarget(TargetType
-							.getITargetById(TaskConfig.templates.get(taskHistory.getTaskName()).getTaskType()));
+					task.setTarget(TargetType.getITargetByTaskHistory(taskHistory));
 					doingTask.setTask(task);
 					// TODO加入进行任务
-
+					doingTaskDao.addDoingTask(doingTask);
 				}
+				member.setReleaseTaskTime(taskHistory.getReleaseTime());
 			}
 		}
+		// 更新任务游标
+		memberDboDao.updateMemberDbo(member);
 	}
 
 	private boolean hasCriterion(MemberDbo member, TaskDocumentHistory task) {
-		if ("true".equals(task.getType()) || "false".equals(task.getType())) {
-			if ("true".equals(member.getVip().toString()) || "false".equals(member.getVip().toString())) {
+		if ("true".equals(task.getVip()) || "false".equals(task.getVip())) {
+			if (task.getVip().equals(member.getVip().toString())) {
 				return true;
 			}
 			return false;

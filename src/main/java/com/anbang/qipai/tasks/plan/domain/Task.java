@@ -4,7 +4,6 @@ public class Task {
 
 	private String id;
 	private int taskState;// 任务状态
-	private int progress;// 进度
 	private ITarget target;
 
 	public String getId() {
@@ -21,14 +20,6 @@ public class Task {
 
 	public void setTaskState(int taskState) {
 		this.taskState = taskState;
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	public void setProgress(int progress) {
-		this.progress = progress;
 	}
 
 	public ITarget getTarget() {

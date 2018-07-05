@@ -1,12 +1,13 @@
 package com.anbang.qipai.tasks.plan.domain;
 
 public class DoingTask {
-	
+
 	private String id;
-	
-	private String memberId;//会员id
-	
-	private Task task;//任务信息
+	private String memberId;// 会员id
+	private String type;// 任务类型
+	private String rewardType;// 奖励类型
+	private Integer rewardNum;
+	private Task task;// 任务信息
 
 	public String getId() {
 		return id;
@@ -24,6 +25,30 @@ public class DoingTask {
 		this.memberId = memberId;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getRewardType() {
+		return rewardType;
+	}
+
+	public void setRewardType(String rewardType) {
+		this.rewardType = rewardType;
+	}
+
+	public Integer getRewardNum() {
+		return rewardNum;
+	}
+
+	public void setRewardNum(Integer rewardNum) {
+		this.rewardNum = rewardNum;
+	}
+
 	public Task getTask() {
 		return task;
 	}
@@ -31,7 +56,5 @@ public class DoingTask {
 	public void setTask(Task task) {
 		this.task = task;
 	}
-	
-	
 
 }

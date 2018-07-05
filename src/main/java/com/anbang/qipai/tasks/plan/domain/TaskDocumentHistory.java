@@ -9,7 +9,7 @@ public class TaskDocumentHistory {
 	private String taskName;// 任务种类,后台
 	private String rewardType;// 奖励类型
 	private Integer rewardNum;
-	private Boolean vip;
+	private String vip;
 	private Integer targetNum;// 完成次数
 	private Integer state;// 状态:0,未发布,1,已发布
 	private Long releaseTime;
@@ -79,11 +79,11 @@ public class TaskDocumentHistory {
 		this.rewardNum = rewardNum;
 	}
 
-	public Boolean getVip() {
+	public String getVip() {
 		return vip;
 	}
 
-	public void setVip(Boolean vip) {
+	public void setVip(String vip) {
 		this.vip = vip;
 	}
 
