@@ -26,10 +26,18 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	public boolean updateMemberDbo(MemberDbo member) {
 		Query query = new Query(Criteria.where("id").is(member.getId()));
 		Update update = new Update();
-		update.set("vip",member.getVip());
-		update.set("createTime",member.getCreateTime());
-		update.set("lastLoginTime",member.getLastLoginTime());
-		update.set("onlineTime",member.getOnlineTime());
+		if (member.getVip() != null) {
+			update.set("vip", member.getVip());
+		}
+		if (member.getCreateTime() != null) {
+			update.set("createTime", member.getCreateTime());
+		}
+		if (member.getLastLoginTime() != null) {
+			update.set("lastLoginTime", member.getLastLoginTime());
+		}
+		if (member.getOnlineTime() != null) {
+			update.set("onlineTime", member.getOnlineTime());
+		}
 		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
 		return result.getN() > 0;
 	}
@@ -38,14 +46,6 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	public MemberDbo findMemberById(String memberId) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		return mongoTemplate.findOne(query, MemberDbo.class);
-	}
-
-	@Override
-	public boolean updateMemberDboTask(MemberDbo member) {
-		Query query = new Query(Criteria.where("id").is(member.getId()));
-		Update update = new Update();
-		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
-		return result.getN() > 0;
 	}
 
 }

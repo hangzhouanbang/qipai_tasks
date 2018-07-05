@@ -14,16 +14,10 @@ public class TaskConfig {
 		TaskTemplate task = new TaskTemplate();
 		task.setTaskType(0);
 		task.setTaskName("邀请玩家");
-		Map<String, String> criterions = new HashMap<String, String>();
-		criterions.put("playerNum", "邀请玩家数量");
-		task.setCriterions(criterions);
 		templates.put(task.getTaskName(), task);
 		TaskTemplate task1 = new TaskTemplate();
 		task1.setTaskType(1);
 		task1.setTaskName("赢得游戏");
-		Map<String, String> criterions1 = new HashMap<String, String>();
-		criterions1.put("winNum", "获胜次数");
-		task1.setCriterions(criterions1);
 		templates.put(task1.getTaskName(), task1);
 	}
 	static {

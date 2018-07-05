@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
-import com.anbang.qipai.tasks.config.TaskTemplate;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
@@ -34,18 +33,12 @@ public class TaskController {
 		return vo;
 	}
 
-	@RequestMapping("/querytaskcriterions")
-	public CommonVO queryTaskCriterions(String taskName) {
+	@RequestMapping("/querytasktype")
+	public CommonVO queryTaskType() {
 		CommonVO vo = new CommonVO();
-		TaskTemplate template = TaskConfig.templates.get(taskName);
-		if (template == null) {
-			vo.setSuccess(false);
-			vo.setMsg("Task Criterions Not Found");
-			return vo;
-		}
 		vo.setSuccess(true);
-		vo.setMsg("Task Criterions");
-		vo.setData(template.getCriterions());
+		vo.setMsg("typeList");
+		vo.setData(TaskConfig.typeList);
 		return vo;
 	}
 

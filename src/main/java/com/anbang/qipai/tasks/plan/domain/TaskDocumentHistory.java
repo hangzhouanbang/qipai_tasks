@@ -1,7 +1,5 @@
 package com.anbang.qipai.tasks.plan.domain;
 
-import java.util.Map;
-
 public class TaskDocumentHistory {
 	private String id;
 	private String taskDocId;
@@ -12,7 +10,7 @@ public class TaskDocumentHistory {
 	private String rewardType;// 奖励类型
 	private Integer rewardNum;
 	private Boolean vip;
-	private Map<String, String> criterions;// 完成条件
+	private Integer targetNum;// 完成次数
 	private Integer state;// 状态:0,未发布,1,已发布
 	private Long releaseTime;
 	private String promulgator;// 发布者
@@ -89,12 +87,12 @@ public class TaskDocumentHistory {
 		this.vip = vip;
 	}
 
-	public Map<String, String> getCriterions() {
-		return criterions;
+	public Integer getTargetNum() {
+		return targetNum;
 	}
 
-	public void setCriterions(Map<String, String> criterions) {
-		this.criterions = criterions;
+	public void setTargetNum(Integer targetNum) {
+		this.targetNum = targetNum;
 	}
 
 	public Integer getState() {

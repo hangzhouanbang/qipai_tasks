@@ -7,8 +7,6 @@ public interface MemberDboDao {
 	void addMemberDbo(MemberDbo member);
 
 	boolean updateMemberDbo(MemberDbo member);
-	
-	boolean updateMemberDboTask(MemberDbo member);
 
 	MemberDbo findMemberById(String memberId);
 }
