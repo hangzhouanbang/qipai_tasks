@@ -10,9 +10,8 @@ public class TaskDocumentHistory {
 	private String type;// 任务类型，前台
 	private String taskName;// 任务种类,后台
 	private String rewardType;// 奖励类型
-	private Integer gold;
-	private Integer score;
-	private ClubCard clubCard;
+	private Integer rewardNum;
+	private Boolean vip;
 	private Map<String, String> criterions;// 完成条件
 	private Integer state;// 状态:0,未发布,1,已发布
 	private Long releaseTime;
@@ -74,28 +73,20 @@ public class TaskDocumentHistory {
 		this.rewardType = rewardType;
 	}
 
-	public Integer getGold() {
-		return gold;
+	public Integer getRewardNum() {
+		return rewardNum;
 	}
 
-	public void setGold(Integer gold) {
-		this.gold = gold;
+	public void setRewardNum(Integer rewardNum) {
+		this.rewardNum = rewardNum;
 	}
 
-	public Integer getScore() {
-		return score;
+	public Boolean getVip() {
+		return vip;
 	}
 
-	public void setScore(Integer score) {
-		this.score = score;
-	}
-
-	public ClubCard getClubCard() {
-		return clubCard;
-	}
-
-	public void setClubCard(ClubCard clubCard) {
-		this.clubCard = clubCard;
+	public void setVip(Boolean vip) {
+		this.vip = vip;
 	}
 
 	public Map<String, String> getCriterions() {
