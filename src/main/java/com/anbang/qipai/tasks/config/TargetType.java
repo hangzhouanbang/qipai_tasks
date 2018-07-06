@@ -3,14 +3,19 @@ package com.anbang.qipai.tasks.config;
 import com.anbang.qipai.tasks.plan.domain.ITarget;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.domain.target.InviteFriendsTarget;
+import com.anbang.qipai.tasks.plan.domain.target.ShareFirendsCircleTarget;
+import com.anbang.qipai.tasks.plan.domain.target.ShareFirendsTarget;
 import com.anbang.qipai.tasks.plan.domain.target.WinGamesTarget;
 
 public enum TargetType {
 	// 0,邀请玩家
 	InviteFriends(new InviteFriendsTarget()),
 	// 1,赢得游戏
-	WinGames(new WinGamesTarget());
-
+	WinGames(new WinGamesTarget()),
+	// 2,分享好友
+	ShareFirends(new ShareFirendsTarget()),
+	// 3,分享朋友圈
+	ShareFirendsCircle(new ShareFirendsCircleTarget());
 	private ITarget target;
 
 	private TargetType(ITarget target) {
