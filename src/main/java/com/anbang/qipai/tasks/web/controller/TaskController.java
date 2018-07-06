@@ -104,15 +104,15 @@ public class TaskController {
 	
 	@RequestMapping("/share")
 	@ResponseBody
-	public CommonVO share_friends(String token,String shareType) {
+	public CommonVO share_friends(@RequestParam Map<String, Object> params) {
 		CommonVO vo = new CommonVO();
+		String token = (String) params.get("token");
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
 		if (memberId == null) {
 			vo.setSuccess(false);
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		
 		return vo;
 	}
 
