@@ -7,10 +7,10 @@ import com.anbang.qipai.tasks.plan.domain.ITarget;
 import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
-public class ShareFirendsTarget implements ITarget{
-	
+public class ShareFirendsTarget implements ITarget {
+
 	private int targetFirendsNum;
-	
+
 	private int finishFirendsNum;
 
 	@Override
@@ -21,9 +21,9 @@ public class ShareFirendsTarget implements ITarget{
 
 	@Override
 	public void updateTask(Task task, Map<String, Object> params) {
-		if(params.get("finishFirendsNum") != null && task.getTaskState() != TaskState.FINISHTASK) {
-			finishFirendsNum += (int)params.get("finishFirendsNum");
-			if(finishFirendsNum >= targetFirendsNum) {
+		if (params.get("finishFirendsNum") != null && task.getTaskState() != TaskState.FINISHTASK) {
+			finishFirendsNum += (int) params.get("finishFirendsNum");
+			if (finishFirendsNum >= targetFirendsNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 			}
 		}
@@ -43,6 +43,11 @@ public class ShareFirendsTarget implements ITarget{
 
 	public void setFinishFirendsNum(int finishFirendsNum) {
 		this.finishFirendsNum = finishFirendsNum;
+	}
+
+	@Override
+	public void reset() {
+		this.finishFirendsNum = 0;
 	}
 
 }

@@ -48,4 +48,9 @@ public class InviteFriendsTarget implements ITarget {
 		this.finishInviteNum = finishInviteNum;
 	}
 
+	@Override
+	public void reset() {
+		this.finishInviteNum = 0;
+	}
+
 }

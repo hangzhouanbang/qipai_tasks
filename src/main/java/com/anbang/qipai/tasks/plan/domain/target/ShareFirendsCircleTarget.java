@@ -7,10 +7,10 @@ import com.anbang.qipai.tasks.plan.domain.ITarget;
 import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
-public class ShareFirendsCircleTarget implements ITarget{
-	
+public class ShareFirendsCircleTarget implements ITarget {
+
 	private int targetFirendsCircleNum;
-	
+
 	private int finishFirendsCircleNum;
 
 	@Override
@@ -44,5 +44,10 @@ public class ShareFirendsCircleTarget implements ITarget{
 	public void setFinishFirendsCircleNum(int finishFirendsCircleNum) {
 		this.finishFirendsCircleNum = finishFirendsCircleNum;
 	}
-	
+
+	@Override
+	public void reset() {
+		this.finishFirendsCircleNum = 0;
+	}
+
 }
