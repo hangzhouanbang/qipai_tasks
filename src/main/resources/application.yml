@@ -19,6 +19,14 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+          
+        historicarecord:
+          destination: historicarecord
+          group: qipai_tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         
   application:
     name: qipai-tasks

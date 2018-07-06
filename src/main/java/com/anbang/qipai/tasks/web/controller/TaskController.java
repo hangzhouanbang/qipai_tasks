@@ -100,6 +100,7 @@ public class TaskController {
 		if (memberId != null) {
 			DoingTask doingTask = taskService.getRewards(doingTaskId);
 			// TODO根据奖励类型Kafka发送奖励并增加记录
+			
 		}
 	}
 }
