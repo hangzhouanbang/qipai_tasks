@@ -113,6 +113,8 @@ public class TaskController {
 				if(vo.isSuccess()) {
 					task.setTaskState(TaskState.FINISHTASK);
 					taskService.updateTask(task);
+					vo.setSuccess(true);
+					return vo;
 				}
 			}
 		}
