@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
@@ -87,7 +88,7 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		Map<String, List<Task>> taskMap = taskService.queryMemberDoingTasks(memberId);
+		Map<String, List<Task>> taskMap = taskService.queryMemberTasks(memberId);
 		vo.setSuccess(true);
 		vo.setMsg("taskMap");
 		vo.setData(taskMap);
@@ -95,16 +96,16 @@ public class TaskController {
 	}
 
 	@RequestMapping("/updatetasks")
-	public void updateTasks(Map<String, Object> params) {
+	public void updateTasks(@RequestParam Map<String, Object> params) {
 		taskService.updateTasks(params);
 	}
 
 	@RequestMapping("/getrewards")
-	public CommonRemoteVO getRewards(String token, String doingTaskId) {
+	public CommonRemoteVO getRewards(String token, String taskId) {
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
 		CommonRemoteVO vo = new CommonRemoteVO();
 		if (memberId != null) {
-			Task task = taskService.getRewards(doingTaskId);
+			Task task = taskService.getRewards(taskId);
 			// 调用服务添加奖励
 			vo = qipaiMembersRemoteService.sendReward(task.getRewardType(), task.getRewardNum(), memberId);
 			if (vo.isSuccess()) {

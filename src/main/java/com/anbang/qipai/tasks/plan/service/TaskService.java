@@ -29,9 +29,9 @@ public class TaskService {
 	@Autowired
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
-	public Map<String, List<Task>> queryMemberDoingTasks(String memberId) {
+	public Map<String, List<Task>> queryMemberTasks(String memberId) {
 		Map<String, List<Task>> taskMap = new HashMap<String, List<Task>>();
-		addMemberDoingTask(memberId);
+		addMemberTasks(memberId);
 		List<String> typeList = TaskConfig.typeList;
 		for (String type : typeList) {
 			List<Task> taskList = taskDao.findTaskByMemberIdAndType(memberId, type);
@@ -54,7 +54,7 @@ public class TaskService {
 		return taskDao.findTaskById(taskId);
 	}
 
-	private void addMemberDoingTask(String memberId) {
+	private void addMemberTasks(String memberId) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);
 		if (member != null) {
 			long releaseTime = 0;
