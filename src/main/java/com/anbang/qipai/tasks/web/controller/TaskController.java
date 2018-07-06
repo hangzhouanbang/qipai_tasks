@@ -15,6 +15,8 @@ import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
+import com.anbang.qipai.tasks.remote.service.QipaiMembersRemoteService;
+import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 
 @RestController
@@ -29,6 +31,9 @@ public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private QipaiMembersRemoteService qipaiMembersRemoteService;
 
 	@RequestMapping("/querytaskconfig")
 	public CommonVO queryTaskConfig() {
@@ -95,12 +100,18 @@ public class TaskController {
 	}
 
 	@RequestMapping("/getrewards")
-	public void getRewards(String token, String doingTaskId) {
+	public CommonRemoteVO getRewards(String token, String doingTaskId) {
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		CommonRemoteVO vo = new CommonRemoteVO();
 		if (memberId != null) {
 			DoingTask doingTask = taskService.getRewards(doingTaskId);
-			// TODO根据奖励类型Kafka发送奖励并增加记录
-			
+			//调用服务添加奖励
+			vo = qipaiMembersRemoteService.sendReward(doingTask.getRewardType(),doingTask.getRewardNum(),memberId);
+			if(vo.isSuccess()) {
+				return vo;
+			}
 		}
+		vo.setSuccess(false);
+		return vo;
 	}
 }

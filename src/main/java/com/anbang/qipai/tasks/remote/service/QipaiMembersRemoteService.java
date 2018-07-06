@@ -17,5 +17,9 @@ public interface QipaiMembersRemoteService {
 
 	@RequestMapping(value = "/auth/trytoken")
 	public CommonRemoteVO auth_trytoken(@RequestParam("token") String token);
+	
+	@RequestMapping(value = "/reward/task_reward")
+	public CommonRemoteVO sendReward(@RequestParam("rewardType") String rewardType,@RequestParam("rewardNum")
+											Integer rewardNum,@RequestParam("memberId") String memberId);
 
 }
