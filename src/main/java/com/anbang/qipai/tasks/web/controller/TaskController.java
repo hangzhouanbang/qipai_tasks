@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
-import com.anbang.qipai.tasks.plan.domain.DoingTask;
+import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
@@ -31,7 +31,7 @@ public class TaskController {
 
 	@Autowired
 	private TaskService taskService;
-	
+
 	@Autowired
 	private QipaiMembersRemoteService qipaiMembersRemoteService;
 
@@ -78,8 +78,8 @@ public class TaskController {
 		return vo;
 	}
 
-	@RequestMapping("/querymemberdoingtasks")
-	public CommonVO queryMemberDoingTasks(String token) {
+	@RequestMapping("/querymembertasks")
+	public CommonVO queryMemberTasks(String token) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
 		if (memberId == null) {
@@ -87,16 +87,16 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		Map<String, List<DoingTask>> taskMap = taskService.queryMemberDoingTasks(token);
+		Map<String, List<Task>> taskMap = taskService.queryMemberDoingTasks(memberId);
 		vo.setSuccess(true);
 		vo.setMsg("taskMap");
 		vo.setData(taskMap);
 		return vo;
 	}
 
-	@RequestMapping("/updatedoingtasks")
-	public void updateDoingTasks(Map<String, Object> params) {
-		taskService.updateDoingTasks(params);
+	@RequestMapping("/updatetasks")
+	public void updateTasks(Map<String, Object> params) {
+		taskService.updateTasks(params);
 	}
 
 	@RequestMapping("/getrewards")
@@ -104,10 +104,10 @@ public class TaskController {
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
 		CommonRemoteVO vo = new CommonRemoteVO();
 		if (memberId != null) {
-			DoingTask doingTask = taskService.getRewards(doingTaskId);
-			//调用服务添加奖励
-			vo = qipaiMembersRemoteService.sendReward(doingTask.getRewardType(),doingTask.getRewardNum(),memberId);
-			if(vo.isSuccess()) {
+			Task task = taskService.getRewards(doingTaskId);
+			// 调用服务添加奖励
+			vo = qipaiMembersRemoteService.sendReward(task.getRewardType(), task.getRewardNum(), memberId);
+			if (vo.isSuccess()) {
 				return vo;
 			}
 		}

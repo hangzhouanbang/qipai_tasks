@@ -42,13 +42,13 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 
 	@Override
 	public long getAmount(long releaseTime) {
-		Query query = new Query(Criteria.where("releaseTime").gte(releaseTime));
+		Query query = new Query(Criteria.where("releaseTime").gt(releaseTime));
 		return mongoTemplate.count(query, TaskDocumentHistory.class);
 	}
 
 	@Override
 	public List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime) {
-		Query query = new Query(Criteria.where("releaseTime").gte(releaseTime));
+		Query query = new Query(Criteria.where("releaseTime").gt(releaseTime));
 		query.skip((page - 1) * size);
 		query.limit(size);
 		return mongoTemplate.find(query, TaskDocumentHistory.class);

@@ -8,7 +8,7 @@ import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
 public class WinGamesTarget implements ITarget {
-	private String taskId;
+
 	private int targetWinNum;
 	private int finishWinNum;
 
@@ -26,6 +26,22 @@ public class WinGamesTarget implements ITarget {
 	public void init(TaskDocumentHistory task) {
 		this.targetWinNum = task.getTargetNum();
 		this.finishWinNum = 0;
+	}
+
+	public int getTargetWinNum() {
+		return targetWinNum;
+	}
+
+	public void setTargetWinNum(int targetWinNum) {
+		this.targetWinNum = targetWinNum;
+	}
+
+	public int getFinishWinNum() {
+		return finishWinNum;
+	}
+
+	public void setFinishWinNum(int finishWinNum) {
+		this.finishWinNum = finishWinNum;
 	}
 
 }
