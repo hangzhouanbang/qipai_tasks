@@ -114,6 +114,8 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
+		taskService.updateTasks(params);
+		vo.setMsg("true");
 		return vo;
 	}
 

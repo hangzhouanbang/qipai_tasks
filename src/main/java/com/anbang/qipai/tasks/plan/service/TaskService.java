@@ -46,7 +46,16 @@ public class TaskService {
 
 	public void updateTasks(Map<String, Object> params) {
 		String[] memberIds = (String[]) params.get("memberIds");
-		for (String memberId : memberIds) {
+		String memberId = (String) params.get("memberId");
+		if(memberIds != null) {
+			for (String memberId1 : memberIds) {
+				List<Task> taskList = taskDao.findTaskByMemberId(memberId1);
+				for (Task task : taskList) {
+					task.getTarget().updateTask(task, params);
+				}
+			}
+		}
+		if(memberId != null) {
 			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
 			for (Task task : taskList) {
 				task.getTarget().updateTask(task, params);
