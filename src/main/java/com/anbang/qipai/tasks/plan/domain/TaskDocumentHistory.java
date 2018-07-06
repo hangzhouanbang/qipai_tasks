@@ -7,8 +7,9 @@ public class TaskDocumentHistory {
 	private String desc;
 	private String type;// 任务类型，前台
 	private String taskName;// 任务种类,后台
-	private String rewardType;// 奖励类型
-	private Integer rewardNum;
+	private Integer rewardGold;// 奖励金币数量
+	private Integer rewardScore;// 奖励积分数量
+	private Integer rewardVip;// 奖励会员时间
 	private String vip;
 	private Integer targetNum;// 完成次数
 	private Integer state;// 状态:0,未发布,1,已发布
@@ -63,20 +64,28 @@ public class TaskDocumentHistory {
 		this.taskName = taskName;
 	}
 
-	public String getRewardType() {
-		return rewardType;
+	public Integer getRewardGold() {
+		return rewardGold;
 	}
 
-	public void setRewardType(String rewardType) {
-		this.rewardType = rewardType;
+	public void setRewardGold(Integer rewardGold) {
+		this.rewardGold = rewardGold;
 	}
 
-	public Integer getRewardNum() {
-		return rewardNum;
+	public Integer getRewardScore() {
+		return rewardScore;
 	}
 
-	public void setRewardNum(Integer rewardNum) {
-		this.rewardNum = rewardNum;
+	public void setRewardScore(Integer rewardScore) {
+		this.rewardScore = rewardScore;
+	}
+
+	public Integer getRewardVip() {
+		return rewardVip;
+	}
+
+	public void setRewardVip(Integer rewardVip) {
+		this.rewardVip = rewardVip;
 	}
 
 	public String getVip() {

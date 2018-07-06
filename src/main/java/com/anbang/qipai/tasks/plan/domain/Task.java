@@ -5,9 +5,12 @@ public class Task {
 	private String taskId;// 任务历史id
 	private String memberId;// 会员id
 	private String type;// 任务类型
-	private String rewardType;// 奖励类型
-	private Integer rewardNum;
+	private Integer rewardGold;// 奖励金币数量
+	private Integer rewardScore;// 奖励积分数量
+	private Integer rewardVip;// 奖励会员时间
 	private String taskState;// 任务状态
+	private Integer targetNum;// 总进度
+	private Integer finishNum;// 完成进度
 	private ITarget target;
 
 	public String getId() {
@@ -42,20 +45,28 @@ public class Task {
 		this.type = type;
 	}
 
-	public String getRewardType() {
-		return rewardType;
+	public Integer getRewardGold() {
+		return rewardGold;
 	}
 
-	public void setRewardType(String rewardType) {
-		this.rewardType = rewardType;
+	public void setRewardGold(Integer rewardGold) {
+		this.rewardGold = rewardGold;
 	}
 
-	public Integer getRewardNum() {
-		return rewardNum;
+	public Integer getRewardScore() {
+		return rewardScore;
 	}
 
-	public void setRewardNum(Integer rewardNum) {
-		this.rewardNum = rewardNum;
+	public void setRewardScore(Integer rewardScore) {
+		this.rewardScore = rewardScore;
+	}
+
+	public Integer getRewardVip() {
+		return rewardVip;
+	}
+
+	public void setRewardVip(Integer rewardVip) {
+		this.rewardVip = rewardVip;
 	}
 
 	public String getTaskState() {
@@ -64,6 +75,22 @@ public class Task {
 
 	public void setTaskState(String taskState) {
 		this.taskState = taskState;
+	}
+
+	public Integer getTargetNum() {
+		return targetNum;
+	}
+
+	public void setTargetNum(Integer targetNum) {
+		this.targetNum = targetNum;
+	}
+
+	public Integer getFinishNum() {
+		return finishNum;
+	}
+
+	public void setFinishNum(Integer finishNum) {
+		this.finishNum = finishNum;
 	}
 
 	public ITarget getTarget() {

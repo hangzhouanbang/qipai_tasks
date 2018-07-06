@@ -51,7 +51,11 @@ public class TaskService {
 	}
 
 	public Task getRewards(String taskId) {
-		return taskDao.findTaskById(taskId);
+		Task task = taskDao.findTaskById(taskId);
+		if (TaskState.COMPLETETASK.equals(task.getTaskState())) {
+			return taskDao.findTaskById(taskId);
+		}
+		return null;
 	}
 
 	private void addMemberTasks(String memberId) {
@@ -73,9 +77,12 @@ public class TaskService {
 						task.setTaskId(taskHistory.getId());
 						task.setMemberId(member.getId());
 						task.setType(taskHistory.getType());
-						task.setRewardType(taskHistory.getRewardType());
-						task.setRewardNum(taskHistory.getRewardNum());
+						task.setRewardGold(taskHistory.getRewardGold());
+						task.setRewardScore(taskHistory.getRewardScore());
+						task.setRewardVip(taskHistory.getRewardVip());
 						task.setTaskState(TaskState.DOINGTASK);
+						task.setTargetNum(taskHistory.getTargetNum());
+						task.setFinishNum(0);
 						task.setTarget(TargetType.getITargetByTaskHistory(taskHistory));
 						taskDao.addTask(task);
 					}

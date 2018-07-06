@@ -16,6 +16,7 @@ public class InviteFriendsTarget implements ITarget {
 	public void updateTask(Task task, Map<String, Object> params) {
 		if (params.get("finishInviteNum") != null) {
 			finishInviteNum += (int) params.get("finishInviteNum");
+			task.setFinishNum(finishInviteNum);
 			if (finishInviteNum >= targetInviteNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 			}
