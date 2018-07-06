@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
@@ -99,6 +100,20 @@ public class TaskController {
 	@RequestMapping("/updatetasks")
 	public void updateTasks(@RequestParam Map<String, Object> params) {
 		taskService.updateTasks(params);
+	}
+	
+	@RequestMapping("/share")
+	@ResponseBody
+	public CommonVO share_friends(String token,String shareType) {
+		CommonVO vo = new CommonVO();
+		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid token");
+			return vo;
+		}
+		
+		return vo;
 	}
 
 	@RequestMapping("/getrewards")
