@@ -78,7 +78,6 @@ public class TaskService {
 					task.setTaskState(TaskState.DOINGTASK);
 					task.setTarget(TargetType.getITargetByTaskHistory(taskHistory));
 					doingTask.setTask(task);
-					// TODO加入进行任务
 					doingTaskDao.addDoingTask(doingTask);
 				}
 				member.setReleaseTaskTime(taskHistory.getReleaseTime());

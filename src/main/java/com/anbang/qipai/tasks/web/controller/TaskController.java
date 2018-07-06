@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anbang.qipai.tasks.config.TaskConfig;
 import com.anbang.qipai.tasks.plan.domain.DoingTask;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
@@ -19,6 +20,9 @@ import com.anbang.qipai.tasks.web.vo.CommonVO;
 @RestController
 @RequestMapping("/task")
 public class TaskController {
+
+	@Autowired
+	private MemberAuthService memberAuthService;
 
 	@Autowired
 	private TaskDocumentHistoryService taskDocumentHistoryService;
@@ -72,9 +76,15 @@ public class TaskController {
 	@RequestMapping("/querymemberdoingtasks")
 	public CommonVO queryMemberDoingTasks(String token) {
 		CommonVO vo = new CommonVO();
-		// TODO根据token获取memberid
-
+		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid token");
+			return vo;
+		}
 		Map<String, List<DoingTask>> taskMap = taskService.queryMemberDoingTasks(token);
+		vo.setSuccess(true);
+		vo.setMsg("taskMap");
 		vo.setData(taskMap);
 		return vo;
 	}
@@ -86,9 +96,10 @@ public class TaskController {
 
 	@RequestMapping("/getrewards")
 	public void getRewards(String token, String doingTaskId) {
-		// TODO根据token获取memberid
-
-		DoingTask doingTask = taskService.getRewards(doingTaskId);
-		// TODO根据奖励类型Kafka发送奖励并增加记录
+		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId != null) {
+			DoingTask doingTask = taskService.getRewards(doingTaskId);
+			// TODO根据奖励类型Kafka发送奖励并增加记录
+		}
 	}
 }

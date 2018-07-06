@@ -39,9 +39,10 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
 		</dependency>
+		<!-- dml依赖 -->
 		<dependency>
-			<groupId>accounting.dml</groupId>
-			<artifactId>accounting.dml</artifactId>
+			<groupId>users.dml</groupId>
+			<artifactId>users.dml</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
