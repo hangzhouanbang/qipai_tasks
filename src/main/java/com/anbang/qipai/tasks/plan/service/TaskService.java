@@ -1,6 +1,6 @@
 package com.anbang.qipai.tasks.plan.service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +16,7 @@ import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
 import com.anbang.qipai.tasks.plan.domain.MemberDbo;
 import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
+import com.anbang.qipai.tasks.web.vo.TaskVO;
 
 @Service
 public class TaskService {
@@ -29,15 +30,18 @@ public class TaskService {
 	@Autowired
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
-	public Map<String, List<Task>> queryMemberTasks(String memberId) {
-		Map<String, List<Task>> taskMap = new HashMap<String, List<Task>>();
+	public List<TaskVO> queryMemberTasks(String memberId) {
+		List<TaskVO> taskVos = new ArrayList<TaskVO>();
 		addMemberTasks(memberId);
 		List<String> typeList = TaskConfig.typeList;
 		for (String type : typeList) {
+			TaskVO taskVo = new TaskVO();
+			taskVo.setType(type);
 			List<Task> taskList = taskDao.findTaskByMemberIdAndType(memberId, type);
-			taskMap.put(type, taskList);
+			taskVo.setTaskList(taskList);
+			taskVos.add(taskVo);
 		}
-		return taskMap;
+		return taskVos;
 	}
 
 	public void updateTasks(Map<String, Object> params) {
@@ -57,7 +61,7 @@ public class TaskService {
 		}
 		return null;
 	}
-	
+
 	public void updateTask(Task task) {
 		taskDao.updateTask(task);
 	}

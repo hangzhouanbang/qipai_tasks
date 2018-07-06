@@ -21,6 +21,7 @@ import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.anbang.qipai.tasks.remote.service.QipaiMembersRemoteService;
 import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
+import com.anbang.qipai.tasks.web.vo.TaskVO;
 
 @RestController
 @RequestMapping("/task")
@@ -90,10 +91,10 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		Map<String, List<Task>> taskMap = taskService.queryMemberTasks(memberId);
+		List<TaskVO> taskVos = taskService.queryMemberTasks(memberId);
 		vo.setSuccess(true);
-		vo.setMsg("taskMap");
-		vo.setData(taskMap);
+		vo.setMsg("taskList");
+		vo.setData(taskVos);
 		return vo;
 	}
 
@@ -101,7 +102,7 @@ public class TaskController {
 	public void updateTasks(@RequestParam Map<String, Object> params) {
 		taskService.updateTasks(params);
 	}
-	
+
 	@RequestMapping("/share")
 	@ResponseBody
 	public CommonVO share_friends(@RequestParam Map<String, Object> params) {
@@ -123,9 +124,10 @@ public class TaskController {
 		if (memberId != null) {
 			Task task = taskService.getRewards(taskId);
 			// 调用服务添加奖励
-			if(task != null) {
-				vo = qipaiMembersRemoteService.sendReward(task.getRewardGold(), task.getRewardScore(),task.getRewardVip(), memberId);
-				if(vo.isSuccess()) {
+			if (task != null) {
+				vo = qipaiMembersRemoteService.sendReward(task.getRewardGold(), task.getRewardScore(),
+						task.getRewardVip(), memberId);
+				if (vo.isSuccess()) {
 					task.setTaskState(TaskState.FINISHTASK);
 					taskService.updateTask(task);
 					vo.setSuccess(true);

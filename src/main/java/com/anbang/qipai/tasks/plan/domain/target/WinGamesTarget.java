@@ -25,7 +25,10 @@ public class WinGamesTarget implements ITarget {
 
 	@Override
 	public void init(TaskDocumentHistory task) {
-		this.targetWinNum = task.getTargetNum();
+		this.targetWinNum = 0;
+		if (task.getTargetNum() != null) {
+			this.targetWinNum = task.getTargetNum();
+		}
 		this.finishWinNum = 0;
 	}
 
