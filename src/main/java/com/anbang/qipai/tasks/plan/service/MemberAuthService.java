@@ -16,13 +16,13 @@ public class MemberAuthService {
 	private UserSessionsManager userSessionsManager;
 
 	@Autowired
-	private QipaiMembersRemoteService qipaiMembersRomoteService;
+	private QipaiMembersRemoteService qipaiMembersRemoteService;
 
 	public String getMemberIdBySessionId(String sessionId) {
 
 		String memberId = userSessionsManager.getUserIdBySessionId(sessionId);
 		if (memberId == null) {
-			CommonRemoteVO rvo = qipaiMembersRomoteService.auth_trytoken(sessionId);
+			CommonRemoteVO rvo = qipaiMembersRemoteService.auth_trytoken(sessionId);
 			if (rvo.isSuccess()) {
 				Map data = (Map) rvo.getData();
 				memberId = (String) data.get("memberId");
