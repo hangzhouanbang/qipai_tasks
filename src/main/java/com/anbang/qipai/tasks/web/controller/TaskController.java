@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
+import com.anbang.qipai.tasks.config.TaskState;
 import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
@@ -107,7 +108,13 @@ public class TaskController {
 		if (memberId != null) {
 			Task task = taskService.getRewards(taskId);
 			// 调用服务添加奖励
-
+			if(task != null) {
+				vo = qipaiMembersRemoteService.sendReward(task.getRewardGold(), task.getRewardScore(),task.getRewardVip(), memberId);
+				if(vo.isSuccess()) {
+					task.setTaskState(TaskState.FINISHTASK);
+					taskService.updateTask(task);
+				}
+			}
 		}
 		vo.setSuccess(false);
 		return vo;

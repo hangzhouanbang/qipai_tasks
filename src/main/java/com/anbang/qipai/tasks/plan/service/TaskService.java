@@ -57,6 +57,10 @@ public class TaskService {
 		}
 		return null;
 	}
+	
+	public void updateTask(Task task) {
+		taskDao.updateTask(task);
+	}
 
 	private void addMemberTasks(String memberId) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);

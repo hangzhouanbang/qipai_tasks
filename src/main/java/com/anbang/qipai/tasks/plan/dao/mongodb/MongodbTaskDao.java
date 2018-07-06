@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.dao.TaskDao;
@@ -43,6 +44,14 @@ public class MongodbTaskDao implements TaskDao {
 	public Task findTaskById(String taskId) {
 		Query query = new Query(Criteria.where("id").is(taskId));
 		return mongoTemplate.findOne(query, Task.class);
+	}
+
+	@Override
+	public void updateTask(Task task) {
+		Query query =new Query(Criteria.where("id").is(task.getId()));
+		Update update = new Update();
+		update.set("taskState",task.getTaskState());
+		mongoTemplate.updateFirst(query, update, Task.class);
 	}
 
 }

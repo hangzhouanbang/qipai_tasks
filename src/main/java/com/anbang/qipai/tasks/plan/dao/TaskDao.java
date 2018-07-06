@@ -15,4 +15,6 @@ public interface TaskDao {
 	List<Task> findTaskByMemberIdAndType(String memberId, String type);
 
 	Task findTaskById(String taskId);
+	
+	void updateTask(Task task);
 }
