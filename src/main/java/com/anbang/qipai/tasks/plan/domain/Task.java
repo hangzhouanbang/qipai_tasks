@@ -4,6 +4,8 @@ public class Task {
 	private String id;
 	private String taskId;// 任务历史id
 	private String memberId;// 会员id
+	private String name;// 任务主题
+	private String desc;// 任务描述
 	private String type;// 任务类型
 	private Integer rewardGold;// 奖励金币数量
 	private Integer rewardScore;// 奖励积分数量
@@ -35,6 +37,22 @@ public class Task {
 
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 	public String getType() {

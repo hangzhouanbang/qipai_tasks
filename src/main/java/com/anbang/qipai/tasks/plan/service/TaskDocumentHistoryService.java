@@ -11,10 +11,6 @@ public class TaskDocumentHistoryService {
 	@Autowired
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
-	public TaskDocumentHistory findTaskById(String taskId) {
-		return taskDocumentHistoryDao.findTaskById(taskId);
-	}
-
 	public void releaseTask(TaskDocumentHistory task) {
 		task.setReleaseTime(System.currentTimeMillis());
 		task.setState(1);

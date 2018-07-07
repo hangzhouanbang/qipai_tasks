@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
-import com.anbang.qipai.tasks.config.TaskState;
 import com.anbang.qipai.tasks.plan.domain.Task;
 import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
@@ -103,41 +102,33 @@ public class TaskController {
 		taskService.updateTasks(params);
 	}
 
-	@RequestMapping("/share")
-	@ResponseBody
-	public CommonVO share_friends(@RequestParam Map<String, Object> params) {
+	@RequestMapping("/getrewards")
+	public CommonVO getRewards(String token, String taskId) {
 		CommonVO vo = new CommonVO();
-		String token = (String) params.get("token");
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
 		if (memberId == null) {
 			vo.setSuccess(false);
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		taskService.updateTasks(params);
-		vo.setMsg("true");
+		Task task = taskService.getRewards(taskId);
+		if (task == null) {
+			vo.setSuccess(false);
+			vo.setMsg("not found task");
+			return vo;
+		}
+		CommonRemoteVO commonRemoteVo = qipaiMembersRemoteService.sendReward(task.getRewardGold(),
+				task.getRewardScore(), task.getRewardVip(), memberId);
+		if (commonRemoteVo.isSuccess()) {
+			taskService.finishTask(taskId);
+		}
+		vo.setSuccess(commonRemoteVo.isSuccess());
+		vo.setMsg(commonRemoteVo.getMsg());
 		return vo;
 	}
 
-	@RequestMapping("/getrewards")
-	public CommonRemoteVO getRewards(String token, String taskId) {
-		String memberId = memberAuthService.getMemberIdBySessionId(token);
-		CommonRemoteVO vo = new CommonRemoteVO();
-		if (memberId != null) {
-			Task task = taskService.getRewards(taskId);
-			// 调用服务添加奖励
-			if (task != null) {
-				vo = qipaiMembersRemoteService.sendReward(task.getRewardGold(), task.getRewardScore(),
-						task.getRewardVip(), memberId);
-				if (vo.isSuccess()) {
-					task.setTaskState(TaskState.FINISHTASK);
-					taskService.updateTask(task);
-					vo.setSuccess(true);
-					return vo;
-				}
-			}
-		}
-		vo.setSuccess(false);
-		return vo;
+	@Scheduled(cron = "0 0 0 * * ?") // 每天凌晨
+	public void reset() {
+		taskService.reset("每日任务");
 	}
 }

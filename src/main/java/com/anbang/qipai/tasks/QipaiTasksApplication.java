@@ -5,12 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.dml.users.UserSessionsManager;
 
 @EnableEurekaClient
 @EnableFeignClients
 @SpringBootApplication
+@EnableScheduling
 public class QipaiTasksApplication {
 	@Bean
 	public UserSessionsManager userSessionsManager() {

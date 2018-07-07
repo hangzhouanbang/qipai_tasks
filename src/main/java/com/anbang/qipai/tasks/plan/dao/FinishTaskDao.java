@@ -6,9 +6,7 @@ import com.anbang.qipai.tasks.plan.domain.FinishTask;
 
 public interface FinishTaskDao {
 
-	List<FinishTask> findAllFinishTaskByMemberId(String memberId);
-	
-	List<FinishTask> findAllFinishTask();
-	
+	List<FinishTask> findFinishTaskByMemberId(String memberId);
+
 	void addFinishTask(FinishTask finishTask);
 }

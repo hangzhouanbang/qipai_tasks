@@ -49,8 +49,10 @@ public class InviteFriendsTarget implements ITarget {
 	}
 
 	@Override
-	public void reset() {
+	public void reset(Task task) {
 		this.finishInviteNum = 0;
+		task.setFinishNum(finishInviteNum);
+		task.setTaskState(TaskState.DOINGTASK);
 	}
 
 }

@@ -6,7 +6,7 @@ public interface ITarget {
 
 	void init(TaskDocumentHistory task);
 
-	void reset();
+	void reset(Task task);
 
 	void updateTask(Task task, Map<String, Object> params);
 }

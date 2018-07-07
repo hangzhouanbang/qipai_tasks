@@ -24,8 +24,10 @@ public class WinGamesTarget implements ITarget {
 	}
 
 	@Override
-	public void reset() {
+	public void reset(Task task) {
 		this.finishWinNum = 0;
+		task.setFinishNum(finishWinNum);
+		task.setTaskState(TaskState.DOINGTASK);
 	}
 
 	@Override

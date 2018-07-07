@@ -46,8 +46,10 @@ public class ShareFirendsCircleTarget implements ITarget {
 	}
 
 	@Override
-	public void reset() {
+	public void reset(Task task) {
 		this.finishFirendsCircleNum = 0;
+		task.setFinishNum(finishFirendsCircleNum);
+		task.setTaskState(TaskState.DOINGTASK);
 	}
 
 }

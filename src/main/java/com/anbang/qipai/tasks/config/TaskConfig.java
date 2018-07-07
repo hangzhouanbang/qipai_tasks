@@ -31,7 +31,5 @@ public class TaskConfig {
 	static {
 		typeList = new ArrayList<String>();
 		typeList.add("每日任务");
-		typeList.add("红包任务");
-		typeList.add("限时任务");
 	}
 }

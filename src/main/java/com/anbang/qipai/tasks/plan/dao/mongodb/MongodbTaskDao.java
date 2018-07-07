@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.dao.TaskDao;
 import com.anbang.qipai.tasks.plan.domain.Task;
+import com.mongodb.WriteResult;
 
 @Component
 public class MongodbTaskDao implements TaskDao {
@@ -24,8 +25,11 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public List<Task> findAllTask() {
-		return mongoTemplate.findAll(Task.class);
+	public List<Task> findTasksByType(int page, int size, String type) {
+		Query query = new Query(Criteria.where("type").is(type));
+		query.skip((page - 1) * size);
+		query.limit(size);
+		return mongoTemplate.find(query, Task.class);
 	}
 
 	@Override
@@ -47,11 +51,34 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public void updateTask(Task task) {
-		Query query =new Query(Criteria.where("id").is(task.getId()));
+	public boolean updateTaskState(Task task) {
+		Query query = new Query(Criteria.where("id").is(task.getId()));
 		Update update = new Update();
-		update.set("taskState",task.getTaskState());
-		mongoTemplate.updateFirst(query, update, Task.class);
+		update.set("taskState", task.getTaskState());
+		WriteResult result = mongoTemplate.updateFirst(query, update, Task.class);
+		return result.getN() > 0;
+	}
+
+	@Override
+	public long getAmountByType(String type) {
+		Query query = new Query(Criteria.where("type").is(type));
+		return mongoTemplate.count(query, Task.class);
+	}
+
+	@Override
+	public boolean updateTaskTarget(Task task) {
+		Query query = new Query(Criteria.where("id").is(task.getId()));
+		Update update = new Update();
+		update.set("target", task.getTarget());
+		WriteResult result = mongoTemplate.updateFirst(query, update, Task.class);
+		return result.getN() > 0;
+	}
+
+	@Override
+	public boolean deleteTaskById(String taskId) {
+		Query query = new Query(Criteria.where("id").is(taskId));
+		WriteResult result = mongoTemplate.remove(query, Task.class);
+		return result.getN() > 0;
 	}
 
 }

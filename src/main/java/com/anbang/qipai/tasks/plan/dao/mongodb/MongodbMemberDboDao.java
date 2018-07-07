@@ -23,32 +23,45 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	}
 
 	@Override
-	public boolean updateMemberDbo(MemberDbo member) {
-		Query query = new Query(Criteria.where("id").is(member.getId()));
+	public MemberDbo findMemberById(String memberId) {
+		Query query = new Query(Criteria.where("id").is(memberId));
+		return mongoTemplate.findOne(query, MemberDbo.class);
+	}
+
+	@Override
+	public boolean updateVip(String memberId, boolean vip) {
+		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
-		if (member.getVip() != null) {
-			update.set("vip", member.getVip());
-		}
-		if (member.getCreateTime() != null) {
-			update.set("createTime", member.getCreateTime());
-		}
-		if (member.getLastLoginTime() != null) {
-			update.set("lastLoginTime", member.getLastLoginTime());
-		}
-		if (member.getOnlineTime() != null) {
-			update.set("onlineTime", member.getOnlineTime());
-		}
-		if (member.getReleaseTaskTime() != null) {
-			update.set("releaseTaskTime", member.getReleaseTaskTime());
-		}
+		update.set("vip", vip);
 		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
 		return result.getN() > 0;
 	}
 
 	@Override
-	public MemberDbo findMemberById(String memberId) {
+	public boolean updateLastLoginTime(String memberId, long lastLoginTime) {
 		Query query = new Query(Criteria.where("id").is(memberId));
-		return mongoTemplate.findOne(query, MemberDbo.class);
+		Update update = new Update();
+		update.set("lastLoginTime", lastLoginTime);
+		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
+		return result.getN() > 0;
+	}
+
+	@Override
+	public boolean updateOnlineTime(String memberId, long onLineTime) {
+		Query query = new Query(Criteria.where("id").is(memberId));
+		Update update = new Update();
+		update.set("onLineTime", onLineTime);
+		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
+		return result.getN() > 0;
+	}
+
+	@Override
+	public boolean updateReleaseTime(String memberId, long releaseTime) {
+		Query query = new Query(Criteria.where("id").is(memberId));
+		Update update = new Update();
+		update.set("releaseTime", releaseTime);
+		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
+		return result.getN() > 0;
 	}
 
 }

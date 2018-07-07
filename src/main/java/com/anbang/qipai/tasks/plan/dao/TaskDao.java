@@ -8,13 +8,19 @@ public interface TaskDao {
 
 	List<Task> findTaskByMemberId(String memberId);
 
-	List<Task> findAllTask();
+	List<Task> findTasksByType(int page, int size, String type);
+
+	long getAmountByType(String type);
 
 	void addTask(Task task);
 
 	List<Task> findTaskByMemberIdAndType(String memberId, String type);
 
 	Task findTaskById(String taskId);
-	
-	void updateTask(Task task);
+
+	boolean updateTaskState(Task task);
+
+	boolean updateTaskTarget(Task task);
+
+	boolean deleteTaskById(String taskId);
 }

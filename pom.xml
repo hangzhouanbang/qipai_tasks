@@ -48,7 +48,12 @@
 			<artifactId>users.dml</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		<!-- 其它 -->
+		<dependency>
+			<groupId>flemish</groupId>
+			<artifactId>flemish</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
