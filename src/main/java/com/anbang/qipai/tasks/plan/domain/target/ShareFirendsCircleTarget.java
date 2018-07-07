@@ -21,8 +21,10 @@ public class ShareFirendsCircleTarget implements ITarget {
 
 	@Override
 	public void updateTask(Task task, Map<String, Object> params) {
-		if (params.get("finishFirendsCircleNum") != null && task.getTaskState() != TaskState.FINISHTASK) {
-			finishFirendsCircleNum += (int) params.get("finishFirendsCircleNum");
+		if (params.get("finishFirendsCircleNum") != null && !TaskState.COMPLETETASK.equals(task.getTaskState())
+				&& !TaskState.FINISHTASK.equals(task.getTaskState())) {
+			finishFirendsCircleNum += Integer.valueOf((String) params.get("finishFirendsCircleNum"));
+			task.setFinishNum(finishFirendsCircleNum);
 			if (finishFirendsCircleNum >= targetFirendsCircleNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 			}

@@ -78,7 +78,7 @@ public class TaskService {
 			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
 			for (Task task : taskList) {
 				task.getTarget().updateTask(task, params);
-				taskDao.updateTaskTarget(task);
+				taskDao.updateTask(task);
 			}
 		}
 	}
@@ -109,6 +109,8 @@ public class TaskService {
 		finishTask.setTarget(task.getTarget());
 		finishTask.setFinishTime(System.currentTimeMillis());
 		finishTaskDao.addFinishTask(finishTask);
+		task.setTaskState(TaskState.FINISHTASK);
+		taskDao.updateTask(task);
 		if (!"每日任务".equals(task.getType())) {
 			taskDao.deleteTaskById(taskId);
 		}
@@ -122,7 +124,7 @@ public class TaskService {
 			List<Task> taskList = taskDao.findTasksByType(page, size, type);
 			for (Task task : taskList) {
 				task.getTarget().reset(task);
-				taskDao.updateTaskTarget(task);
+				taskDao.updateTask(task);
 			}
 		}
 	}

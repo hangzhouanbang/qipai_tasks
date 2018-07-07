@@ -2,7 +2,6 @@ package com.anbang.qipai.tasks.remote.service;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 
@@ -16,10 +15,9 @@ import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 public interface QipaiMembersRemoteService {
 
 	@RequestMapping(value = "/auth/trytoken")
-	public CommonRemoteVO auth_trytoken(@RequestParam("token") String token);
-	
+	public CommonRemoteVO auth_trytoken(String token);
+
 	@RequestMapping(value = "/reward/task_reward")
-	public CommonRemoteVO sendReward(@RequestParam("rewardGold") Integer rewardGold,@RequestParam("rewardScore")Integer rewardScore,
-					@RequestParam("rewardVip")Integer rewardVip,@RequestParam("memberId") String memberId);
+	public CommonRemoteVO sendReward(Integer rewardGold, Integer rewardScore, Integer rewardVip, String memberId);
 
 }

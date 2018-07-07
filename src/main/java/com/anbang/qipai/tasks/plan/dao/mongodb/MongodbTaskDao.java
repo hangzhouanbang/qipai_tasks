@@ -51,10 +51,12 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public boolean updateTaskState(Task task) {
+	public boolean updateTask(Task task) {
 		Query query = new Query(Criteria.where("id").is(task.getId()));
 		Update update = new Update();
 		update.set("taskState", task.getTaskState());
+		update.set("finishNum", task.getFinishNum());
+		update.set("target", task.getTarget());
 		WriteResult result = mongoTemplate.updateFirst(query, update, Task.class);
 		return result.getN() > 0;
 	}
@@ -63,15 +65,6 @@ public class MongodbTaskDao implements TaskDao {
 	public long getAmountByType(String type) {
 		Query query = new Query(Criteria.where("type").is(type));
 		return mongoTemplate.count(query, Task.class);
-	}
-
-	@Override
-	public boolean updateTaskTarget(Task task) {
-		Query query = new Query(Criteria.where("id").is(task.getId()));
-		Update update = new Update();
-		update.set("target", task.getTarget());
-		WriteResult result = mongoTemplate.updateFirst(query, update, Task.class);
-		return result.getN() > 0;
 	}
 
 	@Override

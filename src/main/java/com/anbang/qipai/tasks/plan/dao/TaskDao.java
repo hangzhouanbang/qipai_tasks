@@ -18,9 +18,7 @@ public interface TaskDao {
 
 	Task findTaskById(String taskId);
 
-	boolean updateTaskState(Task task);
-
-	boolean updateTaskTarget(Task task);
+	boolean updateTask(Task task);
 
 	boolean deleteTaskById(String taskId);
 }
