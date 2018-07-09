@@ -25,13 +25,6 @@ public class MembersMsgReceiver {
 			MemberDbo member = gson.fromJson(json, MemberDbo.class);
 			memberService.addMember(member);
 		}
-		if ("updateMember".equals(mo.getMsg())) {
-			String json = gson.toJson(mo.getData());
-			MemberDbo member = gson.fromJson(json, MemberDbo.class);
-			memberService.updateLastLoginTime(member.getId(), member.getLastLoginTime());
-			memberService.updateOnlineTime(member.getId(), member.getOnlineTime());
-			memberService.updateVip(member.getId(), member.getVip());
-		}
 	}
 
 }

@@ -94,7 +94,6 @@ public class TaskService {
 	public void finishTask(String taskId) {
 		Task task = taskDao.findTaskById(taskId);
 		FinishTask finishTask = new FinishTask();
-		finishTask.setId(task.getId());
 		finishTask.setTaskId(task.getTaskId());
 		finishTask.setMemberId(task.getMemberId());
 		finishTask.setName(task.getName());

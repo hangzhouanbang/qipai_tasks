@@ -124,11 +124,12 @@ public class TaskController {
 		}
 		vo.setSuccess(commonRemoteVo.isSuccess());
 		vo.setMsg(commonRemoteVo.getMsg());
+		vo.setData(task);
 		return vo;
 	}
 
 	@Scheduled(cron = "0 0 0 * * ?") // 每天凌晨
-	public void reset() {
+	public void resetEveryDayTask() {
 		taskService.reset("每日任务");
 	}
 }
