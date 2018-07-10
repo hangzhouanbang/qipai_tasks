@@ -19,10 +19,10 @@ public class MembersMsgReceiver {
 	private Gson gson = new Gson();
 
 	@StreamListener(MembersSink.MEMBERS)
-	public void createMembner(CommonMO mo) {
+	public void recordMember(CommonMO mo) {
+		String json = gson.toJson(mo.getData());
+		MemberDbo member = gson.fromJson(json, MemberDbo.class);
 		if ("newMember".equals(mo.getMsg())) {
-			String json = gson.toJson(mo.getData());
-			MemberDbo member = gson.fromJson(json, MemberDbo.class);
 			memberService.addMember(member);
 		}
 	}

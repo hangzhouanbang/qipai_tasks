@@ -41,6 +41,7 @@ public class MongodbTaskDao implements TaskDao {
 	public List<Task> findTaskByMemberIdAndType(String memberId, String type) {
 		Query query = new Query(Criteria.where("memberId").is(memberId));
 		query.addCriteria(Criteria.where("type").is(type));
+		query.addCriteria(Criteria.where("taskState").in("DOINGTASK", "COMPLETETASK"));
 		return mongoTemplate.find(query, Task.class);
 	}
 

@@ -50,4 +50,10 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 		return mongoTemplate.find(query, TaskDocumentHistory.class);
 	}
 
+	@Override
+	public TaskDocumentHistory findTaskById(String taskId) {
+		Query query = new Query(Criteria.where("id").is(taskId));
+		return mongoTemplate.findOne(query, TaskDocumentHistory.class);
+	}
+
 }

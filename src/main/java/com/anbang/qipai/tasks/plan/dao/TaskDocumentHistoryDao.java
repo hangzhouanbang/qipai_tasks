@@ -10,6 +10,8 @@ public interface TaskDocumentHistoryDao {
 
 	List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime);
 
+	TaskDocumentHistory findTaskById(String taskId);
+
 	void addTaskDocumentHistory(TaskDocumentHistory taskDocumentHistory);
 
 	boolean updateState(String[] taskIds, int state);

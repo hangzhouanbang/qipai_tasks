@@ -40,7 +40,10 @@ public class TaskService {
 
 	public List<TaskVO> queryMemberTasks(String memberId) {
 		List<TaskVO> taskVos = new ArrayList<TaskVO>();
+		// 添加新发布任务
 		addMemberTasks(memberId);
+		// 删除撤回任务
+		removeMemberTasks(memberId);
 		List<String> typeList = TaskConfig.typeList;
 		for (String type : typeList) {
 			TaskVO taskVo = new TaskVO();
@@ -163,6 +166,19 @@ public class TaskService {
 			}
 			// 更新任务游标
 			memberDboDao.updateReleaseTime(member.getId(), member.getReleaseTime());
+		}
+	}
+
+	private void removeMemberTasks(String memberId) {
+		MemberDbo member = memberDboDao.findMemberById(memberId);
+		if (member != null) {
+			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
+			for (Task task : taskList) {
+				TaskDocumentHistory taskHistory = taskDocumentHistoryDao.findTaskById(task.getTaskId());
+				if (taskHistory.getState() == 0) {
+					taskDao.deleteTaskById(task.getId());
+				}
+			}
 		}
 	}
 
