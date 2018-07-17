@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anbang.qipai.tasks.config.ActivityState;
 import com.anbang.qipai.tasks.plan.dao.ActivityDao;
 import com.anbang.qipai.tasks.plan.domain.Activity;
 
@@ -19,12 +20,12 @@ public class ActivityService {
 	}
 
 	public Activity startActivity(String activityId) {
-		activityDao.updateActivityStateById(activityId, 1);
+		activityDao.updateActivityStateById(activityId, ActivityState.START);
 		return activityDao.findActivityById(activityId);
 	}
 
 	public Activity stopActivity(String activityId) {
-		activityDao.updateActivityStateById(activityId, 0);
+		activityDao.updateActivityStateById(activityId, ActivityState.STOP);
 		return activityDao.findActivityById(activityId);
 	}
 

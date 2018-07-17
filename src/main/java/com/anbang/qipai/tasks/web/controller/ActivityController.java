@@ -3,7 +3,9 @@ package com.anbang.qipai.tasks.web.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.plan.domain.Activity;
@@ -18,16 +20,17 @@ public class ActivityController {
 	private ActivityService activityService;
 
 	@RequestMapping("/addactivity")
-	public CommonVO addActivity(Activity activity) {
+	public CommonVO addActivity(@RequestBody Activity activity) {
 		CommonVO vo = new CommonVO();
 		activityService.addActivity(activity);
 		vo.setSuccess(true);
 		vo.setMsg("add activity success");
+		vo.setData(activity);
 		return vo;
 	}
 
 	@RequestMapping("/startactivity")
-	public CommonVO startActivity(String activityId) {
+	public CommonVO startActivity(@RequestParam(value = "activityId") String activityId) {
 		CommonVO vo = new CommonVO();
 		Activity activity = activityService.startActivity(activityId);
 		vo.setSuccess(true);
@@ -37,7 +40,7 @@ public class ActivityController {
 	}
 
 	@RequestMapping("/stopactivity")
-	public CommonVO stopActivity(String activityId) {
+	public CommonVO stopActivity(@RequestParam(value = "activityId") String activityId) {
 		CommonVO vo = new CommonVO();
 		Activity activity = activityService.stopActivity(activityId);
 		vo.setSuccess(true);

@@ -7,7 +7,7 @@ import com.anbang.qipai.tasks.plan.domain.Activity;
 public interface ActivityDao {
 	void addActivity(Activity activity);
 
-	boolean updateActivityStateById(String activityId, int state);
+	boolean updateActivityStateById(String activityId, String state);
 
 	List<Activity> findActivity();
 
