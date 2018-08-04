@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.config.ActivityState;
+import com.anbang.qipai.tasks.plan.bean.Activity;
 import com.anbang.qipai.tasks.plan.dao.ActivityDao;
-import com.anbang.qipai.tasks.plan.domain.Activity;
 import com.mongodb.WriteResult;
 
 @Component

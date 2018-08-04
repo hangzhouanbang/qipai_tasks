@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import com.anbang.qipai.tasks.plan.bean.FinishTask;
 import com.anbang.qipai.tasks.plan.dao.FinishTaskDao;
-import com.anbang.qipai.tasks.plan.domain.FinishTask;
 
 @Component
 public class MongodbFinishTaskDao implements FinishTaskDao {

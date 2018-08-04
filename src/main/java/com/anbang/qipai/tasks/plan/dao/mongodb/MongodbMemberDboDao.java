@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.dao.MemberDboDao;
-import com.anbang.qipai.tasks.plan.domain.MemberDbo;
 import com.mongodb.WriteResult;
 
 @Component

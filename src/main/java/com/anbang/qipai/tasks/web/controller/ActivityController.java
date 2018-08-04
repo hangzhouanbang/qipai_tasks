@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.anbang.qipai.tasks.plan.domain.Activity;
+import com.anbang.qipai.tasks.plan.bean.Activity;
 import com.anbang.qipai.tasks.plan.service.ActivityService;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 

@@ -1,4 +1,4 @@
-package com.anbang.qipai.tasks.plan.domain;
+package com.anbang.qipai.tasks.plan.bean;
 
 public class MemberDbo {
 	private String id;// 会员id

@@ -3,8 +3,8 @@ package com.anbang.qipai.tasks.plan.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 
 @Service
 public class TaskDocumentHistoryService {

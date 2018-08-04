@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
-import com.anbang.qipai.tasks.plan.domain.Task;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;

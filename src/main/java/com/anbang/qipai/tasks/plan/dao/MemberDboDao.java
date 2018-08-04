@@ -1,6 +1,6 @@
 package com.anbang.qipai.tasks.plan.dao;
 
-import com.anbang.qipai.tasks.plan.domain.MemberDbo;
+import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 
 public interface MemberDboDao {
 

@@ -2,7 +2,7 @@ package com.anbang.qipai.tasks.plan.dao;
 
 import java.util.List;
 
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 
 public interface TaskDocumentHistoryDao {
 

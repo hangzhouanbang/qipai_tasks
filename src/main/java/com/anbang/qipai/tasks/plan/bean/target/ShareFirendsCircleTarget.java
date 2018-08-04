@@ -1,11 +1,11 @@
-package com.anbang.qipai.tasks.plan.domain.target;
+package com.anbang.qipai.tasks.plan.bean.target;
 
 import java.util.Map;
 
 import com.anbang.qipai.tasks.config.TaskState;
-import com.anbang.qipai.tasks.plan.domain.ITarget;
-import com.anbang.qipai.tasks.plan.domain.Task;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.ITarget;
+import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 
 public class ShareFirendsCircleTarget implements ITarget {
 

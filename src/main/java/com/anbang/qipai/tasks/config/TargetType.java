@@ -1,11 +1,11 @@
 package com.anbang.qipai.tasks.config;
 
-import com.anbang.qipai.tasks.plan.domain.ITarget;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
-import com.anbang.qipai.tasks.plan.domain.target.InviteFriendsTarget;
-import com.anbang.qipai.tasks.plan.domain.target.ShareFirendsCircleTarget;
-import com.anbang.qipai.tasks.plan.domain.target.ShareFirendsTarget;
-import com.anbang.qipai.tasks.plan.domain.target.WinGamesTarget;
+import com.anbang.qipai.tasks.plan.bean.ITarget;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.target.InviteFriendsTarget;
+import com.anbang.qipai.tasks.plan.bean.target.ShareFirendsCircleTarget;
+import com.anbang.qipai.tasks.plan.bean.target.ShareFirendsTarget;
+import com.anbang.qipai.tasks.plan.bean.target.WinGamesTarget;
 
 public enum TargetType {
 	// 0,邀请玩家

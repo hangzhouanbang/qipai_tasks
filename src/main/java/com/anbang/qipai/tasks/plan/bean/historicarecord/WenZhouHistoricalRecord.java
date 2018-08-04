@@ -1,4 +1,4 @@
-package com.anbang.qipai.tasks.plan.domain.historicarecord;
+package com.anbang.qipai.tasks.plan.bean.historicarecord;
 
 import java.util.Comparator;
 

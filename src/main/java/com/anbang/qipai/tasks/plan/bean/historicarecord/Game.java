@@ -1,4 +1,4 @@
-package com.anbang.qipai.tasks.plan.domain.historicarecord;
+package com.anbang.qipai.tasks.plan.bean.historicarecord;
 
 /**
  * 我们平台提供的所有游戏名称的一个枚举

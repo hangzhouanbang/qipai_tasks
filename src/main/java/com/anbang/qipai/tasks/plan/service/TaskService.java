@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import com.anbang.qipai.tasks.config.TargetType;
 import com.anbang.qipai.tasks.config.TaskConfig;
 import com.anbang.qipai.tasks.config.TaskState;
+import com.anbang.qipai.tasks.plan.bean.FinishTask;
+import com.anbang.qipai.tasks.plan.bean.MemberDbo;
+import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.dao.FinishTaskDao;
 import com.anbang.qipai.tasks.plan.dao.MemberDboDao;
 import com.anbang.qipai.tasks.plan.dao.TaskDao;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
-import com.anbang.qipai.tasks.plan.domain.FinishTask;
-import com.anbang.qipai.tasks.plan.domain.MemberDbo;
-import com.anbang.qipai.tasks.plan.domain.Task;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.anbang.qipai.tasks.web.vo.TaskVO;
 
 @Service

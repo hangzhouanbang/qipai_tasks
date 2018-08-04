@@ -1,10 +1,9 @@
-package com.anbang.qipai.tasks.plan.domain.historicarecord;
+package com.anbang.qipai.tasks.plan.bean.historicarecord;
 
 import java.util.Comparator;
-
-/**点炮麻将战绩
+/**瑞安麻将战绩
  * **/
-public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalRecord>{
+public class RuianHistoricalRecord implements Comparator<RuianHistoricalRecord>{
 	
 	private String id;
 	
@@ -20,11 +19,9 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 	
 	private int huCount;//胡几次
 	
-	private int zimoCount;//自摸次数
+	private int paoCount;//多少炮
 	
-	private int mammonCount;//财神
-	
-	private int PointgunCount;//点炮count;
+	private int maxHuCount;//最大胡几次
 	
 	private int totalScore;//总分
 	
@@ -41,6 +38,15 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public int getReward() {
+		return reward;
+	}
+
+	public void setReward(int reward) {
+		this.reward = reward;
+	}
+
 
 	public String getMemberId() {
 		return memberId;
@@ -90,28 +96,20 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 		this.huCount = huCount;
 	}
 
-	public int getZimoCount() {
-		return zimoCount;
+	public int getPaoCount() {
+		return paoCount;
 	}
 
-	public void setZimoCount(int zimoCount) {
-		this.zimoCount = zimoCount;
+	public void setPaoCount(int paoCount) {
+		this.paoCount = paoCount;
 	}
 
-	public int getMammonCount() {
-		return mammonCount;
+	public int getMaxHuCount() {
+		return maxHuCount;
 	}
 
-	public void setMammonCount(int mammonCount) {
-		this.mammonCount = mammonCount;
-	}
-
-	public int getPointgunCount() {
-		return PointgunCount;
-	}
-
-	public void setPointgunCount(int pointgunCount) {
-		PointgunCount = pointgunCount;
+	public void setMaxHuCount(int maxHuCount) {
+		this.maxHuCount = maxHuCount;
 	}
 
 	public int getTotalScore() {
@@ -120,14 +118,6 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 
 	public void setTotalScore(int totalScore) {
 		this.totalScore = totalScore;
-	}
-
-	public int getReward() {
-		return reward;
-	}
-
-	public void setReward(int reward) {
-		this.reward = reward;
 	}
 
 	public int getGameCount() {
@@ -147,7 +137,7 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 	}
 
 	@Override
-	public int compare(DianPaoHistoricalRecord o1, DianPaoHistoricalRecord o2) {
+	public int compare(RuianHistoricalRecord o1, RuianHistoricalRecord o2) {
 		if(o1.getTotalScore() > o2.getTotalScore()) {
 			return 1;
 		}else if(o1.getTotalScore() == o2.getTotalScore()){
@@ -158,4 +148,5 @@ public class DianPaoHistoricalRecord implements Comparator<DianPaoHistoricalReco
 	}
 	
 	
+
 }

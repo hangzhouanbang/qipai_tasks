@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
-import com.anbang.qipai.tasks.plan.domain.TaskDocumentHistory;
 import com.mongodb.WriteResult;
 
 @Component

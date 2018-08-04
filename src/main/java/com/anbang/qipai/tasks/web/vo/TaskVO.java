@@ -2,7 +2,7 @@ package com.anbang.qipai.tasks.web.vo;
 
 import java.util.List;
 
-import com.anbang.qipai.tasks.plan.domain.Task;
+import com.anbang.qipai.tasks.plan.bean.Task;
 
 public class TaskVO {
 
