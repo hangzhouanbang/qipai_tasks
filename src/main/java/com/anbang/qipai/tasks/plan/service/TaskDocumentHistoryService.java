@@ -12,8 +12,6 @@ public class TaskDocumentHistoryService {
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
 	public void releaseTask(TaskDocumentHistory task) {
-		task.setReleaseTime(System.currentTimeMillis());
-		task.setState(1);
 		taskDocumentHistoryDao.addTaskDocumentHistory(task);
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
+import com.anbang.qipai.tasks.msg.service.TasksMsgService;
 import com.anbang.qipai.tasks.plan.bean.Task;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
@@ -22,6 +23,12 @@ import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 import com.anbang.qipai.tasks.web.vo.TaskVO;
 
+/**
+ * 任务管理
+ * 
+ * @author 林少聪 2018.8.6
+ *
+ */
 @RestController
 @RequestMapping("/task")
 public class TaskController {
@@ -36,8 +43,16 @@ public class TaskController {
 	private TaskService taskService;
 
 	@Autowired
+	private TasksMsgService tasksMsgService;
+
+	@Autowired
 	private QipaiMembersRemoteService qipaiMembersRemoteService;
 
+	/**
+	 * 查询任务类型、种类
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/querytaskconfig")
 	public CommonVO queryTaskConfig() {
 		CommonVO vo = new CommonVO();
@@ -50,6 +65,11 @@ public class TaskController {
 		return vo;
 	}
 
+	/**
+	 * 查询任务类型
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/querytasktype")
 	public CommonVO queryTaskType() {
 		CommonVO vo = new CommonVO();
@@ -59,28 +79,42 @@ public class TaskController {
 		return vo;
 	}
 
+	/**
+	 * 发布任务
+	 * 
+	 * @param task
+	 * @return
+	 */
 	@RequestMapping("/release")
 	public CommonVO releaseTask(@RequestBody TaskDocumentHistory task) {
 		CommonVO vo = new CommonVO();
+		task.setReleaseTime(System.currentTimeMillis());
+		task.setState(1);
 		taskDocumentHistoryService.releaseTask(task);
-		vo.setSuccess(true);
-		vo.setMsg("ReleaseTask");
-		vo.setData(task);
+		tasksMsgService.releaseTask(task);
 		return vo;
 	}
 
+	/**
+	 * 撤回任务
+	 * 
+	 * @param taskIds
+	 * @return
+	 */
 	@RequestMapping("/withdraw")
 	public CommonVO withdrawTask(@RequestBody String[] taskIds) {
 		CommonVO vo = new CommonVO();
-		vo.setSuccess(false);
-		vo.setMsg("Tasks WithDraw Fail");
-		if (taskDocumentHistoryService.withdrawTaskDocumentHistory(taskIds)) {
-			vo.setSuccess(true);
-			vo.setMsg("WithDraw TaskDocument");
-		}
+		taskDocumentHistoryService.withdrawTaskDocumentHistory(taskIds);
+		tasksMsgService.withdrawTaskDocumentHistory(taskIds);
 		return vo;
 	}
 
+	/**
+	 * 查询玩家个人任务
+	 * 
+	 * @param token
+	 * @return
+	 */
 	@RequestMapping("/querymembertasks")
 	public CommonVO queryMemberTasks(String token) {
 		CommonVO vo = new CommonVO();
@@ -97,11 +131,23 @@ public class TaskController {
 		return vo;
 	}
 
+	/**
+	 * 更新任务进度
+	 * 
+	 * @param params
+	 */
 	@RequestMapping("/updatetasks")
 	public void updateTasks(@RequestParam Map<String, Object> params) {
 		taskService.updateTasks(params);
 	}
 
+	/**
+	 * 获取任务奖励
+	 * 
+	 * @param token
+	 * @param taskId
+	 * @return
+	 */
 	@RequestMapping("/getrewards")
 	public CommonVO getRewards(String token, String taskId) {
 		CommonVO vo = new CommonVO();
@@ -128,6 +174,10 @@ public class TaskController {
 		return vo;
 	}
 
+	/**
+	 * 重置每日任务
+	 * 
+	 */
 	@Scheduled(cron = "0 0 0 * * ?") // 每天凌晨
 	public void resetEveryDayTask() {
 		taskService.reset("每日任务");
