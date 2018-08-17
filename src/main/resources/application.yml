@@ -40,6 +40,13 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+        ruianMajiangResult:
+          destination: ruianMajiangResult
+          group: qipai_ruianmajiang
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         activity:
           destination: activity
           contentType: application/json
