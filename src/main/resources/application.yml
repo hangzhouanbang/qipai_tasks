@@ -35,14 +35,14 @@ spring:
       bindings:
         members:
           destination: members
-          group: qipai_tasks
+          group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false
           contentType: application/json
         ruianMajiangResult:
           destination: ruianMajiangResult
-          group: qipai_ruianmajiang
+          group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false

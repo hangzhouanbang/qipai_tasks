@@ -16,7 +16,7 @@ public class WinGamesTarget implements ITarget {
 	public void updateTask(Task task, Map<String, Object> params) {
 		if (params.get("finishWinNum") != null && !TaskState.COMPLETETASK.equals(task.getTaskState())
 				&& !TaskState.FINISHTASK.equals(task.getTaskState())) {
-			finishWinNum += Integer.valueOf((String) params.get("finishWinNum"));
+			finishWinNum += (int)params.get("finishWinNum");
 			task.setFinishNum(finishWinNum);
 			if (finishWinNum >= targetWinNum) {
 				task.setTaskState(TaskState.COMPLETETASK);

@@ -26,9 +26,12 @@ public class RuianMajiangResultMsgReceiver {
 		Map map = gson.fromJson(json, Map.class);
 		if ("ruianmajiang ju result".equals(msg)) {
 			Map<String, Object> params = new HashMap<>();
-			params.put("memberId", map.get("dayingjiaId"));
-			params.put("finishWinNum", 1);
-			taskService.updateTasks(params);
+			String memberId = (String) map.get("dayingjiaId");
+			if (memberId != null) {
+				params.put("memberId", map.get("dayingjiaId"));
+				params.put("finishWinNum", 1);
+				taskService.updateTasks(params);
+			}
 		}
 	}
 }
