@@ -13,6 +13,7 @@ public class MemberService {
 	private MemberDboDao memberDboDao;
 
 	public void addMember(MemberDbo memberDbo) {
+		memberDbo.setReleaseTime(0L);
 		memberDboDao.addMemberDbo(memberDbo);
 	}
 
