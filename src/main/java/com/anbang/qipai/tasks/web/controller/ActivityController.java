@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anbang.qipai.tasks.config.ActivityState;
 import com.anbang.qipai.tasks.msg.service.ActivityMsgService;
 import com.anbang.qipai.tasks.plan.bean.Activity;
 import com.anbang.qipai.tasks.plan.service.ActivityService;
@@ -38,6 +39,7 @@ public class ActivityController {
 	@RequestMapping("/addactivity")
 	public CommonVO addActivity(@RequestBody Activity activity) {
 		CommonVO vo = new CommonVO();
+		activity.setState(ActivityState.STOP);
 		activityService.addActivity(activity);
 		activityMsgService.addActivity(activity);
 		return vo;
