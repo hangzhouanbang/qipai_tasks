@@ -74,7 +74,7 @@ public class ActivityController {
 	}
 
 	/**
-	 * 查询所用启用中的活动
+	 * 查询所有活动
 	 * 
 	 * @return
 	 */

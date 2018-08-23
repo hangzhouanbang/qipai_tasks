@@ -6,7 +6,7 @@ public class Activity {
 	private String theme;
 	private String content;
 	private String url;
-	private String state;// 活动状态1:进行中,0:禁用
+	private String state;
 	private String promulgator;// 发布者
 
 	public String getId() {
