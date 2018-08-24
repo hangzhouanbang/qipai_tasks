@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
+import com.anbang.qipai.tasks.config.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.msg.service.TasksMsgService;
 import com.anbang.qipai.tasks.plan.bean.Task;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
@@ -89,7 +90,7 @@ public class TaskController {
 	public CommonVO releaseTask(@RequestBody TaskDocumentHistory task) {
 		CommonVO vo = new CommonVO();
 		task.setReleaseTime(System.currentTimeMillis());
-		task.setState(1);
+		task.setState(TaskDocumentHistoryState.START);
 		taskDocumentHistoryService.releaseTask(task);
 		tasksMsgService.releaseTask(task);
 		return vo;
@@ -102,10 +103,10 @@ public class TaskController {
 	 * @return
 	 */
 	@RequestMapping("/withdraw")
-	public CommonVO withdrawTask(@RequestBody String[] taskIds) {
+	public CommonVO withdrawTask(String taskId) {
 		CommonVO vo = new CommonVO();
-		taskDocumentHistoryService.withdrawTaskDocumentHistory(taskIds);
-		tasksMsgService.withdrawTaskDocumentHistory(taskIds);
+		TaskDocumentHistory task = taskDocumentHistoryService.withdrawTaskDocumentHistory(taskId);
+		tasksMsgService.withdrawTaskDocumentHistory(task);
 		return vo;
 	}
 

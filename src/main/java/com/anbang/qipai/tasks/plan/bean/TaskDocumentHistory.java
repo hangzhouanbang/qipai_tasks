@@ -12,7 +12,7 @@ public class TaskDocumentHistory {
 	private Integer rewardVip;// 奖励会员时间
 	private String vip;
 	private Integer targetNum;// 完成次数
-	private Integer state;// 状态:0,未发布,1,已发布
+	private String state;// 状态:0,未发布,1,已发布
 	private Long releaseTime;
 	private String promulgator;// 发布者
 
@@ -104,11 +104,11 @@ public class TaskDocumentHistory {
 		this.targetNum = targetNum;
 	}
 
-	public Integer getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(Integer state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

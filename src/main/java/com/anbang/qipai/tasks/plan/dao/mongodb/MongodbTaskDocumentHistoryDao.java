@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
-import com.mongodb.WriteResult;
 
 @Component
 public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
@@ -25,13 +24,11 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public boolean updateState(String[] taskIds, int state) {
-		Object[] ids = taskIds;
-		Query query = new Query(Criteria.where("id").in(ids));
+	public void updateState(String taskId, String state) {
+		Query query = new Query(Criteria.where("id").is(taskId));
 		Update update = new Update();
 		update.set("state", state);
-		WriteResult result = mongoTemplate.updateMulti(query, update, TaskDocumentHistory.class);
-		return result.getN() <= taskIds.length;
+		mongoTemplate.updateMulti(query, update, TaskDocumentHistory.class);
 	}
 
 	@Override

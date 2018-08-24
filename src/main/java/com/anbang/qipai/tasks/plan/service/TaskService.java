@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.anbang.qipai.tasks.config.TargetType;
 import com.anbang.qipai.tasks.config.TaskConfig;
+import com.anbang.qipai.tasks.config.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.config.TaskState;
 import com.anbang.qipai.tasks.plan.bean.FinishTask;
 import com.anbang.qipai.tasks.plan.bean.MemberDbo;
@@ -175,7 +176,7 @@ public class TaskService {
 			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
 			for (Task task : taskList) {
 				TaskDocumentHistory taskHistory = taskDocumentHistoryDao.findTaskById(task.getTaskId());
-				if (taskHistory.getState() == 0) {
+				if (TaskDocumentHistoryState.STOP.equals(taskHistory.getState())) {
 					taskDao.deleteTaskById(task.getId());
 				}
 			}
