@@ -27,9 +27,7 @@ public class InviteFriendsTarget implements ITarget {
 	@Override
 	public void init(TaskDocumentHistory task) {
 		this.targetInviteNum = 0;
-		if (task.getTargetNum() != null) {
-			this.targetInviteNum = task.getTargetNum();
-		}
+		this.targetInviteNum = task.getTargetNum();
 		this.finishInviteNum = 0;
 	}
 

@@ -135,10 +135,7 @@ public class TaskService {
 	private void addMemberTasks(String memberId) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);
 		if (member != null) {
-			long releaseTime = 0;
-			if (member.getReleaseTime() != null) {
-				releaseTime = member.getReleaseTime();
-			}
+			long releaseTime = member.getReleaseTime();
 			long amount = taskDocumentHistoryDao.getAmountByReleaseTime(releaseTime);
 			int size = 300;
 			long pageNum = amount % size > 0 ? amount / size + 1 : amount / size;
@@ -185,7 +182,7 @@ public class TaskService {
 
 	private boolean hasCriterion(MemberDbo member, TaskDocumentHistory task) {
 		if ("true".equals(task.getVip()) || "false".equals(task.getVip())) {
-			if (task.getVip().equals(member.getVip().toString())) {
+			if (task.getVip().equals(String.valueOf(member.isVip()))) {
 				return true;
 			}
 			return false;

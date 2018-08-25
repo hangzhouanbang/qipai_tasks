@@ -26,7 +26,7 @@ public class MembersMsgReceiver {
 			memberService.addMember(member);
 		}
 		if ("update member vip".equals(mo.getMsg())) {
-			memberService.updateVip(member.getId(), member.getVip());
+			memberService.updateVip(member.getId(), member.isVip());
 		}
 	}
 

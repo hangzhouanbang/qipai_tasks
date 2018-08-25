@@ -7,13 +7,13 @@ public class TaskDocumentHistory {
 	private String desc;
 	private String type;// 任务类型，前台
 	private String taskName;// 任务种类,后台
-	private Integer rewardGold;// 奖励金币数量
-	private Integer rewardScore;// 奖励积分数量
-	private Integer rewardVip;// 奖励会员时间
+	private int rewardGold;// 奖励金币数量
+	private int rewardScore;// 奖励积分数量
+	private int rewardVip;// 奖励会员时间
 	private String vip;
-	private Integer targetNum;// 完成次数
+	private int targetNum;// 完成次数
 	private String state;// 状态:0,未发布,1,已发布
-	private Long releaseTime;
+	private long releaseTime;
 	private String promulgator;// 发布者
 
 	public String getId() {
@@ -64,27 +64,27 @@ public class TaskDocumentHistory {
 		this.taskName = taskName;
 	}
 
-	public Integer getRewardGold() {
+	public int getRewardGold() {
 		return rewardGold;
 	}
 
-	public void setRewardGold(Integer rewardGold) {
+	public void setRewardGold(int rewardGold) {
 		this.rewardGold = rewardGold;
 	}
 
-	public Integer getRewardScore() {
+	public int getRewardScore() {
 		return rewardScore;
 	}
 
-	public void setRewardScore(Integer rewardScore) {
+	public void setRewardScore(int rewardScore) {
 		this.rewardScore = rewardScore;
 	}
 
-	public Integer getRewardVip() {
+	public int getRewardVip() {
 		return rewardVip;
 	}
 
-	public void setRewardVip(Integer rewardVip) {
+	public void setRewardVip(int rewardVip) {
 		this.rewardVip = rewardVip;
 	}
 
@@ -96,11 +96,11 @@ public class TaskDocumentHistory {
 		this.vip = vip;
 	}
 
-	public Integer getTargetNum() {
+	public int getTargetNum() {
 		return targetNum;
 	}
 
-	public void setTargetNum(Integer targetNum) {
+	public void setTargetNum(int targetNum) {
 		this.targetNum = targetNum;
 	}
 
@@ -112,11 +112,11 @@ public class TaskDocumentHistory {
 		this.state = state;
 	}
 
-	public Long getReleaseTime() {
+	public long getReleaseTime() {
 		return releaseTime;
 	}
 
-	public void setReleaseTime(Long releaseTime) {
+	public void setReleaseTime(long releaseTime) {
 		this.releaseTime = releaseTime;
 	}
 
