@@ -180,6 +180,9 @@ public class TaskService {
 		}
 	}
 
+	/**
+	 * 判断是否满足接任务的条件
+	 */
 	private boolean hasCriterion(MemberDbo member, TaskDocumentHistory task) {
 		if ("true".equals(task.getVip()) || "false".equals(task.getVip())) {
 			if (task.getVip().equals(String.valueOf(member.isVip()))) {
