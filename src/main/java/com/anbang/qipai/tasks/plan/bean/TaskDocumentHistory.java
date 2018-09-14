@@ -12,7 +12,7 @@ public class TaskDocumentHistory {
 	private int rewardVip;// 奖励会员时间
 	private String vip;
 	private int targetNum;// 完成次数
-	private String state;// 状态:0,未发布,1,已发布
+	private String state;
 	private long releaseTime;
 	private String promulgator;// 发布者
 
