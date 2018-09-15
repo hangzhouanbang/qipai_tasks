@@ -47,6 +47,20 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+        fangpaoMajiangResult:
+          destination: fangpaoMajiangResult
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        wenzhouMajiangResult:
+          destination: wenzhouMajiangResult
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         activity:
           destination: activity
           contentType: application/json
