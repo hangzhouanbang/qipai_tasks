@@ -37,4 +37,14 @@ public class ActivityMsgService {
 
 		activitySoure.activity().send(MessageBuilder.withPayload(mo).build());
 	}
+
+	public void deleteActivity(String activityId) {
+		CommonMO mo = new CommonMO();
+		Activity activity = new Activity();
+		activity.setId(activityId);
+		mo.setMsg("delete activity");
+		mo.setData(activity);
+
+		activitySoure.activity().send(MessageBuilder.withPayload(mo).build());
+	}
 }

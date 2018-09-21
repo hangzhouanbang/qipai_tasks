@@ -32,4 +32,8 @@ public class ActivityService {
 	public List<Activity> findActivity() {
 		return activityDao.findActivity();
 	}
+
+	public void deleteActivity(String activityId) {
+		activityDao.deleteActivityById(activityId);
+	}
 }

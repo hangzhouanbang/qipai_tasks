@@ -12,4 +12,6 @@ public interface ActivityDao {
 	List<Activity> findActivity();
 
 	Activity findActivityById(String activityId);
+
+	void deleteActivityById(String activityId);
 }

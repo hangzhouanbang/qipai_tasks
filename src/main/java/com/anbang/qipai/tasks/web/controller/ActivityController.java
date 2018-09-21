@@ -87,4 +87,18 @@ public class ActivityController {
 		vo.setData(activities);
 		return vo;
 	}
+	
+	/**
+	 * 删除活动
+	 * 
+	 * @param activityId
+	 * @return
+	 */
+	@RequestMapping("/deleteactivity")
+	public CommonVO activity_delete(@RequestParam(value = "activityId") String activityId) {
+		CommonVO vo = new CommonVO();
+		activityService.deleteActivity(activityId);
+		activityMsgService.deleteActivity(activityId);
+		return vo;
+	}
 }

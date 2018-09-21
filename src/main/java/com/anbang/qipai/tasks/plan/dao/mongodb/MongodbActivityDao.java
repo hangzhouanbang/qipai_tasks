@@ -44,4 +44,10 @@ public class MongodbActivityDao implements ActivityDao {
 		return mongoTemplate.findOne(query, Activity.class);
 	}
 
+	@Override
+	public void deleteActivityById(String activityId) {
+		Query query = new Query(Criteria.where("id").is(activityId));
+		mongoTemplate.remove(query, Activity.class);
+	}
+
 }
