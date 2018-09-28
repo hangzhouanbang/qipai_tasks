@@ -138,8 +138,11 @@ public class TaskController {
 	 * @param params
 	 */
 	@RequestMapping("/updatetasks")
-	public void updateTasks(@RequestParam Map<String, Object> params) {
+	public CommonVO updateTasks(@RequestParam Map<String, Object> params) {
+		CommonVO vo = new CommonVO();
 		taskService.updateTasks(params);
+		vo.setSuccess(true);
+		return vo;
 	}
 
 	/**
