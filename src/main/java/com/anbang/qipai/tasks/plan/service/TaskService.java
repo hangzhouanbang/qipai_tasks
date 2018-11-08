@@ -135,35 +135,25 @@ public class TaskService {
 	private void addMemberTasks(String memberId) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);
 		if (member != null) {
-			long releaseTime = member.getReleaseTime();
-			long amount = taskDocumentHistoryDao.getAmountByReleaseTime(releaseTime);
-			int size = 300;
-			long pageNum = amount % size > 0 ? amount / size + 1 : amount / size;
-			for (int page = 1; page <= pageNum; page++) {
-				List<TaskDocumentHistory> taskList = taskDocumentHistoryDao.findTaskByReleaseTime(page, size,
-						releaseTime);
-				for (TaskDocumentHistory taskHistory : taskList) {
-					if (hasCriterion(member, taskHistory)) {
-						Task task = new Task();
-						task.setTaskId(taskHistory.getId());
-						task.setMemberId(member.getId());
-						task.setName(taskHistory.getName());
-						task.setDesc(taskHistory.getDesc());
-						task.setType(taskHistory.getType());
-						task.setRewardGold(taskHistory.getRewardGold());
-						task.setRewardScore(taskHistory.getRewardScore());
-						task.setRewardVip(taskHistory.getRewardVip());
-						task.setTaskState(TaskState.DOINGTASK);
-						task.setTargetNum(taskHistory.getTargetNum());
-						task.setFinishNum(0);
-						task.setTarget(TargetType.getITargetByTaskHistory(taskHistory));
-						taskDao.addTask(task);
-					}
-					member.setReleaseTime(taskHistory.getReleaseTime());
+			List<TaskDocumentHistory> taskList = taskDocumentHistoryDao.findTaskByState(TaskDocumentHistoryState.START);
+			for (TaskDocumentHistory taskHistory : taskList) {
+				if (hasCriterion(member, taskHistory)) {
+					Task task = new Task();
+					task.setTaskId(taskHistory.getId());
+					task.setMemberId(member.getId());
+					task.setName(taskHistory.getName());
+					task.setDesc(taskHistory.getDesc());
+					task.setType(taskHistory.getType());
+					task.setRewardGold(taskHistory.getRewardGold());
+					task.setRewardScore(taskHistory.getRewardScore());
+					task.setRewardVip(taskHistory.getRewardVip());
+					task.setTaskState(TaskState.DOINGTASK);
+					task.setTargetNum(taskHistory.getTargetNum());
+					task.setFinishNum(0);
+					task.setTarget(TargetType.getITargetByTaskHistory(taskHistory));
+					taskDao.addTask(task);
 				}
 			}
-			// 更新任务游标
-			memberDboDao.updateReleaseTime(member.getId(), member.getReleaseTime());
 		}
 	}
 
@@ -184,12 +174,11 @@ public class TaskService {
 	 * 判断是否满足接任务的条件
 	 */
 	private boolean hasCriterion(MemberDbo member, TaskDocumentHistory task) {
-		if ("true".equals(task.getVip()) || "false".equals(task.getVip())) {
-			if (task.getVip().equals(String.valueOf(member.isVip()))) {
+		if (task.getVip().equals(String.valueOf(member.isVip())) || task.getVip().equals("null")) {
+			if (taskDao.findTaskByMemberIdAndTaskId(member.getId(), task.getId()) == null) {
 				return true;
 			}
-			return false;
 		}
-		return true;
+		return false;
 	}
 }

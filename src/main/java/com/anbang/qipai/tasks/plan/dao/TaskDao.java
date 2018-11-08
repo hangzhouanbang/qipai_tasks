@@ -18,6 +18,8 @@ public interface TaskDao {
 
 	Task findTaskById(String taskId);
 
+	Task findTaskByMemberIdAndTaskId(String memberId, String taskId);
+
 	boolean updateTask(Task task);
 
 	boolean deleteTaskById(String taskId);

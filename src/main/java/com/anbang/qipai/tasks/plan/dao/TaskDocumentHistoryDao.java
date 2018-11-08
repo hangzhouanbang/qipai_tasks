@@ -6,9 +6,9 @@ import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 
 public interface TaskDocumentHistoryDao {
 
-	long getAmountByReleaseTime(long releaseTime);
+	long getAmountByState(String state);
 
-	List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime);
+	List<TaskDocumentHistory> findTaskByState(String state);
 
 	TaskDocumentHistory findTaskById(String taskId);
 

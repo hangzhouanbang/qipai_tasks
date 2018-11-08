@@ -74,4 +74,11 @@ public class MongodbTaskDao implements TaskDao {
 		return result.getN() > 0;
 	}
 
+	@Override
+	public Task findTaskByMemberIdAndTaskId(String memberId, String taskId) {
+		Query query = new Query(Criteria.where("memberId").is(memberId));
+		query.addCriteria(Criteria.where("taskId").is(taskId));
+		return mongoTemplate.findOne(query, Task.class);
+	}
+
 }

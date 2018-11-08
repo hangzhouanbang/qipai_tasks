@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import com.anbang.qipai.tasks.config.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
 
@@ -33,25 +32,23 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public long getAmountByReleaseTime(long releaseTime) {
-		Query query = new Query(Criteria.where("releaseTime").gt(releaseTime));
-		query.addCriteria(Criteria.where("state").is(TaskDocumentHistoryState.START));
+	public TaskDocumentHistory findTaskById(String taskId) {
+		Query query = new Query(Criteria.where("id").is(taskId));
+		return mongoTemplate.findOne(query, TaskDocumentHistory.class);
+	}
+
+	@Override
+	public long getAmountByState(String state) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("state").is(state));
 		return mongoTemplate.count(query, TaskDocumentHistory.class);
 	}
 
 	@Override
-	public List<TaskDocumentHistory> findTaskByReleaseTime(int page, int size, long releaseTime) {
-		Query query = new Query(Criteria.where("releaseTime").gt(releaseTime));
-		query.addCriteria(Criteria.where("state").is(TaskDocumentHistoryState.START));
-		query.skip((page - 1) * size);
-		query.limit(size);
+	public List<TaskDocumentHistory> findTaskByState(String state) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("state").is(state));
 		return mongoTemplate.find(query, TaskDocumentHistory.class);
-	}
-
-	@Override
-	public TaskDocumentHistory findTaskById(String taskId) {
-		Query query = new Query(Criteria.where("id").is(taskId));
-		return mongoTemplate.findOne(query, TaskDocumentHistory.class);
 	}
 
 }
