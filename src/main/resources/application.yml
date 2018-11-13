@@ -1,13 +1,16 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/qipai_tasks
+      #uri: mongodb://localhost:27017/qipai_tasks
+
   cloud:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
-          zk-nodes: localhost:2181
+          #brokers: localhost:9092
+          #zk-nodes: localhost:2181
+          brokers: 172.16.21.51:9092
+          zk-nodes: 172.16.21.51:2181
           minPartitionCount: 1
           autoCreateTopics: true
           autoAddPartitions: false
@@ -78,4 +81,9 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/
+      defaultZone: http://172.16.21.51:8761/eureka/
+      #defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: http://172.16.21.51:98
+    #instance-id: http://localhost:98
