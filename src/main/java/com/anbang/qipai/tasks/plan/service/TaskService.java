@@ -50,6 +50,8 @@ public class TaskService {
 			TaskVO taskVo = new TaskVO();
 			taskVo.setType(type);
 			List<Task> taskList = taskDao.findTaskByMemberIdAndType(memberId, type);
+			// 过滤任务
+			filterMemberTasks(memberId, taskList);
 			taskVo.setTaskList(taskList);
 			taskVos.add(taskVo);
 		}
@@ -74,15 +76,20 @@ public class TaskService {
 			for (String id : memberIds) {
 				List<Task> taskList = taskDao.findTaskByMemberId(id);
 				for (Task task : taskList) {
-					task.getTarget().updateTask(task, params);
+					if (verifyTasksUpdate(id, task)) {
+						task.getTarget().updateTask(task, params);
+						taskDao.updateTask(task);
+					}
 				}
 			}
 		}
 		if (memberId != null) {
 			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
 			for (Task task : taskList) {
-				task.getTarget().updateTask(task, params);
-				taskDao.updateTask(task);
+				if (verifyTasksUpdate(memberId, task)) {
+					task.getTarget().updateTask(task, params);
+					taskDao.updateTask(task);
+				}
 			}
 		}
 	}
@@ -157,6 +164,9 @@ public class TaskService {
 		}
 	}
 
+	/**
+	 * 删除撤回的任务
+	 */
 	private void removeMemberTasks(String memberId) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);
 		if (member != null) {
@@ -168,6 +178,39 @@ public class TaskService {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 玩家状态改变需要过滤任务
+	 */
+	private void filterMemberTasks(String memberId, List<Task> taskList) {
+		List<Task> removeTaskList = new ArrayList<>();
+		MemberDbo member = memberDboDao.findMemberById(memberId);
+		if (member != null) {
+			for (Task task : taskList) {
+				TaskDocumentHistory taskHistory = taskDocumentHistoryDao.findTaskById(task.getTaskId());
+				if (taskHistory.getVip().equals("true") && !member.isVip()) {
+					removeTaskList.add(task);
+				}
+			}
+			for (Task task : removeTaskList) {
+				taskList.remove(task);
+			}
+		}
+	}
+
+	/**
+	 * 验证任务是否可以更新
+	 */
+	private boolean verifyTasksUpdate(String memberId, Task task) {
+		MemberDbo member = memberDboDao.findMemberById(memberId);
+		if (member != null) {
+			TaskDocumentHistory taskHistory = taskDocumentHistoryDao.findTaskById(task.getTaskId());
+			if (taskHistory.getVip().equals("true") && !member.isVip()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
