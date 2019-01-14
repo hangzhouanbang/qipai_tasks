@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskType;
 import com.anbang.qipai.tasks.plan.dao.TaskDao;
-import com.mongodb.WriteResult;
 
 @Component
 public class MongodbTaskDao implements TaskDao {
@@ -25,8 +25,8 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public List<Task> findTasksByType(int page, int size, String type) {
-		Query query = new Query(Criteria.where("type").is(type));
+	public List<Task> findTasksByType(int page, int size, TaskType taskType) {
+		Query query = new Query(Criteria.where("taskType").is(taskType));
 		query.skip((page - 1) * size);
 		query.limit(size);
 		return mongoTemplate.find(query, Task.class);
@@ -38,9 +38,9 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public List<Task> findTaskByMemberIdAndType(String memberId, String type) {
+	public List<Task> findTaskByMemberIdAndType(String memberId, String taskName) {
 		Query query = new Query(Criteria.where("memberId").is(memberId));
-		query.addCriteria(Criteria.where("type").is(type));
+		query.addCriteria(Criteria.where("taskName").is(taskName));
 		return mongoTemplate.find(query, Task.class);
 	}
 
@@ -51,27 +51,25 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public boolean updateTask(Task task) {
+	public void updateTask(Task task) {
 		Query query = new Query(Criteria.where("id").is(task.getId()));
 		Update update = new Update();
 		update.set("taskState", task.getTaskState());
 		update.set("finishNum", task.getFinishNum());
 		update.set("target", task.getTarget());
-		WriteResult result = mongoTemplate.updateFirst(query, update, Task.class);
-		return result.getN() > 0;
+		mongoTemplate.updateFirst(query, update, Task.class);
 	}
 
 	@Override
-	public long getAmountByType(String type) {
-		Query query = new Query(Criteria.where("type").is(type));
+	public long getAmountByType(TaskType taskType) {
+		Query query = new Query(Criteria.where("taskType").is(taskType));
 		return mongoTemplate.count(query, Task.class);
 	}
 
 	@Override
-	public boolean deleteTaskById(String taskId) {
+	public void deleteTaskById(String taskId) {
 		Query query = new Query(Criteria.where("id").is(taskId));
-		WriteResult result = mongoTemplate.remove(query, Task.class);
-		return result.getN() > 0;
+		mongoTemplate.remove(query, Task.class);
 	}
 
 	@Override

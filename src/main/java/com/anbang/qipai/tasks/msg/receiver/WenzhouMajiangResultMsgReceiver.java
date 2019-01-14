@@ -1,13 +1,13 @@
 package com.anbang.qipai.tasks.msg.receiver;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
-import com.anbang.qipai.tasks.msg.channel.WenzhouMajiangResultSink;
+import com.anbang.qipai.tasks.msg.channel.sink.WenzhouMajiangResultSink;
 import com.anbang.qipai.tasks.msg.msjobj.CommonMO;
 import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.google.gson.Gson;
@@ -25,13 +25,16 @@ public class WenzhouMajiangResultMsgReceiver {
 		String json = gson.toJson(mo.getData());
 		Map map = gson.fromJson(json, Map.class);
 		if ("wenzhoumajiang ju result".equals(msg)) {
-			Map<String, Object> params = new HashMap<>();
 			String memberId = (String) map.get("dayingjiaId");
 			if (memberId != null) {
-				params.put("memberId", map.get("dayingjiaId"));
-				params.put("finishWinNum", 1);
-				taskService.updateTasks(params);
+				taskService.updateTask(memberId, "赢得游戏", 1);
+				((List) map.get("playerResultList")).forEach((juPlayerResult) -> taskService
+						.updateTask((String) ((Map) juPlayerResult).get("playerId"), "对局任务", 1));
 			}
+		}
+		if ("wenzhoumajiang pan result".equals(msg)) {
+			((List) map.get("playerResultList")).forEach((panPlayerResult) -> taskService
+					.updateTask((String) ((Map) panPlayerResult).get("playerId"), "完成小盘游戏", 1));
 		}
 	}
 }

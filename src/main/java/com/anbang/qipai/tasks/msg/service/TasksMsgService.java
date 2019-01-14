@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.support.MessageBuilder;
 
-import com.anbang.qipai.tasks.msg.channel.TasksSoure;
+import com.anbang.qipai.tasks.msg.channel.source.TasksSoure;
 import com.anbang.qipai.tasks.msg.msjobj.CommonMO;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 

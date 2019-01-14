@@ -3,17 +3,18 @@ package com.anbang.qipai.tasks.plan.bean;
 public class TaskDocumentHistory {
 	private String id;
 	private String taskDocId;
-	private String name;
-	private String desc;
-	private String type;// 任务类型，前台
+	private String name;// 任务名称
+	private String desc;// 任务描述
+	private String type;// 任务类型，前台分类
 	private String taskName;// 任务种类,后台
-	private int rewardGold;// 奖励金币数量
-	private int rewardScore;// 奖励积分数量
-	private int rewardVip;// 奖励会员时间
-	private String vip;
+	private RewardType rewardType;// 奖励类型
+	private double rewardNum;// 奖励数量
+	private boolean vip;// 是否vip专属任务
 	private int targetNum;// 完成次数
-	private String state;
-	private long releaseTime;
+	private long limitTime;// 限时
+	private TaskType taskType;// 任务分类：每日，单次
+	private TaskDocumentHistoryState state;// 状态:发布，停用
+	private long releaseTime;// 发布时间
 	private String promulgator;// 发布者
 
 	public String getId() {
@@ -64,35 +65,27 @@ public class TaskDocumentHistory {
 		this.taskName = taskName;
 	}
 
-	public int getRewardGold() {
-		return rewardGold;
+	public RewardType getRewardType() {
+		return rewardType;
 	}
 
-	public void setRewardGold(int rewardGold) {
-		this.rewardGold = rewardGold;
+	public void setRewardType(RewardType rewardType) {
+		this.rewardType = rewardType;
 	}
 
-	public int getRewardScore() {
-		return rewardScore;
+	public double getRewardNum() {
+		return rewardNum;
 	}
 
-	public void setRewardScore(int rewardScore) {
-		this.rewardScore = rewardScore;
+	public void setRewardNum(double rewardNum) {
+		this.rewardNum = rewardNum;
 	}
 
-	public int getRewardVip() {
-		return rewardVip;
-	}
-
-	public void setRewardVip(int rewardVip) {
-		this.rewardVip = rewardVip;
-	}
-
-	public String getVip() {
+	public boolean isVip() {
 		return vip;
 	}
 
-	public void setVip(String vip) {
+	public void setVip(boolean vip) {
 		this.vip = vip;
 	}
 
@@ -104,11 +97,27 @@ public class TaskDocumentHistory {
 		this.targetNum = targetNum;
 	}
 
-	public String getState() {
+	public long getLimitTime() {
+		return limitTime;
+	}
+
+	public void setLimitTime(long limitTime) {
+		this.limitTime = limitTime;
+	}
+
+	public TaskType getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(TaskType taskType) {
+		this.taskType = taskType;
+	}
+
+	public TaskDocumentHistoryState getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(TaskDocumentHistoryState state) {
 		this.state = state;
 	}
 

@@ -1,12 +1,30 @@
 package com.anbang.qipai.tasks.plan.bean;
 
-import java.util.Map;
-
+/**
+ * 所有任务均实现此接口
+ * 
+ * @author lsc
+ *
+ */
 public interface ITarget {
 
-	void init(TaskDocumentHistory task);
+	/**
+	 * 初始化
+	 */
+	void init(Task task, MemberDbo member);
 
-	void reset(Task task);
+	/**
+	 * 重置
+	 */
+	void reset(Task task, MemberDbo member);
 
-	void updateTask(Task task, Map<String, Object> params);
+	/**
+	 * 更新任务
+	 */
+	void updateTask(Task task, MemberDbo member, int finishNum);
+
+	/**
+	 * 完成任务
+	 */
+	void finishTask(Task task);
 }

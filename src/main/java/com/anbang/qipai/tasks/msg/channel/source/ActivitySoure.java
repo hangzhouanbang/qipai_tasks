@@ -1,10 +1,9 @@
-package com.anbang.qipai.tasks.msg.channel;
+package com.anbang.qipai.tasks.msg.channel.source;
 
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 
-public interface TasksSoure {
-
+public interface ActivitySoure {
 	@Output
-	MessageChannel tasks();
+	MessageChannel activity();
 }

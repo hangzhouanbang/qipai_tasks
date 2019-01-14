@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
-import com.anbang.qipai.tasks.msg.channel.MembersSink;
+import com.anbang.qipai.tasks.msg.channel.sink.MembersSink;
 import com.anbang.qipai.tasks.msg.msjobj.CommonMO;
 import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.service.MemberService;
+import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.google.gson.Gson;
 
 @EnableBinding(MembersSink.class)
@@ -15,6 +16,9 @@ public class MembersMsgReceiver {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private TaskService taskService;
 
 	private Gson gson = new Gson();
 
@@ -28,6 +32,11 @@ public class MembersMsgReceiver {
 		}
 		if ("memberOrder delive".equals(msg) || "recharge vip".equals(msg) || "update member vip".equals(msg)) {
 			memberService.updateVip(member.getId(), member.isVip());
+			taskService.updateTask(member.getId(), "分享朋友圈", 1);
+		}
+		if ("update member info".equals(msg)) {
+			memberService.updateBaseInfo(member.getId(), member.getNickname(), member.getHeadimgurl());
+			taskService.updateTask(member.getId(), "成为会员", 1);
 		}
 	}
 

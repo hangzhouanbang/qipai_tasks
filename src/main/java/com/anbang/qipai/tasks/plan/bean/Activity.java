@@ -6,7 +6,7 @@ public class Activity {
 	private String theme;
 	private String content;
 	private String url;
-	private String state;
+	private ActivityState state;
 	private String promulgator;// 发布者
 
 	public String getId() {
@@ -41,11 +41,11 @@ public class Activity {
 		this.url = url;
 	}
 
-	public String getState() {
+	public ActivityState getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(ActivityState state) {
 		this.state = state;
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.dao.TaskDocumentHistoryDao;
 
 @Component
@@ -24,7 +25,7 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public void updateState(String taskId, String state) {
+	public void updateState(String taskId, TaskDocumentHistoryState state) {
 		Query query = new Query(Criteria.where("id").is(taskId));
 		Update update = new Update();
 		update.set("state", state);
@@ -38,14 +39,14 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public long getAmountByState(String state) {
+	public long getAmountByState(TaskDocumentHistoryState state) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("state").is(state));
 		return mongoTemplate.count(query, TaskDocumentHistory.class);
 	}
 
 	@Override
-	public List<TaskDocumentHistory> findTaskByState(String state) {
+	public List<TaskDocumentHistory> findTaskByState(TaskDocumentHistoryState state) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("state").is(state));
 		return mongoTemplate.find(query, TaskDocumentHistory.class);

@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import com.anbang.qipai.tasks.config.ActivityState;
 import com.anbang.qipai.tasks.plan.bean.Activity;
+import com.anbang.qipai.tasks.plan.bean.ActivityState;
 import com.anbang.qipai.tasks.plan.dao.ActivityDao;
 
 @Component
@@ -25,7 +25,7 @@ public class MongodbActivityDao implements ActivityDao {
 	}
 
 	@Override
-	public void updateActivityStateById(String activityId, String state) {
+	public void updateActivityStateById(String activityId, ActivityState state) {
 		Query query = new Query(Criteria.where("id").is(activityId));
 		Update update = new Update();
 		update.set("state", state);

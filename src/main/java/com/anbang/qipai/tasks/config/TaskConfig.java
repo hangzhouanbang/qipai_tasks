@@ -13,7 +13,7 @@ public class TaskConfig {
 		templates = new HashMap<String, TaskTemplate>();
 		TaskTemplate task = new TaskTemplate();
 		task.setTaskType(0);
-		task.setTaskName("邀请玩家");
+		task.setTaskName("邀请新玩家");
 		templates.put(task.getTaskName(), task);
 		TaskTemplate task1 = new TaskTemplate();
 		task1.setTaskType(1);
@@ -27,9 +27,30 @@ public class TaskConfig {
 		task3.setTaskType(3);
 		task3.setTaskName("分享朋友圈");
 		templates.put(task3.getTaskName(), task3);
+		TaskTemplate task4 = new TaskTemplate();
+		task4.setTaskType(4);
+		task4.setTaskName("成为会员");
+		templates.put(task4.getTaskName(), task4);
+		TaskTemplate task5 = new TaskTemplate();
+		task5.setTaskType(5);
+		task5.setTaskName("红包点福利");
+		templates.put(task5.getTaskName(), task5);
+		TaskTemplate task6 = new TaskTemplate();
+		task6.setTaskType(6);
+		task6.setTaskName("完成小盘游戏");
+		templates.put(task6.getTaskName(), task6);
+		TaskTemplate task7 = new TaskTemplate();
+		task7.setTaskType(7);
+		task7.setTaskName("俏皮话");
+		templates.put(task7.getTaskName(), task7);
+		TaskTemplate task8 = new TaskTemplate();
+		task8.setTaskType(8);
+		task8.setTaskName("对局任务");
+		templates.put(task8.getTaskName(), task8);
 	}
 	static {
 		typeList = new ArrayList<String>();
 		typeList.add("每日任务");
+		typeList.add("邀请豪礼");
 	}
 }

@@ -1,18 +1,28 @@
+
 package com.anbang.qipai.tasks.plan.bean;
 
+/**
+ * 任务包装类
+ * 
+ * @author lsc
+ *
+ */
 public class Task {
 	private String id;
 	private String taskId;// 任务历史id
 	private String memberId;// 会员id
 	private String name;// 任务主题
 	private String desc;// 任务描述
-	private String type;// 任务类型
-	private int rewardGold;// 奖励金币数量
-	private int rewardScore;// 奖励积分数量
-	private int rewardVip;// 奖励会员时间
-	private String taskState;// 任务状态
+	private String type;// 任务类型，前台分类
+	private String taskName;// 任务种类,后台
+	private RewardType rewardType;// 奖励类型
+	private double rewardNum;// 奖励数量
+	private TaskMenu menu;// 任务按钮
+	private TaskState taskState;// 任务状态
 	private int targetNum;// 总进度
 	private int finishNum;// 完成进度
+	private long deadTime;// 终止时间
+	private TaskType taskType;// 任务分类：每日，单次
 	private ITarget target;
 
 	public String getId() {
@@ -63,35 +73,43 @@ public class Task {
 		this.type = type;
 	}
 
-	public int getRewardGold() {
-		return rewardGold;
+	public String getTaskName() {
+		return taskName;
 	}
 
-	public void setRewardGold(int rewardGold) {
-		this.rewardGold = rewardGold;
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
-	public int getRewardScore() {
-		return rewardScore;
+	public RewardType getRewardType() {
+		return rewardType;
 	}
 
-	public void setRewardScore(int rewardScore) {
-		this.rewardScore = rewardScore;
+	public void setRewardType(RewardType rewardType) {
+		this.rewardType = rewardType;
 	}
 
-	public int getRewardVip() {
-		return rewardVip;
+	public double getRewardNum() {
+		return rewardNum;
 	}
 
-	public void setRewardVip(int rewardVip) {
-		this.rewardVip = rewardVip;
+	public void setRewardNum(double rewardNum) {
+		this.rewardNum = rewardNum;
 	}
 
-	public String getTaskState() {
+	public TaskMenu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(TaskMenu menu) {
+		this.menu = menu;
+	}
+
+	public TaskState getTaskState() {
 		return taskState;
 	}
 
-	public void setTaskState(String taskState) {
+	public void setTaskState(TaskState taskState) {
 		this.taskState = taskState;
 	}
 
@@ -109,6 +127,22 @@ public class Task {
 
 	public void setFinishNum(int finishNum) {
 		this.finishNum = finishNum;
+	}
+
+	public long getDeadTime() {
+		return deadTime;
+	}
+
+	public void setDeadTime(long deadTime) {
+		this.deadTime = deadTime;
+	}
+
+	public TaskType getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(TaskType taskType) {
+		this.taskType = taskType;
 	}
 
 	public ITarget getTarget() {

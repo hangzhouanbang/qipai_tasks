@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      #uri: mongodb://localhost:27017/qipai_tasks
+      uri: mongodb://localhost:27017/qipai_tasks
 
   cloud:
     stream:
@@ -9,8 +9,6 @@ spring:
         binder:
           brokers: localhost:9092
           zk-nodes: localhost:2181
-          #brokers: 172.16.21.51:9092
-          #zk-nodes: 172.16.21.51:2181
           minPartitionCount: 1
           autoCreateTopics: true
           autoAddPartitions: false
@@ -35,9 +33,83 @@ spring:
                   ms: 5
                 batch:
                   size: 16384
+          finishTasks:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberGoldsAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberScoresAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberVIPAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberHongbaodianAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberHongbaoRMBAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
       bindings:
         members:
           destination: members
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        memberLoginRecord:
+          destination: memberLoginRecord
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        memberInvitationRecord:
+          destination: memberInvitationRecord
           group: qipai-tasks
           consumer:
             concurrency: 1
@@ -78,6 +150,13 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+        wisecrack:
+          destination: wisecrack
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         activity:
           destination: activity
           contentType: application/json
@@ -85,6 +164,36 @@ spring:
             partitionCount: 1
         tasks:
           destination: tasks
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        finishTasks:
+          destination: finishTasks
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        memberGoldsAccounting:
+          destination: memberGoldsAccounting
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        memberScoresAccounting:
+          destination: memberScoresAccounting
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        memberVIPAccounting:
+          destination: memberVIPAccounting
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        memberHongbaodianAccounting:
+          destination: memberHongbaodianAccounting
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        memberHongbaoRMBAccounting:
+          destination: memberHongbaoRMBAccounting
           contentType: application/json
           producer:
             partitionCount: 1

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.dao.MemberDboDao;
-import com.mongodb.WriteResult;
 
 @Component
 public class MongodbMemberDboDao implements MemberDboDao {
@@ -29,39 +28,36 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	}
 
 	@Override
-	public boolean updateVip(String memberId, boolean vip) {
+	public void updateVip(String memberId, boolean vip) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
 		update.set("vip", vip);
-		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
-		return result.getN() > 0;
+		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 
 	@Override
-	public boolean updateLastLoginTime(String memberId, long lastLoginTime) {
+	public void updateLastLoginTime(String memberId, long lastLoginTime) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
 		update.set("lastLoginTime", lastLoginTime);
-		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
-		return result.getN() > 0;
+		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 
 	@Override
-	public boolean updateOnlineTime(String memberId, long onLineTime) {
+	public void updateOnlineTime(String memberId, long onLineTime) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
 		update.set("onLineTime", onLineTime);
-		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
-		return result.getN() > 0;
+		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 
 	@Override
-	public boolean updateReleaseTime(String memberId, long releaseTime) {
+	public void updateBaseInfo(String memberId, String nickname, String headimgurl) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
-		update.set("releaseTime", releaseTime);
-		WriteResult result = mongoTemplate.updateFirst(query, update, MemberDbo.class);
-		return result.getN() > 0;
+		update.set("nickname", nickname);
+		update.set("headimgurl", headimgurl);
+		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 
 }

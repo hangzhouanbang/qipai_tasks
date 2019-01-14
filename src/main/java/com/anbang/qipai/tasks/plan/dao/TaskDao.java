@@ -3,24 +3,25 @@ package com.anbang.qipai.tasks.plan.dao;
 import java.util.List;
 
 import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskType;
 
 public interface TaskDao {
 
 	List<Task> findTaskByMemberId(String memberId);
 
-	List<Task> findTasksByType(int page, int size, String type);
+	List<Task> findTasksByType(int page, int size, TaskType taskType);
 
-	long getAmountByType(String type);
+	long getAmountByType(TaskType taskType);
 
 	void addTask(Task task);
 
-	List<Task> findTaskByMemberIdAndType(String memberId, String type);
+	List<Task> findTaskByMemberIdAndType(String memberId, String taskName);
 
 	Task findTaskById(String taskId);
 
 	Task findTaskByMemberIdAndTaskId(String memberId, String taskId);
 
-	boolean updateTask(Task task);
+	void updateTask(Task task);
 
-	boolean deleteTaskById(String taskId);
+	void deleteTaskById(String taskId);
 }

@@ -12,20 +12,27 @@ public class MemberService {
 	@Autowired
 	private MemberDboDao memberDboDao;
 
+	public MemberDbo findMemberById(String memberId) {
+		return memberDboDao.findMemberById(memberId);
+	}
+
 	public void addMember(MemberDbo memberDbo) {
-		memberDbo.setReleaseTime(0L);
 		memberDboDao.addMemberDbo(memberDbo);
 	}
 
-	public boolean updateVip(String memberId, boolean vip) {
-		return memberDboDao.updateVip(memberId, vip);
+	public void updateVip(String memberId, boolean vip) {
+		memberDboDao.updateVip(memberId, vip);
 	}
 
-	public boolean updateLastLoginTime(String memberId, long lastLoginTime) {
-		return memberDboDao.updateLastLoginTime(memberId, lastLoginTime);
+	public void updateLastLoginTime(String memberId, long lastLoginTime) {
+		memberDboDao.updateLastLoginTime(memberId, lastLoginTime);
 	}
 
-	public boolean updateOnlineTime(String memberId, long onLineTime) {
-		return memberDboDao.updateOnlineTime(memberId, onLineTime);
+	public void updateOnlineTime(String memberId, long onLineTime) {
+		memberDboDao.updateOnlineTime(memberId, onLineTime);
+	}
+
+	public void updateBaseInfo(String memberId, String nickname, String headimgurl) {
+		memberDboDao.updateBaseInfo(memberId, nickname, headimgurl);
 	}
 }

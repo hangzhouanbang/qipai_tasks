@@ -4,23 +4,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anbang.qipai.tasks.config.TaskConfig;
-import com.anbang.qipai.tasks.config.TaskDocumentHistoryState;
+import com.anbang.qipai.tasks.msg.service.FinishTasksMsgService;
+import com.anbang.qipai.tasks.msg.service.MemberGoldsMsgService;
+import com.anbang.qipai.tasks.msg.service.MemberHongbaoRMBMsgService;
+import com.anbang.qipai.tasks.msg.service.MemberHongbaodianMsgService;
+import com.anbang.qipai.tasks.msg.service.MemberScoresMsgService;
+import com.anbang.qipai.tasks.msg.service.MemberVIPMsgService;
 import com.anbang.qipai.tasks.msg.service.TasksMsgService;
-import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.FinishedTask;
+import com.anbang.qipai.tasks.plan.bean.RewardType;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
+import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
+import com.anbang.qipai.tasks.plan.bean.TaskType;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
+import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
-import com.anbang.qipai.tasks.remote.service.QipaiMembersRemoteService;
-import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
+import com.anbang.qipai.tasks.util.IPUtil;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 import com.anbang.qipai.tasks.web.vo.TaskVO;
 
@@ -44,15 +53,31 @@ public class TaskController {
 	private TaskService taskService;
 
 	@Autowired
+	private MemberInvitationRecordService memberInvitationRecordService;
+
+	@Autowired
 	private TasksMsgService tasksMsgService;
 
 	@Autowired
-	private QipaiMembersRemoteService qipaiMembersRemoteService;
+	private FinishTasksMsgService finishTasksMsgService;
+
+	@Autowired
+	private MemberGoldsMsgService memberGoldsMsgService;
+
+	@Autowired
+	private MemberScoresMsgService memberScoresMsgService;
+
+	@Autowired
+	private MemberVIPMsgService memberVIPMsgService;
+
+	@Autowired
+	private MemberHongbaodianMsgService memberHongbaodianMsgService;
+
+	@Autowired
+	private MemberHongbaoRMBMsgService memberHongbaoRMBMsgService;
 
 	/**
 	 * 查询任务类型、种类
-	 * 
-	 * @return
 	 */
 	@RequestMapping("/querytaskconfig")
 	public CommonVO queryTaskConfig() {
@@ -68,8 +93,6 @@ public class TaskController {
 
 	/**
 	 * 查询任务类型
-	 * 
-	 * @return
 	 */
 	@RequestMapping("/querytasktype")
 	public CommonVO queryTaskType() {
@@ -82,9 +105,6 @@ public class TaskController {
 
 	/**
 	 * 发布任务
-	 * 
-	 * @param task
-	 * @return
 	 */
 	@RequestMapping("/release")
 	public CommonVO releaseTask(@RequestBody TaskDocumentHistory task) {
@@ -98,9 +118,6 @@ public class TaskController {
 
 	/**
 	 * 撤回任务
-	 * 
-	 * @param taskIds
-	 * @return
 	 */
 	@RequestMapping("/withdraw")
 	public CommonVO withdrawTask(String taskId) {
@@ -112,9 +129,6 @@ public class TaskController {
 
 	/**
 	 * 查询玩家个人任务
-	 * 
-	 * @param token
-	 * @return
 	 */
 	@RequestMapping("/querymembertasks")
 	public CommonVO queryMemberTasks(String token) {
@@ -133,49 +147,122 @@ public class TaskController {
 	}
 
 	/**
-	 * 更新任务进度
-	 * 
-	 * @param params
+	 * 领取“赢得游戏”任务奖励
 	 */
-	@RequestMapping("/updatetasks")
-	public CommonVO updateTasks(@RequestParam Map<String, Object> params) {
+	public CommonVO getWinGamesTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
-		taskService.updateTasks(params);
-		vo.setSuccess(true);
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
 		return vo;
 	}
 
 	/**
-	 * 获取任务奖励
-	 * 
-	 * @param token
-	 * @param taskId
-	 * @return
+	 * 领取“邀请新玩家”任务奖励
 	 */
-	@RequestMapping("/getrewards")
-	public CommonVO getRewards(String token, String taskId) {
+	public CommonVO getInviteNewMemberTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		int invitaionNum = memberInvitationRecordService.countInvitationByMemberId(finishTask.getMemberId());
+		if (invitaionNum >= finishTask.getTask().getTargetNum()) {
+			// 只有满足邀请条件才发放奖励
+			getReward(finishTask);
+		}
+		return vo;
+	}
+
+	/**
+	 * 更新”分享好友“任务
+	 */
+	public CommonVO updateShareFirendsTask(String token, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
-		if (memberId == null) {
-			vo.setSuccess(false);
-			vo.setMsg("invalid token");
-			return vo;
-		}
-		Task task = taskService.getRewards(taskId);
-		if (task == null) {
-			vo.setSuccess(false);
-			vo.setMsg("not found task");
-			return vo;
-		}
-		CommonRemoteVO commonRemoteVo = qipaiMembersRemoteService.sendReward(task.getRewardGold(),
-				task.getRewardScore(), task.getRewardVip(), memberId);
-		if (commonRemoteVo.isSuccess()) {
-			taskService.finishTask(taskId);
-		}
-		vo.setSuccess(commonRemoteVo.isSuccess());
-		vo.setMsg(commonRemoteVo.getMsg());
-		vo.setData(task);
+		taskService.updateTask(memberId, "分享好友", finishNum);
 		return vo;
+	}
+
+	/**
+	 * 领取“分享好友”任务奖励
+	 */
+	public CommonVO getShareFirendsTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 更新“分享朋友圈“任务
+	 */
+	public CommonVO updateShareFirendsCircleTask(String token, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		taskService.updateTask(memberId, "分享朋友圈", finishNum);
+		return vo;
+	}
+
+	/**
+	 * 领取“分享朋友圈”任务奖励
+	 */
+	public CommonVO getShareFirendsCircleTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领取“成为会员”任务奖励
+	 */
+	public CommonVO getBecomeVIPTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领奖
+	 */
+	private void getReward(FinishedTask task) {
+		RewardType rewardType = task.getRewardType();// 奖励类型
+		double rewardNum = task.getRewardNum();// 奖励数量
+		if (rewardType.equals(RewardType.YUSHI)) {
+			memberGoldsMsgService.giveGoldToMember(task.getMemberId(), (int) rewardNum, "task_reward");
+		} else if (rewardType.equals(RewardType.LIQUAN)) {
+			memberScoresMsgService.giveScoreToMember(task.getMemberId(), (int) rewardNum, "task_reward");
+		} else if (rewardType.equals(RewardType.VIPTIME)) {
+			memberVIPMsgService.rewardVip(task.getMemberId(), (long) rewardNum, "task_reward");
+		} else if (rewardType.equals(RewardType.HONGBAODIAN)) {
+			memberHongbaodianMsgService.giveHongbaodianToMember(task.getMemberId(), (int) rewardNum, "task_reward");
+		} else if (rewardType.equals(RewardType.HONGBAORMB)) {
+			memberHongbaoRMBMsgService.giveHongbaoRMBToMember(task.getMemberId(), rewardNum, "task_reward");
+		}
 	}
 
 	/**
@@ -184,6 +271,6 @@ public class TaskController {
 	 */
 	@Scheduled(cron = "0 0 0 * * ?") // 每天凌晨
 	public void resetEveryDayTask() {
-		taskService.reset("每日任务");
+		taskService.reset(TaskType.EVERYDAY);
 	}
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.anbang.qipai.tasks.config.ActivityState;
 import com.anbang.qipai.tasks.plan.bean.Activity;
+import com.anbang.qipai.tasks.plan.bean.ActivityState;
 import com.anbang.qipai.tasks.plan.dao.ActivityDao;
 
 @Service
