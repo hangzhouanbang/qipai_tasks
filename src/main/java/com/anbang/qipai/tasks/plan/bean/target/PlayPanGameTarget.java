@@ -27,6 +27,7 @@ public class PlayPanGameTarget implements ITarget {
 		menu.setAction(TaskAction.CREATEROOM);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/pangame_reward");
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class HongbaodianRewardTarget implements ITarget {
 		menu.setAction(TaskAction.REWARD);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.COMPLETETASK);
+		task.setRewardUrl("/task/hongbaodian_reward");
 	}
 
 	@Override

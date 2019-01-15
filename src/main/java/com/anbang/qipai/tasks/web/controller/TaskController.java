@@ -149,6 +149,7 @@ public class TaskController {
 	/**
 	 * 领取“赢得游戏”任务奖励
 	 */
+	@RequestMapping("/wingame_reward")
 	public CommonVO getWinGamesTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String reqIP = IPUtil.getRealIp(request);
@@ -164,6 +165,7 @@ public class TaskController {
 	/**
 	 * 领取“邀请新玩家”任务奖励
 	 */
+	@RequestMapping("/invite_newmember_reward")
 	public CommonVO getInviteNewMemberTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String reqIP = IPUtil.getRealIp(request);
@@ -183,6 +185,7 @@ public class TaskController {
 	/**
 	 * 更新”分享好友“任务
 	 */
+	@RequestMapping("/update_firends_reward")
 	public CommonVO updateShareFirendsTask(String token, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
@@ -193,6 +196,7 @@ public class TaskController {
 	/**
 	 * 领取“分享好友”任务奖励
 	 */
+	@RequestMapping("/share_firends_reward")
 	public CommonVO getShareFirendsTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String reqIP = IPUtil.getRealIp(request);
@@ -208,6 +212,7 @@ public class TaskController {
 	/**
 	 * 更新“分享朋友圈“任务
 	 */
+	@RequestMapping("/update_firends_circle_reward")
 	public CommonVO updateShareFirendsCircleTask(String token, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
@@ -218,6 +223,7 @@ public class TaskController {
 	/**
 	 * 领取“分享朋友圈”任务奖励
 	 */
+	@RequestMapping("/share_firends_circle_reward")
 	public CommonVO getShareFirendsCircleTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String reqIP = IPUtil.getRealIp(request);
@@ -233,7 +239,76 @@ public class TaskController {
 	/**
 	 * 领取“成为会员”任务奖励
 	 */
+	@RequestMapping("/vip_reward")
 	public CommonVO getBecomeVIPTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领取“红包点福利”任务奖励
+	 */
+	@RequestMapping("/hongbaodian_reward")
+	public CommonVO getHongbaodianRewardTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领取“完成小盘游戏”任务奖励
+	 */
+	@RequestMapping("/pangame_reward")
+	public CommonVO getPlayPanGameTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领取“俏皮话”任务奖励
+	 */
+	@RequestMapping("/qiaopihua_reward")
+	public CommonVO getQiaopihuaTaskReward(HttpServletRequest request, String taskId, int finishNum) {
+		CommonVO vo = new CommonVO();
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			return vo;
+		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		return vo;
+	}
+
+	/**
+	 * 领取“对局任务”任务奖励
+	 */
+	@RequestMapping("/jugame_reward")
+	public CommonVO getFinishJuGameTaskReward(HttpServletRequest request, String taskId, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);

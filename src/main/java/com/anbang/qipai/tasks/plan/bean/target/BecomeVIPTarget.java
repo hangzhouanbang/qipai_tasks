@@ -25,6 +25,7 @@ public class BecomeVIPTarget implements ITarget {
 		menu.setAction(TaskAction.VIPSHOP);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/vip_reward");
 	}
 
 	@Override

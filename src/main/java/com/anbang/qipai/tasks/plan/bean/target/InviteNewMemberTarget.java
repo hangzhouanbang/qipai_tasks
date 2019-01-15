@@ -27,6 +27,7 @@ public class InviteNewMemberTarget implements ITarget {
 		menu.setAction(TaskAction.SHAREGAME);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/invite_newmember_reward");
 	}
 
 	@Override

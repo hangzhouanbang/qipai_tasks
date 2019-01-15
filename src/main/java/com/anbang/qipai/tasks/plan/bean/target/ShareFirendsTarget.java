@@ -28,6 +28,7 @@ public class ShareFirendsTarget implements ITarget {
 		menu.setAction(TaskAction.SHAREGAME);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/share_firends_reward");
 	}
 
 	@Override

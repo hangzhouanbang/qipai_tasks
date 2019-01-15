@@ -27,6 +27,7 @@ public class WinGamesTarget implements ITarget {
 		menu.setAction(TaskAction.CREATEROOM);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/wingame_reward");
 	}
 
 	@Override

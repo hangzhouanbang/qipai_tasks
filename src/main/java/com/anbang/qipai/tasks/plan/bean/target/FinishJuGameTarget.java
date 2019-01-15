@@ -27,6 +27,7 @@ public class FinishJuGameTarget implements ITarget {
 		menu.setAction(TaskAction.CREATEROOM);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/jugame_reward");
 	}
 
 	@Override

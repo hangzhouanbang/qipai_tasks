@@ -21,6 +21,7 @@ public class Task {
 	private TaskState taskState;// 任务状态
 	private int targetNum;// 总进度
 	private int finishNum;// 完成进度
+	private String rewardUrl;// 领奖地址
 	private long deadTime;// 终止时间
 	private TaskType taskType;// 任务分类：每日，单次
 	private ITarget target;
@@ -95,6 +96,14 @@ public class Task {
 
 	public void setRewardNum(double rewardNum) {
 		this.rewardNum = rewardNum;
+	}
+
+	public String getRewardUrl() {
+		return rewardUrl;
+	}
+
+	public void setRewardUrl(String rewardUrl) {
+		this.rewardUrl = rewardUrl;
 	}
 
 	public TaskMenu getMenu() {

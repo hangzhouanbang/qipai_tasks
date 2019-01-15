@@ -27,6 +27,7 @@ public class QiaopihuaTarget implements ITarget {
 		menu.setAction(TaskAction.CREATEROOM);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
+		task.setRewardUrl("/task/qiaopihua_reward");
 	}
 
 	@Override
