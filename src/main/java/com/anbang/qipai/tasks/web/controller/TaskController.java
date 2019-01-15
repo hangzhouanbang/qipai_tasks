@@ -189,6 +189,11 @@ public class TaskController {
 	public CommonVO updateShareFirendsTask(String token, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid token");
+			return vo;
+		}
 		taskService.updateTask(memberId, "分享好友", finishNum);
 		return vo;
 	}
@@ -216,6 +221,11 @@ public class TaskController {
 	public CommonVO updateShareFirendsCircleTask(String token, int finishNum) {
 		CommonVO vo = new CommonVO();
 		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid token");
+			return vo;
+		}
 		taskService.updateTask(memberId, "分享朋友圈", finishNum);
 		return vo;
 	}

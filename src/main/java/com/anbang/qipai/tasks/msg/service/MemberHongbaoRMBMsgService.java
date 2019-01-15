@@ -17,7 +17,7 @@ public class MemberHongbaoRMBMsgService {
 
 	public void giveHongbaoRMBToMember(String memberId, double amount, String textSummary) {
 		CommonMO mo = new CommonMO();
-		mo.setMsg("givegoldtomember");
+		mo.setMsg("give_hongbaormb_to_member");
 		Map data = new HashMap();
 		data.put("memberId", memberId);
 		data.put("amount", amount);
