@@ -25,8 +25,9 @@ public class MongodbTaskDocumentHistoryDao implements TaskDocumentHistoryDao {
 	}
 
 	@Override
-	public void updateState(String taskId, TaskDocumentHistoryState state) {
-		Query query = new Query(Criteria.where("id").is(taskId));
+	public void updateState(String[] taskIds, TaskDocumentHistoryState state) {
+		Object[] ids = taskIds;
+		Query query = new Query(Criteria.where("id").in(ids));
 		Update update = new Update();
 		update.set("state", state);
 		mongoTemplate.updateMulti(query, update, TaskDocumentHistory.class);

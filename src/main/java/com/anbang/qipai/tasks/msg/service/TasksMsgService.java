@@ -21,10 +21,10 @@ public class TasksMsgService {
 		taksSoure.tasks().send(MessageBuilder.withPayload(mo).build());
 	}
 
-	public void withdrawTaskDocumentHistory(TaskDocumentHistory task) {
+	public void withdrawTaskDocumentHistory(String[] taskIds) {
 		CommonMO mo = new CommonMO();
 		mo.setMsg("withdraw task");
-		mo.setData(task);
+		mo.setData(taskIds);
 		taksSoure.tasks().send(MessageBuilder.withPayload(mo).build());
 	}
 }
