@@ -22,6 +22,7 @@ import com.anbang.qipai.tasks.msg.service.MemberVIPMsgService;
 import com.anbang.qipai.tasks.msg.service.TasksMsgService;
 import com.anbang.qipai.tasks.plan.bean.FinishedTask;
 import com.anbang.qipai.tasks.plan.bean.RewardType;
+import com.anbang.qipai.tasks.plan.bean.Task;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskType;
@@ -75,6 +76,28 @@ public class TaskController {
 
 	@Autowired
 	private MemberHongbaoRMBMsgService memberHongbaoRMBMsgService;
+
+	@RequestMapping("/query_first_hongbao")
+	public CommonVO queryFirstHongbao(String token) {
+		CommonVO vo = new CommonVO();
+		String memberId = memberAuthService.getMemberIdBySessionId(token);
+		if (memberId == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid token");
+			return vo;
+		}
+		Task task = taskService.queryFirstHongbao(memberId);
+		if (task == null) {
+			vo.setSuccess(false);
+			vo.setMsg("no task");
+			return vo;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("taskId", task.getId());
+		map.put("rewardUrl", task.getRewardUrl());
+		vo.setData(map);
+		return vo;
+	}
 
 	/**
 	 * 查询任务类型、种类
@@ -302,6 +325,8 @@ public class TaskController {
 			return vo;
 		}
 		getReward(finishTask);
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		Map data = new HashMap<>();
 		vo.setData(data);

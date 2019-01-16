@@ -6,6 +6,7 @@ import com.anbang.qipai.tasks.plan.bean.target.BecomeVIPTarget;
 import com.anbang.qipai.tasks.plan.bean.target.FinishJuGameTarget;
 import com.anbang.qipai.tasks.plan.bean.target.HongbaodianRewardTarget;
 import com.anbang.qipai.tasks.plan.bean.target.InviteNewMemberTarget;
+import com.anbang.qipai.tasks.plan.bean.target.NewYearRewardOneTarget;
 import com.anbang.qipai.tasks.plan.bean.target.PlayPanGameTarget;
 import com.anbang.qipai.tasks.plan.bean.target.QiaopihuaTarget;
 import com.anbang.qipai.tasks.plan.bean.target.ShareFirendsCircleTarget;
@@ -30,7 +31,9 @@ public enum TargetType {
 	// 7,俏皮话
 	Qiaopihua(new QiaopihuaTarget()),
 	// 8,对局任务
-	DuijuGame(new FinishJuGameTarget());
+	DuijuGame(new FinishJuGameTarget()),
+	// 9,新春福利1
+	NewYearReward(new NewYearRewardOneTarget());
 
 	private ITarget target;
 

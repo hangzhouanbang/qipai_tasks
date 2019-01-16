@@ -38,6 +38,29 @@ public class TaskService {
 	private TaskDocumentHistoryDao taskDocumentHistoryDao;
 
 	/**
+	 * 临时用 查询玩家是否可以领取红包
+	 */
+	public Task queryFirstHongbao(String memberId) {
+		Task task = null;
+		MemberDbo member = memberDboDao.findMemberById(memberId);
+		if (member != null) {
+			// 添加新发布任务
+			addMemberTasks(memberId);
+			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
+			// 删除撤回任务
+			removeMemberTasks(taskList);
+			// 删除过期任务
+			removeMemberTasksForLimitTime(taskList);
+
+			List<Task> tasks = taskDao.findTaskByMemberIdAndTaskName(memberId, "新春福利1");
+			if (!tasks.isEmpty()) {
+				task = tasks.get(0);
+			}
+		}
+		return task;
+	}
+
+	/**
 	 * 查询玩家任务
 	 */
 	public List<TaskVO> queryMemberTasks(String memberId) {
