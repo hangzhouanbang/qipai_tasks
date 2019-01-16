@@ -32,7 +32,7 @@ public class MembersMsgReceiver {
 		}
 		if ("memberOrder delive".equals(msg) || "recharge vip".equals(msg) || "update member vip".equals(msg)) {
 			memberService.updateVip(member.getId(), member.isVip());
-			taskService.updateTask(member.getId(), "分享朋友圈", 1);
+			taskService.updateTask(member.getId(), "成为会员", 1);
 		}
 		if ("update member info".equals(msg)) {
 			memberService.updateBaseInfo(member.getId(), member.getNickname(), member.getHeadimgurl());
