@@ -159,6 +159,11 @@ public class TaskController {
 			return vo;
 		}
 		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -175,10 +180,17 @@ public class TaskController {
 			return vo;
 		}
 		int invitaionNum = memberInvitationRecordService.countInvitationByMemberId(finishTask.getMemberId());
-		if (invitaionNum >= finishTask.getTask().getTargetNum()) {
+		if (invitaionNum < finishTask.getTask().getTargetNum()) {
 			// 只有满足邀请条件才发放奖励
-			getReward(finishTask);
+			vo.setSuccess(false);
+			return vo;
 		}
+		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -211,6 +223,11 @@ public class TaskController {
 			return vo;
 		}
 		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -243,6 +260,11 @@ public class TaskController {
 			return vo;
 		}
 		getReward(finishTask);
+		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -260,6 +282,10 @@ public class TaskController {
 		}
 		getReward(finishTask);
 		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -277,6 +303,10 @@ public class TaskController {
 		}
 		getReward(finishTask);
 		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -294,6 +324,10 @@ public class TaskController {
 		}
 		getReward(finishTask);
 		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -311,6 +345,10 @@ public class TaskController {
 		}
 		getReward(finishTask);
 		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 
@@ -328,6 +366,10 @@ public class TaskController {
 		}
 		getReward(finishTask);
 		finishTasksMsgService.finishTask(finishTask);
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
 		return vo;
 	}
 

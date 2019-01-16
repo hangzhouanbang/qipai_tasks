@@ -11,6 +11,8 @@ public class FinishedTask {
 
 	private String nickname;// 昵称
 
+	private String taskId;// 任务历史id
+
 	private RewardType rewardType;// 奖励类型
 
 	private double rewardNum;// 奖励数量
@@ -43,6 +45,14 @@ public class FinishedTask {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
 	public RewardType getRewardType() {

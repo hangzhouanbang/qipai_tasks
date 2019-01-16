@@ -68,7 +68,7 @@ public class TaskService {
 	 */
 	public void updateTask(String memberId, String taskName, int finishNum) {
 		MemberDbo member = memberDboDao.findMemberById(memberId);
-		List<Task> taskList = taskDao.findTaskByMemberIdAndType(memberId, taskName);
+		List<Task> taskList = taskDao.findTaskByMemberIdAndTaskName(memberId, taskName);
 		for (Task task : taskList) {
 			task.getTarget().updateTask(task, member, finishNum);
 			taskDao.updateTask(task);
@@ -89,6 +89,7 @@ public class TaskService {
 		FinishedTask finishedTask = new FinishedTask();
 		finishedTask.setMemberId(member.getId());
 		finishedTask.setNickname(member.getNickname());
+		finishedTask.setTaskId(task.getTaskId());
 		finishedTask.setRewardType(task.getRewardType());
 		finishedTask.setRewardNum(task.getRewardNum());
 		finishedTask.setGetRewardIP(repIP);
@@ -123,19 +124,32 @@ public class TaskService {
 		if (member != null) {
 			List<TaskDocumentHistory> taskList = taskDocumentHistoryDao.findTaskByState(TaskDocumentHistoryState.START);
 			for (TaskDocumentHistory taskHistory : taskList) {
+				// 已经存在的不再重复添加
+				if (taskDao.findTaskByMemberIdAndTaskId(memberId, taskHistory.getId()) != null) {
+					continue;
+				}
+				// 已经完成的不再添加
+				if (finishTaskDao.findFinishTaskByMemberIdAndTaskId(memberId, taskHistory.getId()) != null) {
+					continue;
+				}
 				Task task = new Task();
 				task.setTaskId(taskHistory.getId());
 				task.setMemberId(member.getId());
 				task.setName(taskHistory.getName());
 				task.setDesc(taskHistory.getDesc());
 				task.setType(taskHistory.getType());
-				task.setRewardType(task.getRewardType());
-				task.setRewardNum(task.getRewardNum());
+				task.setTaskName(taskHistory.getTaskName());
+				task.setRewardType(taskHistory.getRewardType());
+				task.setRewardNum(taskHistory.getRewardNum());
 				task.setTargetNum(taskHistory.getTargetNum());
 				task.setFinishNum(0);
-				task.setDeadTime(System.currentTimeMillis() + taskHistory.getLimitTime());
+				if (taskHistory.getLimitTime() > 0) {
+					task.setDeadTime(System.currentTimeMillis() + taskHistory.getLimitTime());
+				}
 				task.setTaskType(taskHistory.getTaskType());
 				ITarget target = TargetType.getITargetByTaskHistory(taskHistory);
+				// 初始化
+				target.init(task, member);
 				task.setTarget(target);
 				// 刷新状态
 				task.getTarget().updateTask(task, member, 0);

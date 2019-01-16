@@ -38,9 +38,9 @@ public class MongodbTaskDao implements TaskDao {
 	}
 
 	@Override
-	public List<Task> findTaskByMemberIdAndType(String memberId, String taskName) {
+	public List<Task> findTaskByMemberIdAndType(String memberId, String type) {
 		Query query = new Query(Criteria.where("memberId").is(memberId));
-		query.addCriteria(Criteria.where("taskName").is(taskName));
+		query.addCriteria(Criteria.where("type").is(type));
 		return mongoTemplate.find(query, Task.class);
 	}
 
@@ -54,6 +54,7 @@ public class MongodbTaskDao implements TaskDao {
 	public void updateTask(Task task) {
 		Query query = new Query(Criteria.where("id").is(task.getId()));
 		Update update = new Update();
+		update.set("menu", task.getMenu());
 		update.set("taskState", task.getTaskState());
 		update.set("finishNum", task.getFinishNum());
 		update.set("target", task.getTarget());
@@ -77,6 +78,13 @@ public class MongodbTaskDao implements TaskDao {
 		Query query = new Query(Criteria.where("memberId").is(memberId));
 		query.addCriteria(Criteria.where("taskId").is(taskId));
 		return mongoTemplate.findOne(query, Task.class);
+	}
+
+	@Override
+	public List<Task> findTaskByMemberIdAndTaskName(String memberId, String taskName) {
+		Query query = new Query(Criteria.where("memberId").is(memberId));
+		query.addCriteria(Criteria.where("taskName").is(taskName));
+		return mongoTemplate.find(query, Task.class);
 	}
 
 }
