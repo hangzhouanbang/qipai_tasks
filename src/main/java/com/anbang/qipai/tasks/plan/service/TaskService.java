@@ -98,6 +98,10 @@ public class TaskService {
 		}
 	}
 
+	public Task findTaskById(String taskId) {
+		return taskDao.findTaskById(taskId);
+	}
+
 	/**
 	 * 完成任务
 	 */

@@ -30,6 +30,8 @@ import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
+import com.anbang.qipai.tasks.remote.service.QipaiHongbaoRemoteService;
+import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
 import com.anbang.qipai.tasks.util.IPUtil;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 import com.anbang.qipai.tasks.web.vo.TaskVO;
@@ -76,6 +78,9 @@ public class TaskController {
 
 	@Autowired
 	private MemberHongbaoRMBMsgService memberHongbaoRMBMsgService;
+
+	@Autowired
+	private QipaiHongbaoRemoteService qipaiHongbaoRemoteService;
 
 	@RequestMapping("/query_first_hongbao")
 	public CommonVO queryFirstHongbao(String token) {
@@ -175,14 +180,33 @@ public class TaskController {
 	@RequestMapping("/wingame_reward")
 	public CommonVO getWinGamesTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("赢得游戏")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -196,10 +220,17 @@ public class TaskController {
 	@RequestMapping("/invite_newmember_reward")
 	public CommonVO getInviteNewMemberTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("邀请新玩家")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
 		int invitaionNum = memberInvitationRecordService.countInvitationByMemberId(finishTask.getMemberId());
@@ -208,8 +239,20 @@ public class TaskController {
 			vo.setSuccess(false);
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -239,14 +282,33 @@ public class TaskController {
 	@RequestMapping("/share_firends_reward")
 	public CommonVO getShareFirendsTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("分享好友")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -276,14 +338,33 @@ public class TaskController {
 	@RequestMapping("/share_firends_circle_reward")
 	public CommonVO getShareFirendsCircleTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("分享朋友圈")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -297,14 +378,33 @@ public class TaskController {
 	@RequestMapping("/vip_reward")
 	public CommonVO getBecomeVIPTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("成为会员")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -318,16 +418,35 @@ public class TaskController {
 	@RequestMapping("/hongbaodian_reward")
 	public CommonVO getHongbaodianRewardTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("红包点福利")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		// kafka无法深层序列化
 		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -341,14 +460,33 @@ public class TaskController {
 	@RequestMapping("/pangame_reward")
 	public CommonVO getPlayPanGameTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("完成小盘游戏")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -362,14 +500,33 @@ public class TaskController {
 	@RequestMapping("/qiaopihua_reward")
 	public CommonVO getQiaopihuaTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("俏皮话")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -383,14 +540,33 @@ public class TaskController {
 	@RequestMapping("/jugame_reward")
 	public CommonVO getFinishJuGameTaskReward(HttpServletRequest request, String taskId) {
 		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("对局任务")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
 		String reqIP = IPUtil.getRealIp(request);
 		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
 		if (finishTask == null) {
 			vo.setSuccess(false);
+			vo.setMsg("invalid task");
 			return vo;
 		}
-		getReward(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
 		Map data = new HashMap<>();
 		vo.setData(data);
 		data.put("rewardType", finishTask.getRewardType());
@@ -401,7 +577,7 @@ public class TaskController {
 	/**
 	 * 领奖
 	 */
-	private void getReward(FinishedTask task) {
+	private void getReward(FinishedTask task, String reqIP) {
 		RewardType rewardType = task.getRewardType();// 奖励类型
 		double rewardNum = task.getRewardNum();// 奖励数量
 		if (rewardType.equals(RewardType.YUSHI)) {
@@ -412,8 +588,7 @@ public class TaskController {
 			memberVIPMsgService.rewardVip(task.getMemberId(), (long) rewardNum, "task_reward");
 		} else if (rewardType.equals(RewardType.HONGBAODIAN)) {
 			memberHongbaodianMsgService.giveHongbaodianToMember(task.getMemberId(), (int) rewardNum, "task_reward");
-		} else if (rewardType.equals(RewardType.HONGBAORMB)) {
-			memberHongbaoRMBMsgService.giveHongbaoRMBToMember(task.getMemberId(), rewardNum, "task_reward");
+		} else {
 		}
 	}
 
