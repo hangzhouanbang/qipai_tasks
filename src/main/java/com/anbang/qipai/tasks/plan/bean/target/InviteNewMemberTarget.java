@@ -45,6 +45,7 @@ public class InviteNewMemberTarget implements ITarget {
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
+		this.targetInviteNum = task.getTargetNum();
 		this.finishInviteNum = 0;
 		task.setFinishNum(finishInviteNum);
 		task.setTaskState(TaskState.DOINGTASK);

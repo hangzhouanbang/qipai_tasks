@@ -45,6 +45,7 @@ public class WinGamesTarget implements ITarget {
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
+		this.targetWinNum = task.getTargetNum();
 		this.finishWinNum = 0;
 		task.setFinishNum(finishWinNum);
 		task.setTaskState(TaskState.DOINGTASK);

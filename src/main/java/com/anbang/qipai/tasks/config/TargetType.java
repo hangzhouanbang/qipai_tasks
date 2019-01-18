@@ -8,6 +8,7 @@ import com.anbang.qipai.tasks.plan.bean.target.HongbaodianRewardTarget;
 import com.anbang.qipai.tasks.plan.bean.target.InviteNewMemberTarget;
 import com.anbang.qipai.tasks.plan.bean.target.NewYearRewardOneTarget;
 import com.anbang.qipai.tasks.plan.bean.target.PlayPanGameTarget;
+import com.anbang.qipai.tasks.plan.bean.target.PositiveScoreOfJuTarget;
 import com.anbang.qipai.tasks.plan.bean.target.QiaopihuaTarget;
 import com.anbang.qipai.tasks.plan.bean.target.ShareFirendsCircleTarget;
 import com.anbang.qipai.tasks.plan.bean.target.ShareFirendsTarget;
@@ -33,7 +34,9 @@ public enum TargetType {
 	// 8,对局任务
 	DuijuGame(new FinishJuGameTarget()),
 	// 9,新春福利1
-	NewYearReward(new NewYearRewardOneTarget());
+	NewYearRewardOne(new NewYearRewardOneTarget()),
+	// 10,大局正分
+	PositiveScoreOfJuReward(new PositiveScoreOfJuTarget());
 
 	private ITarget target;
 

@@ -32,6 +32,7 @@ public class PlayPanGameTarget implements ITarget {
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
+		this.targetPanNum = task.getTargetNum();
 		this.finishPanNum = 0;
 		task.setFinishNum(finishPanNum);
 		task.setTaskState(TaskState.DOINGTASK);

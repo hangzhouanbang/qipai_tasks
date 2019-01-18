@@ -79,6 +79,10 @@ public class TaskService {
 				TaskVO taskVo = new TaskVO();
 				taskVo.setType(type);
 				List<Task> tasks = taskDao.findTaskByMemberIdAndType(memberId, type);
+				for (Task task : tasks) {
+					// json序列化问题
+					task.setTarget(null);
+				}
 				taskVo.setTaskList(tasks);
 				taskVos.add(taskVo);
 			}

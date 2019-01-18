@@ -46,6 +46,7 @@ public class ShareFirendsTarget implements ITarget {
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
+		this.targetFirendsNum = task.getTargetNum();
 		this.finishFirendsNum = 0;
 		task.setFinishNum(finishFirendsNum);
 		task.setTaskState(TaskState.DOINGTASK);

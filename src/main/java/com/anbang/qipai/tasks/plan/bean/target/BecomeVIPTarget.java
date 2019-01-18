@@ -31,6 +31,7 @@ public class BecomeVIPTarget implements ITarget {
 	@Override
 	public void reset(Task task, MemberDbo member) {
 		this.isVIP = false;
+		task.setFinishNum(0);
 		task.setTaskState(TaskState.DOINGTASK);
 		task.getMenu().setName("成为会员");
 		task.getMenu().setAction(TaskAction.VIPSHOP);
@@ -40,6 +41,7 @@ public class BecomeVIPTarget implements ITarget {
 	public void updateTask(Task task, MemberDbo member, int finishNum) {
 		if (!TaskState.COMPLETETASK.equals(task.getTaskState()) && !TaskState.FINISHTASK.equals(task.getTaskState())) {
 			if (member.isVip()) {
+				task.setFinishNum(task.getTargetNum());
 				isVIP = true;
 				task.setTaskState(TaskState.COMPLETETASK);
 				task.getMenu().setName("领取");

@@ -51,6 +51,10 @@ public class TaskConfig {
 		task9.setTaskType(9);
 		task9.setTaskName("新春福利1");
 		templates.put(task9.getTaskName(), task9);
+		TaskTemplate task10 = new TaskTemplate();
+		task10.setTaskType(10);
+		task10.setTaskName("大局正分");
+		templates.put(task10.getTaskName(), task10);
 	}
 	static {
 		typeList = new ArrayList<String>();

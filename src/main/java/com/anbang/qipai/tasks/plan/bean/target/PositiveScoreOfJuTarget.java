@@ -8,33 +8,33 @@ import com.anbang.qipai.tasks.plan.bean.TaskMenu;
 import com.anbang.qipai.tasks.plan.bean.TaskState;
 
 /**
- * 对局任务
+ * 大局正分
  * 
  * @author lsc
  *
  */
-public class FinishJuGameTarget implements ITarget {
+public class PositiveScoreOfJuTarget implements ITarget {
 
-	private int targetJuNum;
-	private int finishJuNum;
+	private int targetNum;
+	private int finishNum;
 
 	@Override
 	public void init(Task task, MemberDbo member) {
-		this.targetJuNum = task.getTargetNum();
-		this.finishJuNum = 0;
+		this.targetNum = task.getTargetNum();
+		this.finishNum = 0;
 		TaskMenu menu = new TaskMenu();
 		menu.setName("去完成");
 		menu.setAction(TaskAction.CREATEROOM);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
-		task.setRewardUrl("/task/jugame_reward");
+		task.setRewardUrl("/task/juscore_reward");
 	}
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
-		this.targetJuNum = task.getTargetNum();
-		this.finishJuNum = 0;
-		task.setFinishNum(finishJuNum);
+		this.targetNum = task.getTargetNum();
+		this.finishNum = 0;
+		task.setFinishNum(finishNum);
 		task.setTaskState(TaskState.DOINGTASK);
 		task.getMenu().setName("去完成");
 		task.getMenu().setAction(TaskAction.CREATEROOM);
@@ -43,9 +43,9 @@ public class FinishJuGameTarget implements ITarget {
 	@Override
 	public void updateTask(Task task, MemberDbo member, int finishNum) {
 		if (!TaskState.COMPLETETASK.equals(task.getTaskState()) && !TaskState.FINISHTASK.equals(task.getTaskState())) {
-			finishJuNum += finishNum;
-			task.setFinishNum(finishJuNum);
-			if (finishJuNum >= targetJuNum) {
+			finishNum += finishNum;
+			task.setFinishNum(finishNum);
+			if (finishNum >= targetNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 				task.getMenu().setName("领取");
 				task.getMenu().setAction(TaskAction.REWARD);
@@ -58,22 +58,6 @@ public class FinishJuGameTarget implements ITarget {
 		task.setTaskState(TaskState.FINISHTASK);
 		task.getMenu().setName("已完成");
 		task.getMenu().setAction(TaskAction.VOID);
-	}
-
-	public int getTargetJuNum() {
-		return targetJuNum;
-	}
-
-	public void setTargetJuNum(int targetJuNum) {
-		this.targetJuNum = targetJuNum;
-	}
-
-	public int getFinishJuNum() {
-		return finishJuNum;
-	}
-
-	public void setFinishJuNum(int finishJuNum) {
-		this.finishJuNum = finishJuNum;
 	}
 
 }

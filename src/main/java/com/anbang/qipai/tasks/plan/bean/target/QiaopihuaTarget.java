@@ -32,6 +32,7 @@ public class QiaopihuaTarget implements ITarget {
 
 	@Override
 	public void reset(Task task, MemberDbo member) {
+		this.targetNum = task.getTargetNum();
 		this.finishNum = 0;
 		task.setFinishNum(finishNum);
 		task.setTaskState(TaskState.DOINGTASK);
@@ -57,6 +58,22 @@ public class QiaopihuaTarget implements ITarget {
 		task.setTaskState(TaskState.FINISHTASK);
 		task.getMenu().setName("已完成");
 		task.getMenu().setAction(TaskAction.VOID);
+	}
+
+	public int getTargetNum() {
+		return targetNum;
+	}
+
+	public void setTargetNum(int targetNum) {
+		this.targetNum = targetNum;
+	}
+
+	public int getFinishNum() {
+		return finishNum;
+	}
+
+	public void setFinishNum(int finishNum) {
+		this.finishNum = finishNum;
 	}
 
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anbang.qipai.tasks.config.TaskConfig;
 import com.anbang.qipai.tasks.msg.service.FinishTasksMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberGoldsMsgService;
-import com.anbang.qipai.tasks.msg.service.MemberHongbaoRMBMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberHongbaodianMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberScoresMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberVIPMsgService;
@@ -28,6 +27,7 @@ import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskType;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
+import com.anbang.qipai.tasks.plan.service.MemberLoginRecordService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.anbang.qipai.tasks.remote.service.QipaiHongbaoRemoteService;
@@ -59,6 +59,9 @@ public class TaskController {
 	private MemberInvitationRecordService memberInvitationRecordService;
 
 	@Autowired
+	private MemberLoginRecordService memberLoginRecordService;
+
+	@Autowired
 	private TasksMsgService tasksMsgService;
 
 	@Autowired
@@ -77,9 +80,6 @@ public class TaskController {
 	private MemberHongbaodianMsgService memberHongbaodianMsgService;
 
 	@Autowired
-	private MemberHongbaoRMBMsgService memberHongbaoRMBMsgService;
-
-	@Autowired
 	private QipaiHongbaoRemoteService qipaiHongbaoRemoteService;
 
 	@RequestMapping("/query_first_hongbao")
@@ -89,6 +89,11 @@ public class TaskController {
 		if (memberId == null) {
 			vo.setSuccess(false);
 			vo.setMsg("invalid token");
+			return vo;
+		}
+		if (memberLoginRecordService.findRecentRecordByMemberId(memberId) != null) {
+			vo.setSuccess(false);
+			vo.setMsg("not first");
 			return vo;
 		}
 		Task task = taskService.queryFirstHongbao(memberId);
@@ -194,6 +199,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -240,6 +247,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -296,6 +305,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -352,6 +363,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -392,6 +405,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -455,6 +470,48 @@ public class TaskController {
 	}
 
 	/**
+	 * 领取“新春福利1”任务奖励
+	 */
+	@RequestMapping("/newyear_reward")
+	public CommonVO getNewYearRewardOneTaskReward(HttpServletRequest request, String taskId) {
+		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("新春福利1")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid task");
+			return vo;
+		}
+		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
+		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
+		return vo;
+	}
+
+	/**
 	 * 领取“完成小盘游戏”任务奖励
 	 */
 	@RequestMapping("/pangame_reward")
@@ -474,6 +531,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -514,6 +573,8 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
@@ -554,6 +615,50 @@ public class TaskController {
 			return vo;
 		}
 		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
+		finishTasksMsgService.finishTask(finishTask);
+		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
+			double rewardNum = task.getRewardNum();// 奖励数量
+			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
+					"task_reward", reqIP);
+			if (!rvo.isSuccess()) {
+				vo.setSuccess(false);
+				vo.setMsg(rvo.getMsg());
+				return vo;
+			}
+		} else {
+			getReward(finishTask, reqIP);
+		}
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("rewardType", finishTask.getRewardType());
+		data.put("rewardNum", finishTask.getRewardNum());
+		return vo;
+	}
+
+	/**
+	 * 领取“大局正分”任务奖励
+	 */
+	@RequestMapping("/juscore_reward")
+	public CommonVO getPositiveScoreOfJuTaskReward(HttpServletRequest request, String taskId) {
+		CommonVO vo = new CommonVO();
+		Task task = taskService.findTaskById(taskId);
+		if (!task.getTaskName().equals("大局正分")) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid type");
+			return vo;
+		}
+		String reqIP = IPUtil.getRealIp(request);
+		FinishedTask finishTask = taskService.finishTask(taskId, reqIP);
+		if (finishTask == null) {
+			vo.setSuccess(false);
+			vo.setMsg("invalid task");
+			return vo;
+		}
+		RewardType rewardType = task.getRewardType();// 奖励类型
+		// kafka无法深层序列化
+		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量

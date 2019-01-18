@@ -25,16 +25,29 @@ public class WenzhouMajiangResultMsgReceiver {
 		String json = gson.toJson(mo.getData());
 		Map map = gson.fromJson(json, Map.class);
 		if ("wenzhoumajiang ju result".equals(msg)) {
-			String memberId = (String) map.get("dayingjiaId");
-			if (memberId != null) {
-				taskService.updateTask(memberId, "赢得游戏", 1);
-				((List) map.get("playerResultList")).forEach((juPlayerResult) -> taskService
-						.updateTask((String) ((Map) juPlayerResult).get("playerId"), "对局任务", 1));
+			Object mid = map.get("dayingjiaId");
+			if (mid != null) {
+				String memberId = (String) mid;
+				if (memberId != null) {
+					taskService.updateTask(memberId, "赢得游戏", 1);
+				}
+				Object playerList = map.get("playerResultList");
+				if (playerList != null) {
+					((List) playerList).forEach((juPlayerResult) -> {
+						taskService.updateTask((String) ((Map) juPlayerResult).get("playerId"), "对局任务", 1);
+						if ((Double) ((Map) juPlayerResult).get("totalScore") > 0) {
+							taskService.updateTask((String) ((Map) juPlayerResult).get("playerId"), "大局正分", 1);
+						}
+					});
+				}
 			}
 		}
 		if ("wenzhoumajiang pan result".equals(msg)) {
-			((List) map.get("playerResultList")).forEach((panPlayerResult) -> taskService
-					.updateTask((String) ((Map) panPlayerResult).get("playerId"), "完成小盘游戏", 1));
+			Object playerList = map.get("playerResultList");
+			if (playerList != null) {
+				((List) playerList).forEach((panPlayerResult) -> taskService
+						.updateTask((String) ((Map) panPlayerResult).get("playerId"), "完成小盘游戏", 1));
+			}
 		}
 	}
 }
