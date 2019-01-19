@@ -12,6 +12,7 @@ public class TaskDocumentHistory {
 	private boolean vip;// 是否vip专属任务
 	private int targetNum;// 完成次数
 	private long limitTime;// 限时
+	private int weight;// 权重
 	private TaskType taskType;// 任务分类：每日，单次
 	private TaskDocumentHistoryState state;// 状态:发布，停用
 	private long releaseTime;// 发布时间
@@ -71,6 +72,14 @@ public class TaskDocumentHistory {
 
 	public void setRewardType(RewardType rewardType) {
 		this.rewardType = rewardType;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	public double getRewardNum() {

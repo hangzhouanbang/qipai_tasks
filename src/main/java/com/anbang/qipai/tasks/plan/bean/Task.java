@@ -18,6 +18,7 @@ public class Task {
 	private RewardType rewardType;// 奖励类型
 	private double rewardNum;// 奖励数量
 	private TaskMenu menu;// 任务按钮
+	private int weight;// 权重
 	private TaskState taskState;// 任务状态
 	private int targetNum;// 总进度
 	private int finishNum;// 完成进度
@@ -88,6 +89,14 @@ public class Task {
 
 	public void setRewardType(RewardType rewardType) {
 		this.rewardType = rewardType;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
 
 	public double getRewardNum() {

@@ -171,6 +171,7 @@ public class TaskService {
 				task.setType(taskHistory.getType());
 				task.setTaskName(taskHistory.getTaskName());
 				task.setRewardType(taskHistory.getRewardType());
+				task.setWeight(taskHistory.getWeight());
 				task.setRewardNum(taskHistory.getRewardNum());
 				task.setTargetNum(taskHistory.getTargetNum());
 				task.setFinishNum(0);
