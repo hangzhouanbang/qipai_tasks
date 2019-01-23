@@ -91,7 +91,7 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		if (memberLoginRecordService.findRecentRecordByMemberId(memberId) != null) {
+		if (memberLoginRecordService.countLoginRecordByMemberId(memberId) > 1) {
 			vo.setSuccess(false);
 			vo.setMsg("not first");
 			return vo;

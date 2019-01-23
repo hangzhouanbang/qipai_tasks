@@ -41,4 +41,10 @@ public class MongodbMemberLoginRecordDao implements MemberLoginRecordDao {
 		return mongoTemplate.findOne(query, MemberLoginRecord.class);
 	}
 
+	@Override
+	public long countLoginRecordByMemberId(String memberId) {
+		Query query = new Query(Criteria.where("memberId").is(memberId));
+		return mongoTemplate.count(query, MemberLoginRecord.class);
+	}
+
 }

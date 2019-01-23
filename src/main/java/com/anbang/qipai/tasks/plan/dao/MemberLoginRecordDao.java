@@ -9,4 +9,6 @@ public interface MemberLoginRecordDao {
 	void updateOnlineTimeById(String id, long onlineTime);
 
 	MemberLoginRecord findRecentRecordByMemberId(String memberId);
+
+	long countLoginRecordByMemberId(String memberId);
 }

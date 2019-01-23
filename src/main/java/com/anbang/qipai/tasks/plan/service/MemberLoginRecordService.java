@@ -23,4 +23,8 @@ public class MemberLoginRecordService {
 	public MemberLoginRecord findRecentRecordByMemberId(String memberId) {
 		return memberLoginRecordDao.findRecentRecordByMemberId(memberId);
 	}
+
+	public long countLoginRecordByMemberId(String memberId) {
+		return memberLoginRecordDao.countLoginRecordByMemberId(memberId);
+	}
 }
