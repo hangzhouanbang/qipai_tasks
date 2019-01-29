@@ -4,8 +4,8 @@ import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface WenzhouShuangkouResultSink {
-	String WENZHOUSHUANGKOURESULT = "wenzhouShuangkouResult";
+	String WENZHOUSHUANGKOURESULT = "gameWenzhouskResult";
 
 	@Input
-	SubscribableChannel wenzhouShuangkouResult();
+	SubscribableChannel gameWenzhouskResult();
 }

@@ -115,36 +115,36 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
-        ruianMajiangResult:
-          destination: ruianMajiangResult
+        gameRuianmjResult:
+          destination: gameRuianmjResult
           group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false
           contentType: application/json
-        fangpaoMajiangResult:
-          destination: fangpaoMajiangResult
+        gameFangpaomjResult:
+          destination: gameFangpaomjResult
           group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false
           contentType: application/json
-        wenzhouMajiangResult:
-          destination: wenzhouMajiangResult
+        gameWenzhoumjResult:
+          destination: gameWenzhoumjResult
           group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false
           contentType: application/json
-        dianpaoMajiangResult:
-          destination: dianpaoMajiangResult
+        gameDianpaomjResult:
+          destination: gameDianpaomjResult
           group: qipai-tasks
           consumer:
             concurrency: 1
             partitioned: false
           contentType: application/json
-        wenzhouShuangkouResult:
-          destination: wenzhouShuangkouResult
+        gameWenzhouskResult:
+          destination: gameWenzhouskResult
           group: qipai-tasks
           consumer:
             concurrency: 1
