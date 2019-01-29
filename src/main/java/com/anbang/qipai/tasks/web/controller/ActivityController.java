@@ -40,6 +40,7 @@ public class ActivityController {
 	public CommonVO addActivity(@RequestBody Activity activity) {
 		CommonVO vo = new CommonVO();
 		activity.setState(ActivityState.STOP);
+		activity.setCreateTime(System.currentTimeMillis());
 		activityService.addActivity(activity);
 		activityMsgService.addActivity(activity);
 		return vo;

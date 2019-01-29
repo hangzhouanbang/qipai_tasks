@@ -3,6 +3,9 @@ package com.anbang.qipai.tasks.plan.dao.mongodb;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,6 +38,7 @@ public class MongodbActivityDao implements ActivityDao {
 	@Override
 	public List<Activity> findActivity() {
 		Query query = new Query(Criteria.where("state").is(ActivityState.START));
+		query.with(new Sort(new Order(Direction.DESC, "createTime")));
 		return mongoTemplate.find(query, Activity.class);
 	}
 
