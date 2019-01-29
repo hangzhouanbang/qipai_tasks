@@ -42,20 +42,9 @@ public class TaskService {
 	 */
 	public Task queryFirstHongbao(String memberId) {
 		Task task = null;
-		MemberDbo member = memberDboDao.findMemberById(memberId);
-		if (member != null) {
-			// 添加新发布任务
-			addMemberTasks(memberId);
-			List<Task> taskList = taskDao.findTaskByMemberId(memberId);
-			// 删除撤回任务
-			removeMemberTasks(taskList);
-			// 删除过期任务
-			removeMemberTasksForLimitTime(taskList);
-
-			List<Task> tasks = taskDao.findTaskByMemberIdAndTaskName(memberId, "新春福利1");
-			if (!tasks.isEmpty()) {
-				task = tasks.get(0);
-			}
+		List<Task> tasks = taskDao.findTaskByMemberIdAndTaskName(memberId, "新春福利1");
+		if (!tasks.isEmpty()) {
+			task = tasks.get(0);
 		}
 		return task;
 	}

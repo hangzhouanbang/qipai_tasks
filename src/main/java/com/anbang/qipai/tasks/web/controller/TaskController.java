@@ -96,6 +96,7 @@ public class TaskController {
 			vo.setMsg("not first");
 			return vo;
 		}
+		taskService.queryMemberTasks(memberId);
 		Task task = taskService.queryFirstHongbao(memberId);
 		if (task == null) {
 			vo.setSuccess(false);
