@@ -80,6 +80,25 @@ public class TaskService {
 	}
 
 	/**
+	 * 查询玩家是否有完成的任务
+	 */
+	public boolean queryMemberFinishedTasks(List<TaskVO> taskVos) {
+		if (taskVos == null || taskVos.isEmpty()) {
+			return false;
+		}
+		for (TaskVO vo : taskVos) {
+			if (vo.getTaskList() != null || !vo.getTaskList().isEmpty()) {
+				for (Task task : vo.getTaskList()) {
+					if (TaskState.COMPLETETASK.equals(task.getTaskState())) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * 更新任务
 	 */
 	public void updateTask(String memberId, String taskName, int finishNum) {
