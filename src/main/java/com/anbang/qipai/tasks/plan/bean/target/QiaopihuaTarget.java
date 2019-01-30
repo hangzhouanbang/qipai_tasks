@@ -45,7 +45,7 @@ public class QiaopihuaTarget implements ITarget {
 		if (!TaskState.COMPLETETASK.equals(task.getTaskState()) && !TaskState.FINISHTASK.equals(task.getTaskState())) {
 			this.finishNum += finishNum;
 			task.setFinishNum(this.finishNum);
-			if (finishNum >= targetNum) {
+			if (this.finishNum >= targetNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 				task.getMenu().setName("领取");
 				task.getMenu().setAction(TaskAction.REWARD);
