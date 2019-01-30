@@ -93,13 +93,14 @@ public class TaskController {
 		}
 		Map<String, Object> data = new HashMap<String, Object>();
 		vo.setData(data);
-		data.put("hasTask", "false");
+		data.put("hasTask", false);
 		if (!taskService.queryMemberTasks(memberId).isEmpty()) {
-			data.put("hasTask", "true");
+			data.put("hasTask", true);
 		}
 		if (memberLoginRecordService.countLoginRecordByMemberId(memberId) <= 1) {
 			Task task = taskService.queryFirstHongbao(memberId);
-			data.put("task", task);
+			data.put("taskId", task.getId());
+			data.put("rewardUrl", task.getRewardUrl());
 		}
 		return vo;
 	}

@@ -19,7 +19,7 @@ public class NewYearRewardOneTarget implements ITarget {
 	public void init(Task task, MemberDbo member) {
 		TaskMenu menu = new TaskMenu();
 		menu.setName("领取");
-		menu.setAction(TaskAction.REWARDANDDUIHUAN);
+		menu.setAction(TaskAction.REWARD);
 		task.setMenu(menu);
 		task.setTaskState(TaskState.COMPLETETASK);
 		task.setRewardUrl("/task/newyear_reward");
@@ -30,7 +30,7 @@ public class NewYearRewardOneTarget implements ITarget {
 		task.setFinishNum(0);
 		task.setTaskState(TaskState.COMPLETETASK);
 		task.getMenu().setName("领取");
-		task.getMenu().setAction(TaskAction.REWARDANDDUIHUAN);
+		task.getMenu().setAction(TaskAction.REWARD);
 	}
 
 	@Override
