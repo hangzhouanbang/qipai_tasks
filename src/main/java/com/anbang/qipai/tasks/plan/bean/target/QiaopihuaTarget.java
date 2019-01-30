@@ -43,8 +43,8 @@ public class QiaopihuaTarget implements ITarget {
 	@Override
 	public void updateTask(Task task, MemberDbo member, int finishNum) {
 		if (!TaskState.COMPLETETASK.equals(task.getTaskState()) && !TaskState.FINISHTASK.equals(task.getTaskState())) {
-			finishNum += finishNum;
-			task.setFinishNum(finishNum);
+			this.finishNum += finishNum;
+			task.setFinishNum(this.finishNum);
 			if (finishNum >= targetNum) {
 				task.setTaskState(TaskState.COMPLETETASK);
 				task.getMenu().setName("领取");
