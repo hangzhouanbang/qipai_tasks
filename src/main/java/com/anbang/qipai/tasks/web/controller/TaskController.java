@@ -91,22 +91,16 @@ public class TaskController {
 			vo.setMsg("invalid token");
 			return vo;
 		}
-		if (memberLoginRecordService.countLoginRecordByMemberId(memberId) > 1) {
-			vo.setSuccess(false);
-			vo.setMsg("not first");
-			return vo;
+		Map<String, Object> data = new HashMap<String, Object>();
+		vo.setData(data);
+		data.put("hasTask", "false");
+		if (!taskService.queryMemberTasks(memberId).isEmpty()) {
+			data.put("hasTask", "true");
 		}
-		taskService.queryMemberTasks(memberId);
-		Task task = taskService.queryFirstHongbao(memberId);
-		if (task == null) {
-			vo.setSuccess(false);
-			vo.setMsg("no task");
-			return vo;
+		if (memberLoginRecordService.countLoginRecordByMemberId(memberId) <= 1) {
+			Task task = taskService.queryFirstHongbao(memberId);
+			data.put("task", task);
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("taskId", task.getId());
-		map.put("rewardUrl", task.getRewardUrl());
-		vo.setData(map);
 		return vo;
 	}
 
