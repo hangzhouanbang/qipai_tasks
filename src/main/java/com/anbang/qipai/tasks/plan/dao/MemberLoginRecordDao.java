@@ -11,4 +11,6 @@ public interface MemberLoginRecordDao {
 	MemberLoginRecord findRecentRecordByMemberId(String memberId);
 
 	long countLoginRecordByMemberId(String memberId);
+
+	int countMemberNumByLoginIp(String loginIp);
 }

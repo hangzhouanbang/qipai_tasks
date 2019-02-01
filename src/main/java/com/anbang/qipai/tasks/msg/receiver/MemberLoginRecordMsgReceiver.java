@@ -12,7 +12,6 @@ import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.bean.MemberLoginRecord;
 import com.anbang.qipai.tasks.plan.service.MemberLoginRecordService;
 import com.anbang.qipai.tasks.plan.service.MemberService;
-import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.google.gson.Gson;
 
 @EnableBinding(MemberLoginRecordSink.class)
@@ -23,9 +22,6 @@ public class MemberLoginRecordMsgReceiver {
 
 	@Autowired
 	private MemberService memberService;
-
-	@Autowired
-	private TaskService taskService;
 
 	private Gson gson = new Gson();
 

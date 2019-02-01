@@ -12,6 +12,7 @@ import com.anbang.qipai.tasks.plan.bean.FinishedTask;
 import com.anbang.qipai.tasks.plan.bean.ITarget;
 import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.bean.Task;
+import com.anbang.qipai.tasks.plan.bean.TaskAction;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskState;
@@ -154,6 +155,23 @@ public class TaskService {
 				MemberDbo member = memberDboDao.findMemberById(task.getMemberId());
 				task.getTarget().reset(task, member);
 				taskDao.updateTask(task);
+			}
+		}
+	}
+
+	/**
+	 * 回退任务
+	 */
+	public void backTask(String finishTaskId) {
+		FinishedTask finishedTask = finishTaskDao.findFinishTaskById(finishTaskId);
+		if (finishedTask != null) {
+			Task task = finishedTask.getTask();
+			if (task != null && !TaskType.EVERYDAY.equals(task.getTaskType())) {
+				task.setTaskState(TaskState.COMPLETETASK);
+				task.getMenu().setName("领取");
+				task.getMenu().setAction(TaskAction.REWARD);
+				taskDao.addTask(task);
+				finishTaskDao.remove(finishTaskId);
 			}
 		}
 	}

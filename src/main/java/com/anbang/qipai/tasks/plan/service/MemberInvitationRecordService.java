@@ -16,7 +16,15 @@ public class MemberInvitationRecordService {
 		memberInvitationRecordDao.insert(record);
 	}
 
+	public void updateMemberInvitationRecordState(String id, String state) {
+		memberInvitationRecordDao.updateState(id, state);
+	}
+
 	public int countInvitationByMemberId(String memberId) {
 		return (int) memberInvitationRecordDao.countInvitationByMemberId(memberId);
+	}
+
+	public MemberInvitationRecord findMemberInvitationRecordByInvitationMemberId(String invitationMemberId) {
+		return memberInvitationRecordDao.findByInvitationMemberId(invitationMemberId);
 	}
 }

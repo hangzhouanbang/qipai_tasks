@@ -33,4 +33,14 @@ public class MongodbFinishTaskDao implements FinishTaskDao {
 				FinishedTask.class);
 	}
 
+	@Override
+	public FinishedTask findFinishTaskById(String id) {
+		return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), FinishedTask.class);
+	}
+
+	@Override
+	public void remove(String id) {
+		mongoTemplate.remove(new Query(Criteria.where("id").is(id)), FinishedTask.class);
+	}
+
 }

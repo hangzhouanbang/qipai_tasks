@@ -10,5 +10,9 @@ public interface FinishTaskDao {
 
 	FinishedTask findFinishTaskByMemberIdAndTaskId(String memberId, String taskId);
 
+	FinishedTask findFinishTaskById(String id);
+
+	void remove(String id);
+
 	void addFinishTask(FinishedTask finishTask);
 }

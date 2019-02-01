@@ -9,7 +9,10 @@ package com.anbang.qipai.tasks.plan.bean;
 public class MemberInvitationRecord {
 	private String id;
 	private String memberId;
+	private String nickname;// 邀请玩家昵称
 	private String invitationMemberId;
+	private String invitationMemberNickname;// 被邀请玩家昵称
+	private String state;// 邀请状态
 	private long createTime;
 
 	public String getId() {
@@ -28,12 +31,36 @@ public class MemberInvitationRecord {
 		this.memberId = memberId;
 	}
 
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	public String getInvitationMemberId() {
 		return invitationMemberId;
 	}
 
 	public void setInvitationMemberId(String invitationMemberId) {
 		this.invitationMemberId = invitationMemberId;
+	}
+
+	public String getInvitationMemberNickname() {
+		return invitationMemberNickname;
+	}
+
+	public void setInvitationMemberNickname(String invitationMemberNickname) {
+		this.invitationMemberNickname = invitationMemberNickname;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public long getCreateTime() {
@@ -43,4 +70,5 @@ public class MemberInvitationRecord {
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
 	}
+
 }

@@ -27,4 +27,8 @@ public class MemberLoginRecordService {
 	public long countLoginRecordByMemberId(String memberId) {
 		return memberLoginRecordDao.countLoginRecordByMemberId(memberId);
 	}
+
+	public int countMemberNumByLoginIp(String loginIp) {
+		return memberLoginRecordDao.countMemberNumByLoginIp(loginIp);
+	}
 }

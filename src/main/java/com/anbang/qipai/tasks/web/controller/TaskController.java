@@ -6,12 +6,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anbang.qipai.tasks.config.IPVerifyConfig;
 import com.anbang.qipai.tasks.config.TaskConfig;
 import com.anbang.qipai.tasks.msg.service.FinishTasksMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberGoldsMsgService;
@@ -25,16 +28,20 @@ import com.anbang.qipai.tasks.plan.bean.Task;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskType;
+import com.anbang.qipai.tasks.plan.bean.WhiteList;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
 import com.anbang.qipai.tasks.plan.service.MemberLoginRecordService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
+import com.anbang.qipai.tasks.plan.service.WhiteListService;
 import com.anbang.qipai.tasks.remote.service.QipaiHongbaoRemoteService;
 import com.anbang.qipai.tasks.remote.vo.CommonRemoteVO;
+import com.anbang.qipai.tasks.util.HttpUtil;
 import com.anbang.qipai.tasks.util.IPUtil;
 import com.anbang.qipai.tasks.web.vo.CommonVO;
 import com.anbang.qipai.tasks.web.vo.TaskVO;
+import com.google.gson.Gson;
 
 /**
  * 任务管理
@@ -82,6 +89,11 @@ public class TaskController {
 	@Autowired
 	private QipaiHongbaoRemoteService qipaiHongbaoRemoteService;
 
+	@Autowired
+	private WhiteListService whiteListService;
+
+	private Gson gson = new Gson();
+
 	@RequestMapping("/query_first_hongbao")
 	public CommonVO queryFirstHongbao(String token) {
 		CommonVO vo = new CommonVO();
@@ -98,8 +110,10 @@ public class TaskController {
 		data.put("hasTask", taskService.queryMemberFinishedTasks(taskVos));
 		if (memberLoginRecordService.countLoginRecordByMemberId(memberId) <= 1) {
 			Task task = taskService.queryFirstHongbao(memberId);
-			data.put("taskId", task.getId());
-			data.put("rewardUrl", task.getRewardUrl());
+			if (task != null) {
+				data.put("taskId", task.getId());
+				data.put("rewardUrl", task.getRewardUrl());
+			}
 		}
 		return vo;
 	}
@@ -202,6 +216,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -238,22 +253,32 @@ public class TaskController {
 		int invitaionNum = memberInvitationRecordService.countInvitationByMemberId(finishTask.getMemberId());
 		if (invitaionNum < finishTask.getTask().getTargetNum()) {
 			// 只有满足邀请条件才发放奖励
+			taskService.backTask(finishTask.getId());
 			vo.setSuccess(false);
+			vo.setMsg("invitaionNum is incorrectly");
 			return vo;
 		}
-		RewardType rewardType = task.getRewardType();// 奖励类型
+		WhiteList whitelist = whiteListService.findByPlayerId(finishTask.getMemberId());
+		if (whitelist == null && !verifyReqIP(reqIP)) {// ip不在白名单并且无效
+			taskService.backTask(finishTask.getId());
+			vo.setSuccess(false);
+			vo.setMsg("invalid ip");
+			return vo;
+		}
 		// kafka无法深层序列化
 		finishTask.getTask().setTarget(null);
 		finishTasksMsgService.finishTask(finishTask);
+		RewardType rewardType = task.getRewardType();// 奖励类型
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
-			if (!rvo.isSuccess()) {
-				vo.setSuccess(false);
-				vo.setMsg(rvo.getMsg());
-				return vo;
-			}
+			// if (!rvo.isSuccess()) {
+			// taskService.backTask(finishTask.getId());
+			// vo.setSuccess(false);
+			// vo.setMsg(rvo.getMsg());
+			// return vo;
+			// }
 		} else {
 			getReward(finishTask, reqIP);
 		}
@@ -308,6 +333,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -366,6 +392,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -408,6 +435,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -450,6 +478,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -492,6 +521,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -534,6 +564,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -576,6 +607,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -618,6 +650,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -660,6 +693,7 @@ public class TaskController {
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
 					"task_reward", reqIP);
 			if (!rvo.isSuccess()) {
+				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
 				vo.setMsg(rvo.getMsg());
 				return vo;
@@ -690,6 +724,44 @@ public class TaskController {
 			memberHongbaodianMsgService.giveHongbaodianToMember(task.getMemberId(), (int) rewardNum, "task_reward");
 		} else {
 		}
+	}
+
+	/**
+	 * 验证ip
+	 */
+	private boolean verifyReqIP(String reqIP) {
+		int num = memberLoginRecordService.countMemberNumByLoginIp(reqIP);
+		if (num > 4) {// 有4个以上的账号用该IP做登录
+			return false;
+		}
+		String host = "http://iploc.market.alicloudapi.com";
+		String path = "/v3/ip";
+		String method = "GET";
+		String appcode = IPVerifyConfig.APPCODE;
+		Map<String, String> headers = new HashMap<String, String>();
+		// 最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
+		headers.put("Authorization", "APPCODE " + appcode);
+		Map<String, String> querys = new HashMap<String, String>();
+		querys.put("ip", reqIP);
+
+		try {
+			HttpResponse response = HttpUtil.doGet(host, path, method, headers, querys);
+			String entity = EntityUtils.toString(response.getEntity());
+			Map map = gson.fromJson(entity, Map.class);
+			String status = (String) map.get("status");
+			String info = (String) map.get("info");
+			String infocode = (String) map.get("infocode");
+			String province = (String) map.get("province");
+			String adcode = (String) map.get("adcode");
+			String city = (String) map.get("city");
+			if (status.equals("1") && info.equals("OK") && province.equals("浙江省") && infocode.equals("10000")
+					&& city.equals("温州市") && adcode.equals("330300")) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
