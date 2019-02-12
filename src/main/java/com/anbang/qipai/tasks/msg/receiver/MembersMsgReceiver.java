@@ -32,11 +32,12 @@ public class MembersMsgReceiver {
 		}
 		if ("memberOrder delive".equals(msg) || "recharge vip".equals(msg) || "update member vip".equals(msg)) {
 			memberService.updateVip(member.getId(), member.isVip());
-			taskService.updateTask(member.getId(), "成为会员", 1);
+			if (member.isVip()) {// 只有会员才更新任务
+				taskService.updateTask(member.getId(), "成为会员", 1);
+			}
 		}
 		if ("update member info".equals(msg)) {
 			memberService.updateBaseInfo(member.getId(), member.getNickname(), member.getHeadimgurl());
-			taskService.updateTask(member.getId(), "成为会员", 1);
 		}
 	}
 

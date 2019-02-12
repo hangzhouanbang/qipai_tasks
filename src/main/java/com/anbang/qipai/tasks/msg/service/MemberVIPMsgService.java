@@ -17,7 +17,7 @@ public class MemberVIPMsgService {
 
 	public void rewardVip(String memberId, long vipTime, String summary) {
 		CommonMO mo = new CommonMO();
-		mo.setMsg("rewardVip");
+		mo.setMsg("reward vip");
 		Map data = new HashMap();
 		data.put("memberId", memberId);
 		data.put("vipTime", vipTime);

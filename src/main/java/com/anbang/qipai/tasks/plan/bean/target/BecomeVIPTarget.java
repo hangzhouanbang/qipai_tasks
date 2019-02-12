@@ -26,6 +26,13 @@ public class BecomeVIPTarget implements ITarget {
 		task.setMenu(menu);
 		task.setTaskState(TaskState.DOINGTASK);
 		task.setRewardUrl("/task/vip_reward");
+		if (member.isVip()) {
+			task.setFinishNum(task.getTargetNum());
+			isVIP = true;
+			task.setTaskState(TaskState.COMPLETETASK);
+			task.getMenu().setName("领取");
+			task.getMenu().setAction(TaskAction.REWARD);
+		}
 	}
 
 	@Override
@@ -35,6 +42,13 @@ public class BecomeVIPTarget implements ITarget {
 		task.setTaskState(TaskState.DOINGTASK);
 		task.getMenu().setName("成为会员");
 		task.getMenu().setAction(TaskAction.VIPSHOP);
+		if (member.isVip()) {
+			task.setFinishNum(task.getTargetNum());
+			isVIP = true;
+			task.setTaskState(TaskState.COMPLETETASK);
+			task.getMenu().setName("领取");
+			task.getMenu().setAction(TaskAction.REWARD);
+		}
 	}
 
 	@Override

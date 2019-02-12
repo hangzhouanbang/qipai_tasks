@@ -94,6 +94,20 @@ public class TaskController {
 
 	private Gson gson = new Gson();
 
+	@RequestMapping("/test")
+	public CommonVO verifyIp(HttpServletRequest request) {
+		CommonVO vo = new CommonVO();
+		String ip = request.getHeader("X-Real-IP");
+		String ip2 = request.getRemoteAddr();
+		String xip = request.getHeader("x-forwarded-for");
+		Map data = new HashMap<>();
+		vo.setData(data);
+		data.put("ip", ip);
+		data.put("ip2", ip2);
+		data.put("xip", xip);
+		return vo;
+	}
+
 	@RequestMapping("/query_first_hongbao")
 	public CommonVO queryFirstHongbao(String token) {
 		CommonVO vo = new CommonVO();
@@ -259,7 +273,7 @@ public class TaskController {
 			return vo;
 		}
 		WhiteList whitelist = whiteListService.findByPlayerId(finishTask.getMemberId());
-		if (whitelist == null && !verifyReqIP(reqIP)) {// ip不在白名单并且无效
+		if (whitelist == null && !verifyReqIP(request)) {// ip不在白名单并且无效
 			taskService.backTask(finishTask.getId());
 			vo.setSuccess(false);
 			vo.setMsg("invalid ip");
@@ -729,9 +743,13 @@ public class TaskController {
 	/**
 	 * 验证ip
 	 */
-	private boolean verifyReqIP(String reqIP) {
+	private boolean verifyReqIP(HttpServletRequest request) {
+		if (!IPUtil.verifyIp(request)) {
+			return false;
+		}
+		String reqIP = IPUtil.getRealIp(request);
 		int num = memberLoginRecordService.countMemberNumByLoginIp(reqIP);
-		if (num > 4) {// 有4个以上的账号用该IP做登录
+		if (num > 2) {// 有2个以上的账号用该IP做登录
 			return false;
 		}
 		String host = "http://iploc.market.alicloudapi.com";

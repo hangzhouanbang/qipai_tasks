@@ -26,13 +26,17 @@ public class RuianMajiangResultMsgReceiver {
 		Map map = gson.fromJson(json, Map.class);
 		if ("ruianmajiang ju result".equals(msg)) {
 			Object mid = map.get("dayingjiaId");
-			if (mid != null) {
+			Object lpn = map.get("lastPanNo");
+			Object ps = map.get("panshu");
+			if (mid != null && lpn != null && ps != null) {
 				String memberId = (String) mid;
+				int lastPanNo = ((Double) lpn).intValue();
+				int panshu = ((Double) ps).intValue();
 				if (memberId != null) {
 					taskService.updateTask(memberId, "赢得游戏", 1);
 				}
 				Object playerList = map.get("playerResultList");
-				if (playerList != null) {
+				if (playerList != null && lastPanNo == panshu) {
 					((List) playerList).forEach((juPlayerResult) -> {
 						taskService.updateTask((String) ((Map) juPlayerResult).get("playerId"), "对局任务", 1);
 						if ((Double) ((Map) juPlayerResult).get("totalScore") > 0) {
