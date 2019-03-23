@@ -150,6 +150,13 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+        gameDoudizhuResult:
+          destination: gameDoudizhuResult
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         wisecrack:
           destination: wisecrack
           group: qipai-tasks
@@ -197,6 +204,13 @@ spring:
           contentType: application/json
           producer:
             partitionCount: 1
+        whitelist:
+          destination: whitelist
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
   application:
     name: qipai-tasks
 server:
