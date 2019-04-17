@@ -1,5 +1,6 @@
 package com.anbang.qipai.tasks.plan.dao.mongodb;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -57,7 +58,9 @@ public class MongodbMemberDboDao implements MemberDboDao {
 		Update update = new Update();
 		update.set("nickname", nickname);
 		update.set("headimgurl", headimgurl);
-		update.set("reqIP", reqIP);
+		if (!StringUtils.isBlank(reqIP)) {
+			update.set("reqIP", reqIP);
+		}
 		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 
