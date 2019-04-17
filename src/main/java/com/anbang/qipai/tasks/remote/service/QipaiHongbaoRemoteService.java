@@ -11,6 +11,5 @@ public interface QipaiHongbaoRemoteService {
 
 	@RequestMapping(value = "/hongbao/give_hongbao_to_member")
 	public CommonRemoteVO hongbao_give_to_member(@RequestParam(value = "memberId") String memberId,
-			@RequestParam(value = "amount") double amount, @RequestParam(value = "textSummary") String textSummary,
-			@RequestParam(value = "reqIP") String reqIP);
+			@RequestParam(value = "amount") double amount, @RequestParam(value = "textSummary") String textSummary);
 }

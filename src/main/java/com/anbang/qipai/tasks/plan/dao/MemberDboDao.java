@@ -12,7 +12,7 @@ public interface MemberDboDao {
 
 	void updateOnlineTime(String memberId, long onLineTime);
 
-	void updateBaseInfo(String memberId, String nickname, String headimgurl);
+	void updateBaseInfo(String memberId, String nickname, String headimgurl, String reqIP);
 
 	MemberDbo findMemberById(String memberId);
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.eclipse.jetty.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import com.anbang.qipai.tasks.msg.service.MemberScoresMsgService;
 import com.anbang.qipai.tasks.msg.service.MemberVIPMsgService;
 import com.anbang.qipai.tasks.msg.service.TasksMsgService;
 import com.anbang.qipai.tasks.plan.bean.FinishedTask;
+import com.anbang.qipai.tasks.plan.bean.MemberDbo;
 import com.anbang.qipai.tasks.plan.bean.RewardType;
 import com.anbang.qipai.tasks.plan.bean.Task;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
@@ -32,6 +34,7 @@ import com.anbang.qipai.tasks.plan.bean.WhiteList;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
 import com.anbang.qipai.tasks.plan.service.MemberLoginRecordService;
+import com.anbang.qipai.tasks.plan.service.MemberService;
 import com.anbang.qipai.tasks.plan.service.TaskDocumentHistoryService;
 import com.anbang.qipai.tasks.plan.service.TaskService;
 import com.anbang.qipai.tasks.plan.service.WhiteListService;
@@ -88,6 +91,9 @@ public class TaskController {
 
 	@Autowired
 	private QipaiHongbaoRemoteService qipaiHongbaoRemoteService;
+
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private WhiteListService whiteListService;
@@ -228,7 +234,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -236,7 +242,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -272,8 +278,9 @@ public class TaskController {
 			vo.setMsg("invitaionNum is incorrectly");
 			return vo;
 		}
+		MemberDbo member = memberService.findMemberById(finishTask.getMemberId());
 		WhiteList whitelist = whiteListService.findByPlayerId(finishTask.getMemberId());
-		if (whitelist == null && !verifyReqIP(request)) {// ip不在白名单并且无效
+		if (whitelist == null && !verifyReqIP(member.getReqIP())) {// ip不在白名单并且无效
 			taskService.backTask(finishTask.getId());
 			vo.setSuccess(false);
 			vo.setMsg("invalid ip");
@@ -286,7 +293,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			// if (!rvo.isSuccess()) {
 			// taskService.backTask(finishTask.getId());
 			// vo.setSuccess(false);
@@ -294,7 +301,7 @@ public class TaskController {
 			// return vo;
 			// }
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -345,7 +352,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -353,7 +360,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -404,7 +411,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -412,7 +419,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -447,7 +454,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -455,7 +462,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -490,7 +497,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -498,7 +505,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -533,7 +540,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -541,7 +548,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -576,7 +583,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -584,7 +591,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -619,7 +626,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -627,7 +634,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -662,7 +669,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -670,7 +677,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -705,7 +712,7 @@ public class TaskController {
 		if (rewardType.equals(RewardType.HONGBAORMB)) {// 现金红包
 			double rewardNum = task.getRewardNum();// 奖励数量
 			CommonRemoteVO rvo = qipaiHongbaoRemoteService.hongbao_give_to_member(task.getMemberId(), rewardNum,
-					"task_reward", reqIP);
+					"task_reward");
 			if (!rvo.isSuccess()) {
 				taskService.backTask(finishTask.getId());
 				vo.setSuccess(false);
@@ -713,7 +720,7 @@ public class TaskController {
 				return vo;
 			}
 		} else {
-			getReward(finishTask, reqIP);
+			getReward(finishTask);
 		}
 		Map data = new HashMap<>();
 		vo.setData(data);
@@ -725,7 +732,7 @@ public class TaskController {
 	/**
 	 * 领奖
 	 */
-	private void getReward(FinishedTask task, String reqIP) {
+	private void getReward(FinishedTask task) {
 		RewardType rewardType = task.getRewardType();// 奖励类型
 		double rewardNum = task.getRewardNum();// 奖励数量
 		if (rewardType.equals(RewardType.YUSHI)) {
@@ -743,11 +750,10 @@ public class TaskController {
 	/**
 	 * 验证ip
 	 */
-	private boolean verifyReqIP(HttpServletRequest request) {
-		if (!IPUtil.verifyIp(request)) {
+	private boolean verifyReqIP(String reqIP) {
+		if (StringUtil.isBlank(reqIP)) {
 			return false;
 		}
-		String reqIP = IPUtil.getRealIp(request);
 		int num = memberLoginRecordService.countMemberNumByLoginIp(reqIP);
 		if (num > 2) {// 有2个以上的账号用该IP做登录
 			return false;

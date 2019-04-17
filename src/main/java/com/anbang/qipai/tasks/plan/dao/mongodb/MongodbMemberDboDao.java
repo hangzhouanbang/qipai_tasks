@@ -52,11 +52,12 @@ public class MongodbMemberDboDao implements MemberDboDao {
 	}
 
 	@Override
-	public void updateBaseInfo(String memberId, String nickname, String headimgurl) {
+	public void updateBaseInfo(String memberId, String nickname, String headimgurl, String reqIP) {
 		Query query = new Query(Criteria.where("id").is(memberId));
 		Update update = new Update();
 		update.set("nickname", nickname);
 		update.set("headimgurl", headimgurl);
+		update.set("reqIP", reqIP);
 		mongoTemplate.updateFirst(query, update, MemberDbo.class);
 	}
 

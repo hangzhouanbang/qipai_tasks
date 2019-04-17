@@ -32,7 +32,7 @@ public class MemberService {
 		memberDboDao.updateOnlineTime(memberId, onLineTime);
 	}
 
-	public void updateBaseInfo(String memberId, String nickname, String headimgurl) {
-		memberDboDao.updateBaseInfo(memberId, nickname, headimgurl);
+	public void updateBaseInfo(String memberId, String nickname, String headimgurl, String reqIP) {
+		memberDboDao.updateBaseInfo(memberId, nickname, headimgurl, reqIP);
 	}
 }

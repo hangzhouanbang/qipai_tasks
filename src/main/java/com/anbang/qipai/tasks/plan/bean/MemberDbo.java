@@ -8,6 +8,15 @@ public class MemberDbo {
 	private int onlineTime;// 在线时长
 	private long lastLoginTime;// 最后登录时间
 	private long createTime;// 注册时间
+	private String reqIP;// 注册ip
+
+	public String getReqIP() {
+		return reqIP;
+	}
+
+	public void setReqIP(String reqIP) {
+		this.reqIP = reqIP;
+	}
 
 	public String getId() {
 		return id;

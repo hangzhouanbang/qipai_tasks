@@ -37,7 +37,8 @@ public class MembersMsgReceiver {
 			}
 		}
 		if ("update member info".equals(msg)) {
-			memberService.updateBaseInfo(member.getId(), member.getNickname(), member.getHeadimgurl());
+			memberService.updateBaseInfo(member.getId(), member.getNickname(), member.getHeadimgurl(),
+					member.getReqIP());
 		}
 	}
 
