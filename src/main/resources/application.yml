@@ -157,6 +157,13 @@ spring:
             concurrency: 1
             partitioned: false
           contentType: application/json
+        gameChayuanskResult:
+          destination: gameChayuanskResult
+          group: qipai-tasks
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
         wisecrack:
           destination: wisecrack
           group: qipai-tasks
