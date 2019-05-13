@@ -31,6 +31,7 @@ import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistory;
 import com.anbang.qipai.tasks.plan.bean.TaskDocumentHistoryState;
 import com.anbang.qipai.tasks.plan.bean.TaskType;
 import com.anbang.qipai.tasks.plan.bean.WhiteList;
+import com.anbang.qipai.tasks.plan.dao.mongodb.TestDao;
 import com.anbang.qipai.tasks.plan.service.MemberAuthService;
 import com.anbang.qipai.tasks.plan.service.MemberInvitationRecordService;
 import com.anbang.qipai.tasks.plan.service.MemberLoginRecordService;
@@ -98,6 +99,9 @@ public class TaskController {
 	@Autowired
 	private WhiteListService whiteListService;
 
+	@Autowired
+	private TestDao testDao;
+
 	private Gson gson = new Gson();
 
 	@RequestMapping("/test")
@@ -113,6 +117,13 @@ public class TaskController {
 		data.put("xip", xip);
 		return vo;
 	}
+
+	// @RequestMapping("/test1")
+	// public CommonVO testEnum(HttpServletRequest request) {
+	// CommonVO vo = new CommonVO();
+	// testDao.test();
+	// return vo;
+	// }
 
 	@RequestMapping("/query_first_hongbao")
 	public CommonVO queryFirstHongbao(String token) {
@@ -758,8 +769,8 @@ public class TaskController {
 		if (num > 2) {// 有2个以上的账号用该IP做登录
 			return false;
 		}
-		String host = "http://iploc.market.alicloudapi.com";
-		String path = "/v3/ip";
+		String host = "http://ipquery.market.alicloudapi.com";
+		String path = "/query";
 		String method = "GET";
 		String appcode = IPVerifyConfig.APPCODE;
 		Map<String, String> headers = new HashMap<String, String>();
@@ -772,20 +783,45 @@ public class TaskController {
 			HttpResponse response = HttpUtil.doGet(host, path, method, headers, querys);
 			String entity = EntityUtils.toString(response.getEntity());
 			Map map = gson.fromJson(entity, Map.class);
-			String status = (String) map.get("status");
-			String info = (String) map.get("info");
-			String infocode = (String) map.get("infocode");
-			String province = (String) map.get("province");
-			String adcode = (String) map.get("adcode");
-			String city = (String) map.get("city");
-			if (status.equals("1") && info.equals("OK") && province.equals("浙江省") && infocode.equals("10000")) {
-				return true;
+			String ret = ((Double) map.get("ret")).toString();
+			if (ret.equals("200")) {
+				Map data = (Map) map.get("data");
+				String prov = (String) data.get("prov");
+				String city = (String) data.get("city");
+				if (prov.contains("浙江")) {
+					return true;
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
+
+	// public static void main(String[] args) throws Exception {
+	// String host = "http://iploc.market.alicloudapi.com";
+	// String path = "/v3/ip";
+	// String method = "GET";
+	// String appcode = IPVerifyConfig.APPCODE;
+	// Map<String, String> headers = new HashMap<String, String>();
+	// // 最后在header中的格式(中间是英文空格)为Authorization:APPCODE
+	// 83359fd73fe94948385f570e3c139105
+	// headers.put("Authorization", "APPCODE " + appcode);
+	// Map<String, String> querys = new HashMap<String, String>();
+	// querys.put("ip", "60.180.15.143");
+	//
+	// Gson gson = new Gson();
+	// HttpResponse response = HttpUtil.doGet(host, path, method, headers, querys);
+	// String entity = EntityUtils.toString(response.getEntity());
+	// Map map = gson.fromJson(entity, Map.class);
+	// System.out.println(map);
+	// String status = (String) map.get("status");
+	// String info = (String) map.get("info");
+	// String infocode = (String) map.get("infocode");
+	// String province = (String) map.get("province");
+	// String adcode = (String) map.get("adcode");
+	// String city = (String) map.get("city");
+	// }
 
 	/**
 	 * 重置每日任务
